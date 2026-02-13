@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Proposal Bbliography" type="BIBTEX_RUN_CONFIGURATION" factoryName="LaTeX configuration factory">
+    <texify-bibtex>
+      <compiler>BIBER</compiler>
+      <compiler-path />
+      <compiler-arguments />
+      <envs />
+      <main-file>$PROJECT_DIR$/LaTeX/cs595_proposal_lottery_ticket_hypothesis_washington.tex</main-file>
+      <aux-dir>$PROJECT_DIR$/auxil/proposal</aux-dir>
+      <latex-distribution>MIKTEX</latex-distribution>
+    </texify-bibtex>
+    <method v="2" />
+  </configuration>
+</component>

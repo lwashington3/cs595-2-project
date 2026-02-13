@@ -1,0 +1,76 @@
+%! Author = Len Washington III
+%! Date = 2/13/26
+
+% Preamble
+\documentclass[12pt,
+	style={numeric},
+]{report}
+
+% Packages
+\usepackage[
+	title={Project Proposal},
+]{cs595}
+
+\addbibresource{project.bib}
+\renewcommand{\thesection}{\arabic{section}. }
+
+% Document
+\begin{document}
+
+\section{Project Title \& Team}\label{sec:project-title-&-team}
+Title: Using the Lottery Ticket Hypothesis to Decrease the Size of LLMs\\
+Name: \href{mailto:lwashington3@hawk.illinoistech.edu}{Len Washington III}\\
+A\#: A20484223
+
+\section{Problem \& Motivation}\label{sec:problem-&-motivation}
+(About .5 page)
+
+Problem statement: [One crisp paragraph describing the problem you will tackle].
+
+Why it matters: [Who benefits and where it is used (LLM serving, GNN training, recsys, etc.)].
+
+Efficiency demands: [e.g., average latency $\leq$ 120 ms @ 16K context; VRAM $\leq$ 40 GB; \$/1M tokens $\leq$ X].
+
+Current gap: [1–2 sentences on why existing approaches fall short].
+
+\section{Challenges \& Trade-offs}\label{sec:challenges-&-trade-offs}
+(About .5 page)
+
+Bottlenecks: [Compute vs memory vs communication; where is the time/bytes spent?].
+
+Trade-offs: [Latency vs throughput; quality vs latency/energy; accuracy vs model size].
+
+Key measurements to collect: [HBM GB/s, cache hit rate, acceptance rate, accuracies etc.].
+
+\section{Proposed Design}\label{sec:proposed-design}
+($\approx$0.5 page)
+Core idea: [3–5 bullets of the expected mechanism/system changes].
+
+Why it should work: [Tie to the bottleneck—reduced bytes moved, higher TC util, fewer PCIe trips, etc.].
+
+\section{Evaluation Plan}\label{sec:evaluation-plan}
+($\approx$0.25 page)
+Workloads: [Dataset(s), model(s), scale (seq length/graph size), precision].
+
+Environment: [Hardware (A6000/A100/CPU count), platform (Chameleon?), libraries (PyTorch, FAISS, vLLM, DGL/PyG), container/OS].
+
+Metrics: [Serving: TTFT, p50/p95, tokens/s, QPS, VRAM (model+KV), J/token, \$/1M tokens, quality. Training: step time, samples/s, scaling efficiency, HBM/PCIe/NVLink GB/s, energy/epoch, final accuracy. GNN/TGNN: SpMM/SDDMM util, sampler time, feature-store hit rate, end-to-end p95/QPS. RAG: recall@k/nDCG, index p95, embedding/ANN latency, context length].
+
+Baselines: [Dense/stock/paper baseline on your hardware].
+
+Ablations: [Which knobs you will vary: nprobe, PQ code size, LoRA rank, sparsity \%, KV precision,
+etc.].
+
+\section{Plan \& Milestones}\label{sec:plan-&-milestones}
+$\approx$0.25 page)
+Milestone A (Week 6–7): [Baseline + first prototype].
+
+Milestone B (Week 10–11): [Full pipeline + ablations planned].
+
+Final (Week 14–15): [Results + artifacts ready].
+
+\cite{Lottery-Ticket-Hypothesis,LTH-Transformer}
+
+\printbibliography[title={References}, heading=subbibnumbered]
+
+\end{document}
