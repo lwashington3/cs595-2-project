@@ -1,0 +1,35 @@
+name: washington_lottery_ticket
+
+services:
+    project:
+        build: .
+        image: washington_lth_project
+        environment:
+            - HF_HOME=/hf
+            - HF_DATASETS_CACHE=/hf/datasets
+            - HUGGINGFACE_HUB_CACHE=/hf/hub
+            - HISTFILE=/var/.bash_history
+        env_file: .env
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+            - ./.bash_history:/var/.bash_history
+            - ./hf:/hf
+            - /mnt/Current/datasets:/datasets
+            - ./:/lth
+            - ./LaTeX:/lth/LaTeX
+            - ./washLTH:/usr/local/lib/python3.14/site-packages/washLTH
+        deploy:
+            resources:
+                reservations:
+                    devices:
+                        -   driver: nvidia
+                            count: all
+                            capabilities: [ gpu ]
+        runtime: nvidia
+#        user: 1000:1000
+
+
+networks:
+    default:
+        external: true
+        name: main_shared_net

@@ -2,17 +2,9 @@
 %! Date = 2/13/26
 
 % Preamble
-\documentclass[12pt,
-	style={numeric},
-]{report}
-
-% Packages
-\usepackage[
-	title={Project Proposal},
-]{cs595}
-
-\addbibresource{project.bib}
-\renewcommand{\thesection}{\arabic{section}. }
+\documentclass[
+	title={Project Proposal}
+]{cs595project}
 
 % Document
 \begin{document}
@@ -23,6 +15,7 @@ Name: \href{mailto:lwashington3@hawk.illinoistech.edu}{Len Washington III}\\
 A\#: A20484223
 
 \section{Problem \& Motivation}\label{sec:problem-&-motivation}
+\ifdetails
 (About .5 page)
 
 Problem statement: [One crisp paragraph describing the problem you will tackle].
@@ -33,7 +26,17 @@ Efficiency demands: [e.g., average latency $\leq$ 120 ms @ 16K context; VRAM $\l
 
 Current gap: [1–2 sentences on why existing approaches fall short].
 
+\fi
+For my semester project, I plan on using the Lottery Ticket Hypothesis (LTH)~\supercite{Lottery-Ticket-Hypothesis} to prune a Large Language Model to reduce the amount of space required to run said LLM\@.
+LLMs have become ingrained in most aspects of life since~\citeauthor{vaswani2017attention} introduced the transformer architecture and ChatGPT made it easy to access them.
+However, the increasingly complex tasks that LLMs need to handle have led them to become larger and larger, which has increased them amount of space the LLMs need to be stored on and to run.
+Since the LTH requires for a model to have already been trained to competition before pruning, instead of trying to create a smaller model from the start, I thought this would be the best way to shrink pretrained models like Llama.
+The LTH is the way I plan to reduce the number of parameters for the transformer architecture, since some runs found that regular neural networks could have 5\% of their original training size while still holding the same accuracy\supercite{Lottery-Ticket-Hypothesis}.
+To account for the difference in architectures between regular neural networks and transformers, I will consult the methods described by~\citeauthor{LTH-Transformer}.
+The Lottery Ticket Hypothesis currently falls short due to it producing sparse matrices, which did not fare well with most hardware when the article was written.
+
 \section{Challenges \& Trade-offs}\label{sec:challenges-&-trade-offs}
+\ifdetails
 (About .5 page)
 
 Bottlenecks: [Compute vs memory vs communication; where is the time/bytes spent?].
@@ -41,14 +44,35 @@ Bottlenecks: [Compute vs memory vs communication; where is the time/bytes spent?
 Trade-offs: [Latency vs throughput; quality vs latency/energy; accuracy vs model size].
 
 Key measurements to collect: [HBM GB/s, cache hit rate, acceptance rate, accuracies etc.].
+\fi
+
+The original challenges and trade-offs of the Lottery Ticket Hypothesis is that it would produce a sparse model.
+Back in 2018, the random sparsity of the model was an issue that most hardware architectures couldn't deal with, which may have made the sparse model run less efficiently than the full sized, dense model.
+To combat this, I'm going to use ``structured sparsity'', as proposed by~\citeauthor{Medium}, which would delete the weights in patterns instead of deleting weights randomly.
+
+Another challenge is that~\citeauthor{Lottery-Ticket-Hypothesis} state that after pruning weights, the unpruned weights needed to be reset to the initial values that they had before training; however, it would be difficult to find a model that would have these initial values published.
+To combat this, I will attempt to pick new random values that may train a full transformer to reach similar accuracy levels as the pulled version.
+If I can't find values that work, I will note this in my paper and use either the values I downloaded, or a random initialization.
 
 \section{Proposed Design}\label{sec:proposed-design}
+\ifdetails
 ($\approx$0.5 page)
 Core idea: [3–5 bullets of the expected mechanism/system changes].
 
 Why it should work: [Tie to the bottleneck—reduced bytes moved, higher TC util, fewer PCIe trips, etc.].
+\fi
+\begin{enumerate}
+	\item \textbf{Initial Model Pruning} The first step involves downloading a small language model from HuggingFace with \href{https://huggingface.co/docs/safetensors/en/index}{SafeTensors} uploaded.
+	This is done since I can directly manipulate and prune weights using SafeTensors.
+	\item \textbf{Generating the Pruning Algorithm for a SafeTensor file} The next step is to apply the algorithms in~\cite{Lottery-Ticket-Hypothesis,LTH-Transformer} to the small model to reduce its size.
+	\item \textbf{Evaluate the test model} Each time I prune down the test model, I will evaluate its accuracy against a test dataset I download from HuggingFace. I currently plan on using the \href{https://www.kaggle.com/datasets/mohamedlotfy50/wmt-2014-english-german}{WMT 2014 English-German} dataset, but I might talk to other students who are also modifying transformers to see which dataset they use.
+	\item \textbf{Apply these methods to Llama 4} If Steps 1--3 are successful, I will apply them to Llama 4 which has a model size of 67GB, and again evaluate this reduced Llama model in the same way as before.
+	\item \textbf{Apply to a domain-specific application} If Step 4 is successful (and I have the time), I might run Argonne National Laboratory's \href{https://exsclaim.materialeyes.org}{EXSCLAIM} pipeline using the modified model. As the current maintainer of this software, I would like to see how it fares taking the place of Llama 3.3 on our current hardware (that doesn't have a GPU).
+	I would record metrics and accuracy, and paste the responses in the appendix.
+\end{enumerate}
 
 \section{Evaluation Plan}\label{sec:evaluation-plan}
+\ifdetails
 ($\approx$0.25 page)
 Workloads: [Dataset(s), model(s), scale (seq length/graph size), precision].
 
@@ -58,18 +82,66 @@ Metrics: [Serving: TTFT, p50/p95, tokens/s, QPS, VRAM (model+KV), J/token, \$/1M
 
 Baselines: [Dense/stock/paper baseline on your hardware].
 
-Ablations: [Which knobs you will vary: nprobe, PQ code size, LoRA rank, sparsity \%, KV precision,
-etc.].
+Ablations: [Which knobs you will vary: nprobe, PQ code size, LoRA rank, sparsity \%, KV precision, etc.].
+\fi
+
+Workloads
+\begin{itemize}
+	\item \href{https://www.kaggle.com/datasets/mohamedlotfy50/wmt-2014-english-german}{WMT 2014 English-German} (updated 2 years ago)
+\end{itemize}
+
+Environment
+\begin{itemize}
+	\item Hardware
+	\begin{itemize}
+		\item Personal PC
+		\begin{itemize}
+			\item Nvidia RTX 5090 GPU
+			\item CPU Count: 32
+			\item Ram: 64 GB
+			\item Operating System: Ubuntu Linux
+		\end{itemize}
+		\item Chameleon?
+	\end{itemize}
+	\item Pytorch
+	\item SafeTensors
+\end{itemize}
+
+Metrics
+\begin{itemize}
+	\item Number of Parameters
+	\item Memory
+	\item Accuracy
+	\item Wait time
+	\item Bilingual Evaluation Understudy [BLEU]\supercite{LTH-Transformer} (If the training dataset is similar to the one in~\cite{LTH-Transformer} and translates between languages)
+\end{itemize}
+
+Baselines
+\begin{itemize}
+	\item Table 1 of~\cite{LTH-Transformer} describes baselines for the models they trained, including their sparsity memory.
+\end{itemize}
+
+Ablations
+\begin{itemize}
+	\item Sparsity \%
+\end{itemize}
 
 \section{Plan \& Milestones}\label{sec:plan-&-milestones}
-$\approx$0.25 page)
+\ifdetails
+$\approx$0.25 page
 Milestone A (Week 6–7): [Baseline + first prototype].
 
 Milestone B (Week 10–11): [Full pipeline + ablations planned].
 
 Final (Week 14–15): [Results + artifacts ready].
-
-\cite{Lottery-Ticket-Hypothesis,LTH-Transformer}
+\fi
+\begin{description}
+	\item[Week 6-7] Figure out how to use SafeTensor and directly edit the smaller model.
+	\item[Week 7-8] Run the LTH algorithm on the model, attempting to replicate the initial training values.
+	\item[Week 9-11] Evaluate the algorithm will continuously decreasing the size of the model.
+	\item[Week 12-13] If the model could be decreased, use the created files to run the same process for Llama 4.
+	\item[Week 14-15] Results + artifacts ready.
+\end{description}
 
 \printbibliography[title={References}, heading=subbibnumbered]
 

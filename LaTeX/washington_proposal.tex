@@ -1,0 +1,49 @@
+%! Author = Len Washington III
+%! Date = 3/16/26
+
+% Preamble
+\documentclass[
+	title={Lottery Ticket Hypothesis}
+]{cs595project}
+
+% Document
+\begin{document}
+
+\section{Project Title \& Team}\label{sec:project-title-&-team}
+Title: Using the Lottery Ticket Hypothesis to Decrease the Size of LLMs\\
+Name: \href{mailto:lwashington3@hawk.illinoistech.edu}{Len Washington III}~\orcid{0009-0004-0165-6316}\\
+A\#: A20484223
+
+\section{Motivation}\label{sec:problem-&-motivation}
+Using Large Language Models (LLMs) have become the standard tool to handle complex tasks within and outside the domain of Natural Language Processing (NLP).
+LLMs have been shown to increase their ability to solve these tasks when the amount of parameters they contain and the data they're trained on increases.
+The problem with this is that training these larger models requires extremely large corpora, large amounts of energy for computing, and days worth of training to be able to create such a model.
+This strategy doesn't work for a few reasons,
+\begin{itemize}
+	\item Not everyone has the facilities to create such a model
+	\item Not everyone has the data required to successfully train a model
+	\item Most LLMs have static knowledge sets, if they don't have RAG or a similar system, they can't retrieve new information
+	\item The emissions from training these models and running them is polluting the Earth \url{https://huggingface.co/blog/carbon-emissions-on-the-hub}.
+	\begin{itemize}
+		\item Show some metrics about the emissions for the popular models on HuggingFace (Llama, etc)
+	\end{itemize}
+\end{itemize}
+
+One of the more well-known solutions to this problem is fine-tuning a large, pre-trained model to work better for your specific tasks.
+This may achieve better results for your tasks, however, you would still have to deal with the necessary compute power to run all of the parameters in the model.
+To deal with this,~\citeauthor{Lottery-Ticket-Hypothesis} proposed a new way to prune the unnecessary parameters.
+This was done using the \textit{Lottery Ticket Hypothesis (LTH)}, which uses finds and masks the smallest magnitude parameters in a model, then retrains only the models within the saved structure.
+The theory is $\dots$
+However, two issues arise from their method.
+
+The first is that the fine-tuning dataset needs to be the same dataset that was used to train the original LLM, but that might not be possible to use since most researchers may not upload the dataset due to it using proprietary information.
+The second issue is that while the LTH may reduce the number of parameters within a model, the uneven pruning may lead to structures that won't run as efficiently on most hardware, which may results to longer waits then the original model.
+
+The first issue will be addressed by finetuning the original LLM \textit{before} starting the pruning process.
+This will continue until the model losses are sufficiently small, which may be required for any assumptions the LTH process makes.
+The second issue will be addressed by using the LLMPruner technique proposed by~\citeauthor{LLM-Pruner}, to prune entire sections instead of individual parameters.
+Both~\cite{Lottery-Ticket-Hypothesis} and~\cite{LLM-Pruner} focus on finding relevant structures for the pruning, $\dots$
+
+\printbibliography[title={References}, heading=subbibnumbered]
+
+\end{document}
