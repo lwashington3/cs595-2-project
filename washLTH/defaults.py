@@ -1,0 +1,6 @@
+__all__ = ["DEFAULT_TOKENIZER", "DEFAULT_SEED"]
+
+
+DEFAULT_TOKENIZER = "bert-base-uncased"
+
+DEFAULT_SEED = 20_484_223

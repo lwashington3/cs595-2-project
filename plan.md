@@ -30,6 +30,35 @@ Look into [SafeTensors](https://huggingface.co/docs/safetensors/en/index)
 - Compatible with [Ollama models](https://docs.ollama.com/modelfile#build-from-a-safetensors-model)
 - Might be compatible with PyTorch?
   - Can convert a Pytorch .bin model to .safetensors using their [convert.py](https://github.com/huggingface/safetensors/blob/main/bindings/python/convert.py), but need to make sure its not uploading my models.
-    - Will probably need to replace every like that initalizes operations with an empty list so it doesn't know to upload it back
+    - Will probably need to replace every like that initializes operations with an empty list so it doesn't know to upload it back
 - Llama 3.1 has safetensor files on [HuggingFace](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct/tree/main)
 - Katerina uploaded datasets about EXSCLAIM to [HuggingFace](https://huggingface.co/datasets/kvriza8/microscopy_images)
+
+
+What I could do is retrain the model, then prune the retrained model and use the dataset I used for retraining for pruning.
+This dataset could be related to processing the captions for EXSCLAIM.
+
+Keep reading https://huggingface.co/learn/llm-course/en/chapter3/4
+
+Benchmarking could use [GLUE](https://gluebenchmark.com/), which was recommended by [Hugging Face](https://huggingface.co/learn/llm-course/chapter3/2#loading-a-dataset-from-the-hub)
+
+# Nice to Know:
+- What is a model head? An additional component, usually made up of one or a few layers, to convert the transformer predictions to a task-specific output
+  - Adaptation heads, also known simply as heads, come up in different forms: language modeling heads, question answering heads, sequence classification heads...
+
+For evaluation, run
+- Base model downloaded from HF (as the baseline)
+- The full pre-trained model (the one that has yet to be pruned)
+- The magnitude-based pruned model
+  - Maybe also this model where the values are masked instead of completely removed, testing if the missing structure was obstructing it.
+- The structural-pruned model
+
+TODO:
+- Find a better dataset that would also cover some niche-LLM task (b/c probably won't generate good EXSCLAIM one in time)
+- Implement MRPC if necessary
+- Build a function that takes in models to compare and runs them through `LTHPipeline`, before saving the results to a table and saving said table
+
+Models to test:
+- https://huggingface.co/Qwen/Qwen3.5-2B
+- https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507
+- https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct

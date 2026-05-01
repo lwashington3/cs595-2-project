@@ -1,12 +1,32 @@
+from datasets import Dataset, IterableDataset, DatasetDict, IterableDatasetDict
+from datasets.formatting.formatting import LazyBatch
 from re import Pattern
-from torch import Tensor, Device
-from typing import Any, Callable
+from torch import Tensor
+from torch.types import Device
+from transformers import TokenizersBackend, BatchEncoding, EvalPrediction
+from typing import Any, Callable, NamedTuple
 
 
-__all__ = ["Device", "MetricEvaluator", "RegexType", "SafeTensor", "StringChecker"]
+__all__ = ["DatasetType", "DatasetDictType", "LiveDatasetType", "StreamingDatasetType", "FormatterType", "Device",
+		   "MetricEvaluator", "RegexType", "SafeTensor", "StringChecker", "DatasetInfo"]
+
+DatasetType = Dataset | IterableDataset
+
+DatasetDictType = DatasetDict | IterableDatasetDict
+
+LiveDatasetType = Dataset | DatasetDict
+
+StreamingDatasetType = IterableDataset | IterableDatasetDict
+
+FormatterType = Callable[[LazyBatch, TokenizersBackend], BatchEncoding]
 
 
-MetricEvaluator = Callable[["transformers.trainer_utils.EvalPrediction"], dict[str, Any]]
+class DatasetInfo(NamedTuple):
+	dataset: DatasetType | DatasetDictType
+	formatter: FormatterType
+
+
+MetricEvaluator = Callable[[EvalPrediction], dict[str, Any]]
 
 RegexType = str | Pattern
 

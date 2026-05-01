@@ -1,18 +1,25 @@
 from .types import Device, SafeTensor
 
+from accelerate import Accelerator
 from pathlib import Path
 from safetensors import safe_open
 from transformers import AutoModelForCausalLM
 from typing import Optional
 from tqdm import tqdm
 
+import logging
 import torch
 
 __all__ = ["SafeTensor", "SafeTensorReader", "Device", "get_pytorch_device", "combine_safetensors", "apply_mask_to_safetensors", "create_model_from_safetensors"]
 
 
-def get_pytorch_device() -> str:
-	return "cuda" if torch.cuda.is_available() else "cpu"
+def get_pytorch_device(as_string=True) -> str:
+	device = Accelerator().device
+	if as_string:
+		return str(device)
+	return device
+	# return "cuda" if torch.cuda.is_available() else "cpu"
+	# return "cpu"
 
 
 def combine_safetensors(output_file: Path = None, directory: Optional[Path] = None, tensor_files: list[str | Path] | tuple[str | Path, ...] = None,
@@ -28,9 +35,13 @@ def combine_safetensors(output_file: Path = None, directory: Optional[Path] = No
 	# Might need to sort the layers, because the keys weren't in order
 	tensors: SafeTensor = dict()
 	device = device or get_pytorch_device()
-	for file in sorted(tensor_files):
+	num_files = f"{len(tensor_files):,}"
+
+	logging.debug(f"Beginning to load ({num_files}) safetensor files.")
+	for i, file in enumerate(sorted(tensor_files)):
 		tensor_slice = load_file(file, device=device)
 		tensors.update(tensor_slice)
+		logging.debug(f"Loaded safetensor file {i+1:,} of {num_files}: {file}")
 
 	if output_file is not None:
 		save_file(tensors, output_file, metadata=metadata)
@@ -104,8 +115,8 @@ def apply_mask_to_safetensors(safe_tensors: SafeTensor | Path, masks: SafeTensor
 			mask = masks[key]
 
 			new_tensors[key] = safe_layer * mask
-			if device != "cpu" and tensors.from_file:
-				safe_layer.to("cpu")
+			# if device != "cpu" and tensors.from_file:
+			# 	safe_layer.to("cpu")
 
 	return new_tensors
 
@@ -116,13 +127,21 @@ def write_masked_model(tensors: SafeTensor, output_file: Path, metadata: dict[st
 	save_file(tensors, output_file, metadata=metadata)
 
 
-def create_model_from_safetensors(base_model: str | Path, safe_tensors: SafeTensor, strict=True, **kwargs) -> AutoModelForCausalLM:
+def create_model_from_safetensors(base_model: str | Path, safe_tensors: str | SafeTensor, strict=True, **kwargs) -> AutoModelForCausalLM:
 	from transformers import AutoConfig
 
 	config = AutoConfig.from_pretrained(base_model, **kwargs)
-	with torch.device("meta"):
-		model = AutoModelForCausalLM.from_config(config)
 
-	model.load_state_dict(safe_tensors, strict=strict, assign=True)
+	if isinstance(safe_tensors, str):
+		from safetensors.torch import load_file
+		safe_tensors = load_file(safe_tensors)
+
+	# try:
+	model = AutoModelForCausalLM.from_config(config)
+	model.load_state_dict(safe_tensors, strict=strict, assign=True) # TODO: Catch the error here so I can catch it and try again with the meta wrapper
+	# with torch.device("meta"):
+	# 	model = AutoModelForCausalLM.from_config(config)
+	#
+	# model.load_state_dict(safe_tensors, strict=strict, assign=True)
 
 	return model

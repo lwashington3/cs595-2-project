@@ -2,7 +2,7 @@ from .tools import correct_patterns, RegexType, StringChecker
 from ..tensors import get_pytorch_device, SafeTensorReader
 from ..types import SafeTensor
 
-from datasets import DatasetDict
+from datasets import Dataset
 from pathlib import Path
 from tqdm import tqdm
 from typing import Iterable
@@ -15,7 +15,8 @@ import torch
 __all__ = ["magnitude_prune"]
 
 
-def magnitude_prune(safe_tensors_file, pruning_parameter: float, dataset: DatasetDict, output_file: Path = None, /,
+def magnitude_prune(safe_tensors_file, pruning_parameter: float, train: Dataset, val: Dataset, logger: logging.Logger,
+					output_file: Path = None, /,
 					allow_layer_pattern: RegexType | StringChecker | Iterable[RegexType | StringChecker] = None,
 					ignore_layer_pattern: RegexType | StringChecker | Iterable[RegexType | StringChecker] = None,
 					**kwargs) -> SafeTensor:
@@ -39,10 +40,11 @@ def magnitude_prune(safe_tensors_file, pruning_parameter: float, dataset: Datase
 
 	device: Device = kwargs.get("device", get_pytorch_device())
 
+	# TODO: For iterative pruning to work, set up a while loop here and decrease the pruning parameter to decrease the number of usable parameters
 	masks: SafeTensor = dict()
 
 	with SafeTensorReader(safe_tensors_file, device=device) as reader:
-		pbar = tqdm(f.offset_keys(), total=len(f.keys()), desc="Generating Magnitude Masks")
+		pbar = tqdm(reader, total=len(reader), desc="Generating Magnitude Masks")
 		for layer in pbar:
 			if ignore_layer_pattern and any(map(lambda ignore: ignore(layer), ignore_layer_pattern)):
 				# If any of these are true, ignore this layer and continue the loop
@@ -68,10 +70,12 @@ def magnitude_prune(safe_tensors_file, pruning_parameter: float, dataset: Datase
 			if device != "cpu":
 				tensor.to("cpu")
 
+	# TODO: Should test the results against the dataset if iteratively pruning
+
 	if output_file is not None:
 		from safetensors.torch import save_file
 
-		logging.debug(f"Writing magnitude mask to {output_file}.")
+		logger.debug(f"Writing magnitude mask to {output_file}.")
 		save_file(masks, output_file, metadata=kwargs.get("metadata"))
 
 	return masks

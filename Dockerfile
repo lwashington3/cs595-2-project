@@ -13,4 +13,7 @@ RUN pip install --upgrade pip; \
 	apt install -y --no-install-recommends texlive-full texlive-latex-extra texlive-fonts-recommended latexmk biber && \
     rm -rf /var/lib/apt/lists/*
 
+COPY ./scripts /lth/scripts
+COPY ./washLTH /usr/local/lib/python3.14/site-packages/washLTH
+
 WORKDIR /lth

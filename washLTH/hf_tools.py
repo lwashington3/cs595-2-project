@@ -10,7 +10,7 @@ __all__ = ["HFObject", "login", "pull_model", "pull_dataset", "upload_dataset"]
 
 @dataclass
 class HFObject:
-	"""A dataclass to hold relevant parts of an HF object (model, dataset, etc) together."""
+	"""A dataclass to hold relevant parts of an HF object (model, dataset, etc.) together."""
 	name: str
 	revision: Optional[str] = None
 
@@ -57,27 +57,17 @@ def pull_model(model_namespace: HFObject, parent_directory: Path = None, **kwarg
 	if not hf.repo_exists(model):
 		raise hf.errors.RepositoryNotFoundError(f"Model namespace {model} does not exist.")
 
-	# info: hf.hf_api.ModelInfo = hf.repo_info(model_namespace)
 	repo_type, author, model_name = hf.repo_type_and_id_from_hf_id(model)
+
 	if parent_directory is not None:
 		parent_directory.mkdir(parents=True, exist_ok=True)
 		local_dir = parent_directory / model_name
 	else:
 		local_dir = None
 
-	download = hf.snapshot_download(repo_id=model, local_dir=local_dir, repo_type=repo_type, revision=revision,
-	                                local_files_only=True, **kwargs)
+	download = hf.snapshot_download(repo_id=model, local_dir=local_dir, repo_type=repo_type, revision=revision, **kwargs)
 
 	if kwargs.get("dry_run", False):
 		return download
 
 	return Path(download).resolve()
-
-
-	# collection = hf.get_collection(collection_slug)
-	# matching_datasets = filter(lambda item: item.item_type == "dataset" and item.item_id == repo_id, collection.items)
-	#
-	# if next(matching_datasets, None) is not None: # if the dataset already exists in the collection:
-	# 	hf.update_collection(collection_slug, dataset)
-	# else:
-	# 	hf.add_collection_item(collection_slug, item_id, item_type="dataset")

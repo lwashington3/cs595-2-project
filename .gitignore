@@ -1,3 +1,12 @@
+**/__pycache__
+hf/
+models
+papers/arXiv-1803.03635v5
+papers/arXiv-1803.03635v5.tar.gz
+test/MMInstruction
+
+.bash_history
+
 ### TeX template
 ## Core latex/pdflatex auxiliary files:
 *.aux
