@@ -3,7 +3,7 @@ from .types import Device, SafeTensor
 from accelerate import Accelerator
 from pathlib import Path
 from safetensors import safe_open
-from transformers import AutoModelForCausalLM
+from transformers import AutoModelForCausalLM, GenerationConfig
 from typing import Optional
 from tqdm import tqdm
 
@@ -18,12 +18,10 @@ def get_pytorch_device(as_string=True) -> str:
 	if as_string:
 		return str(device)
 	return device
-	# return "cuda" if torch.cuda.is_available() else "cpu"
-	# return "cpu"
 
 
 def combine_safetensors(output_file: Path = None, directory: Optional[Path] = None, tensor_files: list[str | Path] | tuple[str | Path, ...] = None,
-                        metadata: dict[str, str] = None, device: Device = None) -> SafeTensor:
+                        metadata: dict[str, str] = None, device: Device = "cpu") -> SafeTensor:
 	from safetensors.torch import load_file, save_file
 
 	if tensor_files is None and directory is None:
@@ -34,7 +32,7 @@ def combine_safetensors(output_file: Path = None, directory: Optional[Path] = No
 
 	# Might need to sort the layers, because the keys weren't in order
 	tensors: SafeTensor = dict()
-	device = device or get_pytorch_device()
+	# device = device or get_pytorch_device()
 	num_files = f"{len(tensor_files):,}"
 
 	logging.debug(f"Beginning to load ({num_files}) safetensor files.")
@@ -104,15 +102,15 @@ def apply_mask_to_safetensors(safe_tensors: SafeTensor | Path, masks: SafeTensor
 	new_tensors: SafeTensor = dict()
 	device = device or get_pytorch_device()
 
-	with SafeTensorReader(safe_tensors, device=device) as tensors, SafeTensorReader(masks, device=device) as masks:
+	with SafeTensorReader(safe_tensors, device=device) as tensors, SafeTensorReader(masks, device=device) as mask_tensors:
 		for key in tqdm(tensors, total=len(tensors), desc="Loading Masked Layers"):
 			safe_layer = tensors[key]
 
-			if key not in masks:
+			if key not in mask_tensors:
 				new_tensors[key] = safe_layer
 				continue
 
-			mask = masks[key]
+			mask = mask_tensors[key]
 
 			new_tensors[key] = safe_layer * mask
 			# if device != "cpu" and tensors.from_file:
@@ -127,18 +125,35 @@ def write_masked_model(tensors: SafeTensor, output_file: Path, metadata: dict[st
 	save_file(tensors, output_file, metadata=metadata)
 
 
-def create_model_from_safetensors(base_model: str | Path, safe_tensors: str | SafeTensor, strict=True, **kwargs) -> AutoModelForCausalLM:
+def create_model_from_safetensors(base_model: str | Path, safe_tensors: str | Path | SafeTensor = None, mask: str | Path | SafeTensor = None, strict=True, **kwargs) -> AutoModelForCausalLM:
+	from safetensors.torch import load_file
 	from transformers import AutoConfig
 
-	config = AutoConfig.from_pretrained(base_model, **kwargs)
+	try:
+		config = AutoConfig.from_pretrained(base_model, **kwargs)
+		generation_config = GenerationConfig.from_pretrained(base_model, **kwargs)
+	except (UnicodeError, OSError) as e:
+		if not isinstance(base_model, Path):
+			raise e
+		config = AutoConfig.from_pretrained(base_model.parent, **kwargs)
+		generation_config = GenerationConfig.from_pretrained(base_model.parent, **kwargs)
 
-	if isinstance(safe_tensors, str):
-		from safetensors.torch import load_file
+	if isinstance(safe_tensors, str | Path):
 		safe_tensors = load_file(safe_tensors)
+
+	if isinstance(mask, str | Path):
+		mask = load_file(mask)
 
 	# try:
 	model = AutoModelForCausalLM.from_config(config)
-	model.load_state_dict(safe_tensors, strict=strict, assign=True) # TODO: Catch the error here so I can catch it and try again with the meta wrapper
+	if safe_tensors is not None:
+		model.load_state_dict(safe_tensors, strict=strict, assign=True)
+	elif mask is not None:
+		state_dict = model.state_dict()
+		tensors = apply_mask_to_safetensors(state_dict, mask)
+		model.load_state_dict(tensors, strict=strict, assign=True)
+	model.generation_config = generation_config
+
 	# with torch.device("meta"):
 	# 	model = AutoModelForCausalLM.from_config(config)
 	#

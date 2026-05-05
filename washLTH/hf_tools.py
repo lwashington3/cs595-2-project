@@ -14,6 +14,9 @@ class HFObject:
 	name: str
 	revision: Optional[str] = None
 
+	def __str__(self):
+		return f"{self.name}:{self.revision}"
+
 
 def login(*args, **kwargs):
 	try:

@@ -15,8 +15,8 @@ import torch
 __all__ = ["magnitude_prune"]
 
 
-def magnitude_prune(safe_tensors_file, pruning_parameter: float, train: Dataset, val: Dataset, logger: logging.Logger,
-					output_file: Path = None, /,
+def magnitude_prune(safe_tensors_file, pruning_parameter: float, logger: logging.Logger, train: Dataset = None,
+					val: Dataset = None, output_file: Path = None, /,
 					allow_layer_pattern: RegexType | StringChecker | Iterable[RegexType | StringChecker] = None,
 					ignore_layer_pattern: RegexType | StringChecker | Iterable[RegexType | StringChecker] = None,
 					**kwargs) -> SafeTensor:

@@ -4,7 +4,7 @@ curl -o Python.tar.xz https://www.python.org/ftp/python/3.14.4/Python-3.14.4.tar
 echo "d923c51303e38e249136fc1bdf3568d56ecb03214efdef48516176d3d7faaef8 Python.tar.xz" | sha256sum -c
 tar -xvf Python.tar.xz
 
-sudo update; sudo apt install -y libssl-dev libsqlite3-dev libffi-dev libbz2-dev liblzma-dev nvidia-driver-590
+sudo apt update; sudo apt install -y libssl-dev libsqlite3-dev libffi-dev libbz2-dev liblzma-dev uuid-dev nvidia-driver-590
 
 export OPENSSL_DIR="/usr"
 export LDFLAGS="-L$OPENSSL_DIR/lib"

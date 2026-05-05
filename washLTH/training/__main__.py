@@ -19,9 +19,9 @@ __all__ = ["do_magnitude_pruning", "training_pipeline"]
 MAX_TOKENIZER_LENGTH = 131_072 # Tokenizer length for Llama 3.1
 
 
-def do_magnitude_pruning(model: HFObject, experiment_directory: Path, safetensor_file: Path, train: Dataset, val: Dataset,
-						 pruning_parameter: float, device: Device, logger: logging.Logger, prune_head_only: bool = True,
-						 **kwargs) -> tuple[SafeTensor, AutoModelForCausalLM]:
+def do_magnitude_pruning(model: HFObject, experiment_directory: Path, safetensor_file: Path, pruning_parameter: float,
+						 device: Device, logger: logging.Logger, train: Dataset = None, val: Dataset = None,
+						 prune_head_only: bool = True, save_masked_model: bool = False, **kwargs) -> tuple[SafeTensor, AutoModelForCausalLM]:
 	if not prune_head_only: # Only did it this way so the documentation for magnitude_prune would show up for pruner
 		from .magnitude_prune import magnitude_prune as pruner
 		log_value = "magnitude"
@@ -33,21 +33,23 @@ def do_magnitude_pruning(model: HFObject, experiment_directory: Path, safetensor
 	directory.mkdir(parents=True, exist_ok=True)
 	mask_file = directory / "mask.safetensors"
 
-	mask = pruner(safetensor_file, pruning_parameter, train, val, logger, mask_file, **kwargs)
+	mask = pruner(safetensor_file, pruning_parameter, logger, train, val, mask_file, **kwargs)
 	logger.info(f"Generated the masks for {log_value} pruning and wrote the mask to the experiment directory.")
 
 	tensors = apply_mask_to_safetensors(safetensor_file, mask, device=device)
 	logger.info(f"Applied the {log_value} masks to the safetensors.")
 
-	model: AutoModelForCausalLM = create_model_from_safetensors(model.name, tensors, strict=False, revision=model.revision)
+	model: AutoModelForCausalLM = create_model_from_safetensors(model.name, safe_tensors=tensors, strict=False, revision=model.revision)
 	logger.info(f"Created the {log_value} model given the {log_value} mask.")
 
-	model.save_pretrained(directory, max_shard_size=kwargs.get("max_shard_size", MAX_SHARD_SIZE))
-	logger.info(f"Saved the {log_value} model using `save_pretrained()`.")
+	if save_masked_model:
+		model.save_pretrained(directory, max_shard_size=kwargs.get("max_shard_size", MAX_SHARD_SIZE))
+		logger.info(f"Saved the {log_value} model using `save_pretrained()`.")
+
 	return mask, model
 
 
-def training_pipeline(model: HFObject, dataset: HFObject | DatasetDict, experiment_directory: Path, pruning_parameter: float, /,
+def training_pipeline(model: HFObject, experiment_directory: Path, pruning_parameter: float, dataset: Optional[HFObject | DatasetDict] = None, /,
 					  logger: logging.Logger = None, **kwargs):
 	"""
 
@@ -63,7 +65,7 @@ def training_pipeline(model: HFObject, dataset: HFObject | DatasetDict, experime
 	from .pretrain import pretrain_model
 
 	logger = logger or logging.getLogger("lottery_ticket_hypothesis")
-	logger.info(f"Started training pipeline with model={model.name}:{model.revision} and dataset={dataset.name}:{dataset.revision}")
+	logger.info(f"Started training pipeline with model={model} and dataset={dataset}")
 	kwargs.setdefault("device", get_pytorch_device())
 	kwargs.setdefault("push_to_hub", False)
 	kwargs.setdefault("seed", DEFAULT_SEED)
@@ -77,7 +79,8 @@ def training_pipeline(model: HFObject, dataset: HFObject | DatasetDict, experime
 	snapshot_path: Path = pull_model(model)
 
 	# Combines the safe tensors shards into a single file
-	safetensor_file = experiment_directory / "model.safetensors"
+	# safetensor_file = experiment_directory / "model.safetensors"
+	safetensor_file = snapshot_path / "combined_model.safetensors"
 	combine_safetensors(output_file=safetensor_file, directory=snapshot_path)
 	logger.info("Combined safetensors into one file.")
 
@@ -107,27 +110,37 @@ def training_pipeline(model: HFObject, dataset: HFObject | DatasetDict, experime
 
 		logger.info("Loaded and preprocessed the dataset.")
 
-	train: Dataset = dataset[training_key]
-	val: Dataset = dataset[validation_key]
-	dataset_name = train.info.dataset_name
+	if dataset is None:
+		train, val = None, None
+		pretrained_safe_tensors = safetensor_file
+	else:
+		train: Dataset = dataset[training_key].take(6)
+		val: Dataset = dataset[validation_key].take(4)
+		dataset_name = train.info.dataset_name
 
-	# Pretrains a version of the model on the given dataset
-	pretrained_directory = experiment_directory / f"pretrained_{dataset_name}" # TODO: Add username at some point if possible
-	pretrained_directory.mkdir(parents=True, exist_ok=True)
-	_, _, pretrained_safe_tensors, pretrained_model, _ = pretrain_model(snapshot_path, train, val, tokenizer,
-																		pretrained_directory, **kwargs)
+		# Pretrains a version of the model on the given dataset
+		# pretrained_directory = experiment_directory / f"pretrained_{dataset_name}" # TODO: Add username at some point if possible
+		pretrained_directory = snapshot_path / f"pretrained_{dataset_name}"
+		if pretrained_directory.exists():
+			pretrained_safe_tensors = pretrained_directory / "model.safetensors"
+		else:
+			pretrained_directory.mkdir(parents=True, exist_ok=True)
+			_, _, pretrained_safe_tensors, pretrained_model, _ = pretrain_model(snapshot_path, train, val, tokenizer,
+																			pretrained_directory, **kwargs)
 
-	logger.info("Pretrained the model.")
+		# Creates a link to where it's base safetensors are, to reduce how often files are written
+		(experiment_directory / "base_model.safetensors").symlink_to(pretrained_safe_tensors)
+		logger.info(f"Pretrained the model and saved to {pretrained_directory}.")
 
 	# Create a list of arguments required for magnitude pruning (so I'm not repeating code)
 	kwargs.pop("device")
-	pruning_args = (model, experiment_directory, pretrained_safe_tensors, train, val, pruning_parameter, device, logger)
 
 	# Prune the entire model given generalized magnitude pruning
-	magnitude_mask, magnitude_model = do_magnitude_pruning(*pruning_args, prune_head_only=False, **kwargs)
+	pruning_args = (model, experiment_directory, pretrained_safe_tensors, pruning_parameter, device, logger, train, val)
+	do_magnitude_pruning(*pruning_args, prune_head_only=False, **kwargs)
 
-	head_mask, head_model = do_magnitude_pruning(*pruning_args, prune_head_only=True, **kwargs)
+	do_magnitude_pruning(*pruning_args, prune_head_only=True, **kwargs)
 
 	# structure_model = structure_prune(pretrained_model, dataset, experiment_directory)
 
-	return safetensor_file
+	return safetensor_file, pretrained_safe_tensors if dataset is not None else None

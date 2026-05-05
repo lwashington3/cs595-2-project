@@ -31,7 +31,7 @@ def pretrain_model(model: AutoModelForCausalLM | Path, train: Dataset, val: Data
 	device = kwargs.get("device", get_pytorch_device())
 	logging.info("IN PRETRAIN_MODEL")
 	if isinstance(model, Path):
-		model = AutoModelForCausalLM.from_pretrained(model, use_safetensors=True)
+		model = AutoModelForCausalLM.from_pretrained(model, use_safetensors=True, device_map="auto")
 
 	training_args = TrainingArguments(
 		str(output_directory),
@@ -68,6 +68,10 @@ def pretrain_model(model: AutoModelForCausalLM | Path, train: Dataset, val: Data
 	logging.info("Finished training.")
 
 	trainer.model.save_pretrained(output_directory, safe_serialization=True)
+
+	config = trainer.model.generation_config
+	config.update(dict(max_new_tokens=20))
+	config.save_pretrained(output_directory, safe_serialization=True)
 
 	pretrained_safetensors_file = output_directory / "model.safetensors"
 	if not pretrained_safetensors_file.exists():

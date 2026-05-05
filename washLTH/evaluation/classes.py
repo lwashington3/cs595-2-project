@@ -1,10 +1,15 @@
+from dataclasses import dataclass
 from time import perf_counter_ns
-from transformers import TextGenerationPipeline, BatchEncoding, TextIteratorStreamer
+
+import numpy as np
+from transformers import TextGenerationPipeline, BatchEncoding, TextIteratorStreamer, GenerationConfig
+from warnings import catch_warnings, filterwarnings
 
 import torch
+import torch.nn.functional as F
 
 
-__all__ = ["LTHPipeline", "LTHStreamer"]
+__all__ = ["LTHPipeline", "LTHStreamer", "ExperimentItem"]
 
 
 class LTHStreamer(TextIteratorStreamer):
@@ -47,6 +52,11 @@ class LTHStreamer(TextIteratorStreamer):
 
 
 class LTHPipeline(TextGenerationPipeline):
+	_default_generation_config = GenerationConfig(
+		max_length=1000000000000,
+		max_new_tokens=1
+	)
+
 	def preprocess(self, *args, **kwargs):
 		process_start = perf_counter_ns()
 		processed: BatchEncoding = super().preprocess(*args, **kwargs)
@@ -56,15 +66,32 @@ class LTHPipeline(TextGenerationPipeline):
 	def _forward(self, inputs, **kwargs):
 		streamer = LTHStreamer(self.tokenizer)
 		streamer.start()
+
 		generated_sequence = super()._forward(inputs, streamer=streamer, **kwargs)
 
 		input_ids = inputs["input_ids"]
 		target_ids = input_ids.clone()
 
-		with torch.no_grad():
-			outputs = self.model(input_ids, labels=target_ids)
+		with catch_warnings():
+			filterwarnings("ignore", category=UserWarning)
+			with torch.no_grad():
+				outputs = self.model(input_ids, labels=target_ids)
 
-		generated_sequence["loss"] = outputs.loss
+		# region Test
+		logits = outputs.logits
+
+		shift_logits = logits[:, :-1, :].contiguous()
+		shift_labels = input_ids[:, 1:].contiguous()
+
+		losses = F.cross_entropy(shift_logits.view(-1, shift_logits.size(-1)), shift_labels.view(-1), reduction="none")
+		losses = losses.view(input_ids.size(0), -1)
+
+		# tokens = [self.tokenizer.decode(t) for t in input_ids[0]]
+		# print(f"Last losses: {tuple(i.item() for i in losses[0, -50:])}")
+		# endregion
+
+		# generated_sequence["loss"] = outputs.loss
+		generated_sequence["loss"] = losses.mean().item()
 		generated_sequence["ttft"] = streamer.ttft
 		generated_sequence["process_start"] = inputs.get("process_start")
 
@@ -78,12 +105,16 @@ class LTHPipeline(TextGenerationPipeline):
 		else:
 			run_time = torch.nan
 
-		perplexity = torch.exp(outputs["loss"]).item()
+		perplexity = np.exp(outputs["loss"])
 
 		def assign_evaluations(dct: dict):
 			dct["perplexity"] = perplexity
 			dct["ttft"] = outputs["ttft"]
 			dct["run_time"] = run_time
+			output_tokens = outputs["generated_sequence"].shape[-1]
+			dct["num_output_tokens"] = output_tokens
+			dct["time_per_output_token"] = run_time / output_tokens
+			dct["decoded_tokens"] = [self.tokenizer.decode(t) for t in outputs["input_ids"][0]]
 		# Easier to see the (small) fixed length info before the resulting text
 		# dct["generated_text"] = dct["generated_text"]
 
@@ -94,3 +125,17 @@ class LTHPipeline(TextGenerationPipeline):
 			assign_evaluations(results)
 
 		return results
+
+
+@dataclass
+class ExperimentItem:
+	name: str
+	base_model: str
+	base_tensors: Optional[Path]
+	mask: Optional[str | Path]
+	tokenizer_directory: Path
+
+	def __post_init__(self):
+		if self.base_tensors is None:
+			self.base_tensors = self.base_model
+

@@ -15,9 +15,7 @@ services:
             - /etc/localtime:/etc/localtime:ro
             - ./.bash_history:/var/.bash_history
             - ./hf:/hf
-            - /media/valence/Seagate1:/seagate
             - ./datasets:/datasets
-#            - /mnt/Current/datasets:/datasets
             - ./:/lth
             - ./LaTeX:/lth/LaTeX
             - ./washLTH:/usr/local/lib/python3.14/site-packages/washLTH
@@ -32,38 +30,38 @@ services:
         runtime: nvidia
 #        user: 1000:1000
 
-    vllm:
-        image: vllm/vllm-openai:v0.18.1
-        environment:
-            - HF_HOME=/hf
-            - HF_DATASETS_CACHE=/hf/datasets
-            - HF_HUB_CACHE=/hf/hub
-            - HUGGINGFACE_HUB_CACHE=/hf/hub
-            - HISTFILE=/var/.bash_history
-        env_file: .env
-        command: ["meta-llama/Llama-3.1-8B-Instruct"]
-        volumes:
-            - /etc/localtime:/etc/localtime:ro
-            - ./.bash_history:/var/.bash_history
-            - ./hf:/hf
-#            - /media/valence/Seagate:/hf
-#            - /mnt/Current/datasets:/datasets
-            - ./:/lth
-            - ./LaTeX:/lth/LaTeX
-            - ./washLTH:/usr/local/lib/python3.14/site-packages/washLTH
-        deploy:
-            resources:
-                reservations:
-                    devices:
-                        -   driver: nvidia
-                            count: all
-                            capabilities: [ gpu ]
-        runtime: nvidia
-        ports:
-            - "8000:8000"
+#    vllm:
+#        image: vllm/vllm-openai:v0.18.1
+#        environment:
+#            - HF_HOME=/hf
+#            - HF_DATASETS_CACHE=/hf/datasets
+#            - HF_HUB_CACHE=/hf/hub
+#            - HUGGINGFACE_HUB_CACHE=/hf/hub
+#            - HISTFILE=/var/.bash_history
+#        env_file: .env
+#        command: ["meta-llama/Llama-3.1-8B-Instruct"]
+#        volumes:
+#            - /etc/localtime:/etc/localtime:ro
+#            - ./.bash_history:/var/.bash_history
+#            - ./hf:/hf
+##            - /media/valence/Seagate:/hf
+##            - /mnt/Current/datasets:/datasets
+#            - ./:/lth
+#            - ./LaTeX:/lth/LaTeX
+#            - ./washLTH:/usr/local/lib/python3.14/site-packages/washLTH
+#        deploy:
+#            resources:
+#                reservations:
+#                    devices:
+#                        -   driver: nvidia
+#                            count: all
+#                            capabilities: [ gpu ]
+#        runtime: nvidia
+#        ports:
+#            - "8000:8000"
 
 
-networks:
+networks: # This exists because of how I have Docker setup through my Firewall, delete this if I forgot to
     default:
         external: true
         name: main_shared_net

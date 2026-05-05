@@ -2,13 +2,14 @@ import sqlite3
 
 from contextlib import contextmanager
 from pathlib import Path
-from typing import ContextManager
+from re import match
+from typing import Generator
 
 __all__ = ["get_connection", "safe_cursor"]
 
 
 @contextmanager
-def safe_cursor(connection: sqlite3.Connection) -> ContextManager[sqlite3.Cursor]:
+def safe_cursor(connection: sqlite3.Connection) -> Generator[sqlite3.Cursor]:
 	try:
 		cursor = connection.cursor()
 		yield cursor
@@ -22,14 +23,16 @@ def safe_cursor(connection: sqlite3.Connection) -> ContextManager[sqlite3.Cursor
 def get_connection(location: Path) -> sqlite3.Connection:
 	db_already_exists = location.exists()
 	connection = sqlite3.connect(location)
+	connection.create_function("REGEXP", 2, lambda pattern, string: match(pattern, string) is not None)
 
 	if not db_already_exists:
 		with safe_cursor(connection) as cursor:
 			cursor.execute("""CREATE TABLE experiments(
-								dataset TEXT,
+								dataset TEXT DEFAULT NULL,
 								base_model TEXT,
+								pretrained_model TEXT DEFAULT NULL,
 								\"name\" TEXT,
-								safetensors_file TEXT,
+								experiment_directory TEXT,
 								tokenizer_directory TEXT,
 								pipeline_start TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 							)""")
