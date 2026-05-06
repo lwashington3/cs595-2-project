@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 
 from matplotlib import pyplot as plt, rcParams
+from operator import add, sub
 from pathlib import Path
 
 
@@ -48,6 +49,7 @@ def perplexity_plot(df: pd.DataFrame, output_folder: Path, row: int):
 	figure.tight_layout()
 	for _format, extension in DEFAULT_FIGURE_FORMATS.items():
 		figure.savefig(output_folder / f"perplexity.{extension}", format=_format)
+	plt.close(figure)
 
 
 def ablation_plot(df: pd.DataFrame, output_folder: Path, column: str, row: int = None, add_bar_labels: bool = False,
@@ -58,25 +60,29 @@ def ablation_plot(df: pd.DataFrame, output_folder: Path, column: str, row: int =
 	untrained = df[df["Trained"] == False]
 	baseline = df[pd.isna(df["Trained"])]
 
-	trained_color = kwargs.get("trained_color", "C0")
-	untrained_color = kwargs.get("untrained_color", "C2")
-	baseline_color = kwargs.get("baseline_color", "C3")
+	trained_color = kwargs.get("trained_color", "C2")
+	untrained_color = kwargs.get("untrained_color", "C3")
+	baseline_color = kwargs.get("baseline_color", "C0")
 
 	names = ["Baseline"] + trained["Pruning Percentage"].to_list()
 
 	x = np.arange(len(names))
-	ax.set_xticks(x)
-	ax.set_xticklabels(labels=names)
+	ax.set_xticks(x) # FIXME: The spacing is too small
+	# if len(names) < 8:
+	# 	ax.set_xticklabels(labels=names)
+	# else:
+	ax.set_xticklabels(labels=names[1:-1:2])
 	ax.set_xlabel("Pruning Percentage")
 
 	width = 0.25
 
-	for multiplier, (label, values, color) in enumerate((
-		("Trained", trained[column], trained_color),
-		("Untrained", untrained[column], untrained_color),
+	for multiplier, (label, values, color, offset_func) in enumerate((
+		("Trained", trained[column], trained_color, sub),
+		("Untrained", untrained[column], untrained_color, add),
 	)):
-		offset = width * multiplier
-		rects = ax.bar(x[1:] + offset, values, width, label=label, color=color)
+		# offset = width * multiplier
+		offset = width / 2
+		rects = ax.bar(offset_func(x[1:], offset), values, width, label=label, color=color)
 		if add_bar_labels:
 			ax.bar_label(rects, padding=3, color=color)
 
@@ -96,17 +102,7 @@ def ablation_plot(df: pd.DataFrame, output_folder: Path, column: str, row: int =
 	file_base = file_base or column.replace(" ", "_")
 	for _format, extension in DEFAULT_FIGURE_FORMATS.items():
 		figure.savefig(output_folder / f"{file_base}.{extension}", format=_format)
-
-
-def time_plot():
-	ax2 = ax.twinx()
-	ax2.plot(x, df["TTFT (s)"] * 1000, label="TTFT (ms)", c="C2", marker="o")
-	ax2.set_ylabel("TTFT (ms)", color="C2")
-
-	figure.suptitle(f"Perplexity vs TTFT (ms) for Row {row:,}")
-	# figure.legend()
-	figure.tight_layout()
-	figure.savefig(output_file_base, transparent=True)
+	plt.close(figure)
 
 
 if __name__ == "__main__":

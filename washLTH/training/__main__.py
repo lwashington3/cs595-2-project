@@ -49,6 +49,11 @@ def do_magnitude_pruning(model: HFObject, experiment_directory: Path, safetensor
 	return mask, model
 
 
+def get_training_rows(safetensor_file: Path) -> int | None:
+	"""Returns the number of training and validation rows that can be used to train a model without going over the bounds of the GPU."""
+	return 8
+
+
 def training_pipeline(model: HFObject, experiment_directory: Path, pruning_parameter: float, dataset: Optional[HFObject | DatasetDict] = None, /,
 					  logger: logging.Logger = None, **kwargs):
 	"""
@@ -114,8 +119,13 @@ def training_pipeline(model: HFObject, experiment_directory: Path, pruning_param
 		train, val = None, None
 		pretrained_safe_tensors = safetensor_file
 	else:
-		train: Dataset = dataset[training_key].take(6)
-		val: Dataset = dataset[validation_key].take(4)
+		num_rows = get_training_rows(safetensor_file) # TODO: Try to programmatically figure out how many can be taken while staying within bounds of memory
+		train: Dataset = dataset[training_key]
+		val: Dataset = dataset[validation_key]
+		if num_rows is not None:
+			train = train.take(num_rows)
+			val = val.take(num_rows)
+
 		dataset_name = train.info.dataset_name
 
 		# Pretrains a version of the model on the given dataset

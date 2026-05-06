@@ -20,4 +20,7 @@ def rogue_lcs(predicted: str | Sequence[str], target: str | Sequence[str]) -> fl
 	precision = lcs_len / num_predicted
 	recall = lcs_len / num_target
 
+	if lcs_len == 0:
+		return 0
+
 	return (2 * precision * recall) / (precision + recall)

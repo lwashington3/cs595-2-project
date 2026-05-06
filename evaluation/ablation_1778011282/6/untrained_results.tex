@@ -1,0 +1,90 @@
+\begin{table}[H]
+\centering
+\caption{Row 6: (No pre-training before pruning). \ifshowcaption{}Caption: ``By . Daily Mail Reporter . PUBLISHED: . 21:10 EST, 19 March 2013 . | . UPDATED: . 03:06 EST, 20 March 2013 . A U.S. coffee company is claiming to produce the first and last cup of coffee ever needed to kick start your work day. Death Wish, a medium-dark roast coffee blend roasted in Upstate New York, claims to be the 'most highly caffeinated premium dark roast organic coffee in the world.' The brand, featuring a menacing black skull and cross bones, says they use coffee beans containing close to 200% of the amount of caffeine found in a typical coffee shop coffee. Death by coffee: Death Wish, roasted in Upstate New York, claims to contain 200% more caffeine than normal coffee while offering it by the pound, left, as well as coated in chocolate, right . Average brewed coffee (8fl oz):              108mgStarbucks tall coffee: (12fl oz):                260mgStarbucks grande coffee (16fl oz):         330mgMcDonald's small coffee (12fl oz):           109mgMcDonald's large coffee (16fl oz):           145mgDunkin' Donuts Coffee (10fl oz):             132mg . Source: EnergyField.com . In comparison, a tall, 12oz cup of . regular Starbucks coffee contains an average of 260mg caffeine according . to Energy Fiend, making the potentency in each cup of Death Wish . approximately 520mg. The coffee that sells for $19.99 per . 1lb bag is organically grown, fair traded and shade grown to save more . land, according to the company. It's also said to have the full flavor of dark-roasted Arabica coffee beans without the loss of caffeine during its . Explaining . this as a rarity, Death Wish states that dark roasts typically contain . less caffeine than lighter roasts due to the amount of time the beans . are cooked. 'The longer and darker you roast the coffee bean the more caffeine gets pulled/cooked out,' they state on their website. 'I was zipping around like I was the . Flash,' a satisfied user wrote of the product while giving it five out . of five stars on Amazon.com. 'Not only was it one of the strongest . coffees I've ever had but it is also one of the best tasting and . smelling.’ Promises: The coffee beans are said to have the full flavor of dark-roasted Arabica coffee beans without the loss of caffeine with the company offering a money-back guaranteed satisfaction with its purchase . 'Ar first I . was thinking that it whould be so strong that I whould not be able to . drink .. but its very nuce and smooth and gives a big boost of energy . !!' another Amazon user wrote. 'Much to my dismay, this is just regular coffee,' one of two negative reviews out of 15 shared in contrast. 'I'm chugging the stuff and still falling asleep sitting up.' So secure with their product, the company offers a money-back guarantee with its sale according to its website. 'Buy a bag, if you hate it, send it back (within 60 days) and we will refund you your money plus shipping. No Risk. It’s the best part about selling a product we believe in,' they write.''.\fi}
+\label{tab:evaluation-pipeline-6-untrained}
+\begin{tabular}{lllrllll}
+\toprule
+ &  & Perplexity & ROGUE-L F1 Score (\%) & TTFT (ms) & Run Time (ms) & Output Tokens & Time per Output Token (ms) \\
+Trained & Pruning Percentage &  &  &  &  &  &  \\
+\midrule
+- & - & \bfseries 21.3809 & \bfseries 100.0000\% & 1.002 & 85.943 & 873 & 0.098 \\
+\cline{1-8} \cline{2-8}
+False & 5\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 1.012 & 85.069 & 873 & 0.097 \\
+\cline{1-8} \cline{2-8}
+False & 7.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 1.015 & 85.350 & 873 & 0.098 \\
+\cline{1-8} \cline{2-8}
+False & 10\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 1.019 & 85.286 & 873 & 0.098 \\
+\cline{1-8} \cline{2-8}
+False & 12.5\% & 285,643.5546 & \bfseries \color{red} 100.0000\% & 1.011 & 85.210 & 873 & 0.098 \\
+\cline{1-8} \cline{2-8}
+False & 15\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 0.997 & 86.048 & 873 & 0.099 \\
+\cline{1-8} \cline{2-8}
+False & 17.5\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 0.992 & 84.766 & 873 & 0.097 \\
+\cline{1-8} \cline{2-8}
+False & 20\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 1.014 & 85.116 & 873 & 0.097 \\
+\cline{1-8} \cline{2-8}
+False & 22.5\% & 366,773.5842 & \bfseries \color{red} 100.0000\% & 0.995 & 85.951 & 873 & 0.098 \\
+\cline{1-8} \cline{2-8}
+False & 25\% & 366,773.5842 & \bfseries \color{red} 100.0000\% & 1.022 & 87.338 & 873 & 0.100 \\
+\cline{1-8} \cline{2-8}
+False & 27.5\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 1.022 & 86.835 & 873 & 0.099 \\
+\cline{1-8} \cline{2-8}
+False & 30\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 1.031 & 86.365 & 873 & 0.099 \\
+\cline{1-8} \cline{2-8}
+False & 32.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 1.022 & 86.954 & 873 & 0.100 \\
+\cline{1-8} \cline{2-8}
+False & 35\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 1.015 & 86.990 & 873 & 0.100 \\
+\cline{1-8} \cline{2-8}
+False & 37.5\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 1.022 & 87.113 & 873 & 0.100 \\
+\cline{1-8} \cline{2-8}
+False & 40\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 1.033 & 87.024 & 873 & 0.100 \\
+\cline{1-8} \cline{2-8}
+False & 42.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 1.024 & 86.168 & 873 & 0.099 \\
+\cline{1-8} \cline{2-8}
+False & 45\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 1.028 & 86.962 & 873 & 0.100 \\
+\cline{1-8} \cline{2-8}
+False & 47.5\% & \color{red} 268,337.2865 & \bfseries \color{red} 100.0000\% & 1.014 & 86.614 & 873 & 0.099 \\
+\cline{1-8} \cline{2-8}
+False & 50\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 1.018 & 86.228 & 873 & 0.099 \\
+\cline{1-8} \cline{2-8}
+False & 52.5\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 1.020 & 85.314 & 873 & 0.098 \\
+\cline{1-8} \cline{2-8}
+False & 55\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 1.022 & 86.718 & 873 & 0.099 \\
+\cline{1-8} \cline{2-8}
+False & 57.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 1.014 & 87.262 & 873 & 0.100 \\
+\cline{1-8} \cline{2-8}
+False & 60\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 1.014 & 87.071 & 873 & 0.100 \\
+\cline{1-8} \cline{2-8}
+False & 62.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 1.022 & 86.087 & 873 & 0.099 \\
+\cline{1-8} \cline{2-8}
+False & 65\% & 366,773.5842 & \bfseries \color{red} 100.0000\% & 1.003 & 86.623 & 873 & 0.099 \\
+\cline{1-8} \cline{2-8}
+False & 67.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 0.991 & 86.749 & 873 & 0.099 \\
+\cline{1-8} \cline{2-8}
+False & 70\% & 366,773.5842 & \bfseries \color{red} 100.0000\% & 1.037 & 86.527 & 873 & 0.099 \\
+\cline{1-8} \cline{2-8}
+False & 72.5\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 1.011 & 86.094 & 873 & 0.099 \\
+\cline{1-8} \cline{2-8}
+False & 75\% & 366,773.5842 & \bfseries \color{red} 100.0000\% & 1.007 & 87.087 & 873 & 0.100 \\
+\cline{1-8} \cline{2-8}
+False & 77.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 1.041 & 88.482 & 873 & 0.101 \\
+\cline{1-8} \cline{2-8}
+False & 80\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 1.047 & 88.388 & 873 & 0.101 \\
+\cline{1-8} \cline{2-8}
+False & 82.5\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 1.015 & 87.397 & 873 & 0.100 \\
+\cline{1-8} \cline{2-8}
+False & 85\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 1.038 & 87.385 & 873 & 0.100 \\
+\cline{1-8} \cline{2-8}
+False & 87.5\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 1.009 & 86.424 & 873 & 0.099 \\
+\cline{1-8} \cline{2-8}
+False & 90\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 1.037 & 86.544 & 873 & 0.099 \\
+\cline{1-8} \cline{2-8}
+False & 92.5\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 1.010 & 87.429 & 873 & 0.100 \\
+\cline{1-8} \cline{2-8}
+False & 95\% & 366,773.5842 & \bfseries \color{red} 100.0000\% & 1.017 & 87.547 & 873 & 0.100 \\
+\cline{1-8} \cline{2-8}
+False & 97.5\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 1.013 & 87.603 & 873 & 0.100 \\
+\cline{1-8} \cline{2-8}
+\bottomrule
+\end{tabular}
+\end{table}

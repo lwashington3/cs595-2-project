@@ -12,6 +12,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from typing import Callable, Iterable, Optional, Generator
 
 import pandas as pd
+import tracemalloc
 import sqlite3
 
 __all__ = ["evaluation_pipeline"]
@@ -25,7 +26,7 @@ def create_items_for_experiment(item: ExperimentItem) -> tuple[str, LTHPipeline]
 		model = create_model_from_safetensors(item.base_tensors, safe_tensors=masked_tensors, strict=False)
 	else:
 		if item.mask is None:
-			model = AutoModelForCausalLM.from_pretrained(item.base_model, device="cpu")
+			model = AutoModelForCausalLM.from_pretrained(item.base_model)
 		else:
 			model = create_model_from_safetensors(item.base_model, mask=item.mask, strict=False)
 
@@ -38,13 +39,14 @@ def create_items_for_experiment(item: ExperimentItem) -> tuple[str, LTHPipeline]
 
 
 def test_models(prompt, experiments: tuple[tuple[str, LTHPipeline] | ExperimentItem, ...],
-				device=None, max_new_tokens: int = None) -> pd.DataFrame:
+				target: str, device=None, max_new_tokens: int = None, set_baseline_as_target: bool = True) -> pd.DataFrame:
 	df = pd.DataFrame(index=[experiment[0] for experiment in experiments],
 					  columns=["Perplexity", "ROGUE-L F1 Score", "TTFT (s)", "Run Time (s)", "Output Tokens",
 							   "Time per Output Token (s)", "Generated Text"])
 
-	pbar: tqdm[tuple[int, tuple[str, LTHPipeline] | ExperimentItem]] = tqdm(enumerate(experiments), desc="Running models through evaluation pipeline for row.", position=1)
-	baseline_response = None
+	pbar: tqdm[tuple[int, tuple[str, LTHPipeline] | ExperimentItem]] = tqdm(enumerate(experiments), total=len(experiments),
+																			desc="Running models through evaluation pipeline for row.",
+																			position=1)
 	decoded_tokens = [None] * len(experiments)
 
 	for i, item in pbar:
@@ -54,29 +56,33 @@ def test_models(prompt, experiments: tuple[tuple[str, LTHPipeline] | ExperimentI
 		else:
 			name, pipeline = item
 
+		pipeline.device = device
 		pipeline.model.to(device)
 		results = pipeline(prompt)[0]
+		pipeline.device = "cpu"
 		pipeline.model.cpu()
 
-		# TODO: Assuming the first one is the baseline
-		df.loc[name] = [results["perplexity"], None, results["ttft"], results["run_time"], results["num_output_tokens"],
-						results["time_per_output_token"], results["generated_text"]]
 		decoded_tokens[i] = results["decoded_tokens"]
-		if i == 0:
-			baseline_response = results["decoded_tokens"]
+		rogue = None
+		if not set_baseline_as_target:
+			rogue = rogue_lcs(results["decoded_tokens"], [pipeline.tokenizer.decode(token) for token in pipeline.tokenizer.encode(target)])
 
-	if baseline_response is not None:
-		df["ROGUE-L F1 Score"] = [rogue_lcs(tokens, baseline_response) for tokens in decoded_tokens]
-	else:
-		df.drop(columns=["ROGUE-L F1 Score"], inplace=True)
+		# TODO: Assuming the first one is the baseline
+		if i == 0 and set_baseline_as_target:
+			target = results["decoded_tokens"]
 
+		df.loc[name] = [results["perplexity"], rogue, results["ttft"], results["run_time"], results["num_output_tokens"],
+						results["time_per_output_token"], results["generated_text"]]
+
+	if set_baseline_as_target:
+		df["ROGUE-L F1 Score"] = [rogue_lcs(tokens, target) for tokens in decoded_tokens]
 	return df
 
 
 def evaluation_pipeline(dataset: str | Dataset | DatasetDict, output_directory: Path, connection: sqlite3.Connection,
                         logger, ablation: bool = False, max_evaluations: int = None,
                         sql_filter: str = None, baseline: Optional[int | str] = None, max_new_tokens: int = None,
-                        mask_selector: Callable[[Path], Iterable[Path]] = None):
+                        mask_selector: Callable[[Path], Iterable[Path]] = None, baseline_as_target: bool = False):
 	from ..dataset_loader import load_dataset
 	output_directory.mkdir(parents=True, exist_ok=True)
 
@@ -131,9 +137,9 @@ def evaluation_pipeline(dataset: str | Dataset | DatasetDict, output_directory: 
 	experiment_idx = 0
 	try:
 		items = [experiment for experiment in experiments]
-		for experiment_idx, item in enumerate(experiments, start=experiment_idx):
+		for experiment_idx, item in enumerate(tqdm(experiments, desc="Loading models for evaluation"), start=experiment_idx):
 			items[experiment_idx] = create_items_for_experiment(item)
-			logger.debug(f"Created model {experiment_idx:,} of {len(experiments):,}: {item.name}.");
+			logger.debug(f"Created model {experiment_idx:,} of {len(experiments):,}: {item.name}.")
 		logger.info(f"Created all models {len(experiments):,} and stored them in memory.")
 	except (MemoryError, OutOfMemoryError) as e:
 		logger.warning("Could not immediately load all items into memory. System will load each one individually, test it, then off load it.", exc_info=e)
@@ -146,20 +152,35 @@ def evaluation_pipeline(dataset: str | Dataset | DatasetDict, output_directory: 
 	latex_kwargs = dict(
 		position="H",
 		position_float="centering",
-		hrules=True
+		hrules=True,
+		sparse_index=False,
+		clines="all;data",
+		column_format=r"|m{0.08\textwidth}| m{0.11\textwidth}| r | R{0.13\textwidth}| R{0.09\textwidth}| R{0.09\textwidth}| R{0.09\textwidth}| R{0.11\textwidth}|"
 	)
-	latex_na_rep = "NaN"
+	latex_na_rep = "-"
 
+	tracemalloc.start(20)
+	snapshot1 = tracemalloc.take_snapshot()
+	results_func = write_ablation_results if ablation else write_results
 	logger.info("Starting model evaluations.")
-	for i, row in tqdm(enumerate(dataset, start=1), desc="Running Tests"):
+	for i, row in enumerate(tqdm(dataset, desc="Running Tests"), start=1):
 		prompt = row["article"] # TODO: Have it get the correct column given the dataset
-		df = test_models(prompt, items, device=device, max_new_tokens=max_new_tokens)
+		target = row["highlights"]
+		df = test_models(prompt, items, target, device=device, set_baseline_as_target=baseline_as_target)
 
-		if ablation:
-			write_ablation_results(output_directory, df, i, prompt, latex_na_rep, latex_kwargs)
-		else:
-			write_results(output_directory, df, i, prompt, latex_na_rep, latex_kwargs)
+		results_directory = output_directory / f"{i}"
+		results_directory.mkdir(parents=True, exist_ok=True)
+
+		results_func(results_directory, df, i, prompt, latex_na_rep, latex_kwargs)
 
 		logger.debug(f"Finished testing row {i:,} of {len(dataset):,}.")
+		snapshot2 = tracemalloc.take_snapshot()
+		top_stats = snapshot2.compare_to(snapshot1, "lineno", cumulative=True)
+		snapshot2.dump(output_directory / f"{i:,}_dump.txt")
+		top_stats = tuple(filter(lambda stat: "washLTH" in stat.traceback._frames[0][0], top_stats))
+		stat_info = "\n\t".join(map(repr, top_stats[:30]))
+		logger.debug(f"Top stats for row {i:,}:\n\t{stat_info}")
+		# for stat in top_stats[:5]:
+		# 	print(stat)
 
 	logger.info("Model evaluations have finished.")

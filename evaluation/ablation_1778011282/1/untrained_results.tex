@@ -1,0 +1,90 @@
+\begin{table}[H]
+\centering
+\label{tab:evaluation-pipeline-1-untrained}
+%\centerline{%
+\begin{tabular}{|m{0.08\textwidth}| m{0.11\textwidth}| r | R{0.13\textwidth}| R{0.09\textwidth}| R{0.09\textwidth}| R{0.09\textwidth}| R{0.11\textwidth}|} % lllrllll
+\toprule
+ &  & Perplexity & ROGUE-L F1 Score (\%) & TTFT (ms) & Run Time (ms) & Output Tokens & Time per Output Token (ms) \\
+Trained & Pruning Percentage &  &  &  &  &  &  \\
+\midrule
+- & - & \bfseries 32.0966 & \bfseries 100.0000\% & 91.138 & 464.422 & 629 & 0.738 \\
+\cline{1-8} \cline{2-8}
+False & 5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 1.072 & 88.155 & 629 & 0.140 \\
+\cline{1-8} \cline{2-8}
+False & 7.5\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 1.056 & 88.073 & 629 & 0.140 \\
+\cline{1-8} \cline{2-8}
+False & 10\% & 366,773.5842 & \bfseries \color{red} 100.0000\% & 1.056 & 88.463 & 629 & 0.141 \\
+\cline{1-8} \cline{2-8}
+False & 12.5\% & \color{red} 268,337.2865 & \bfseries \color{red} 100.0000\% & 1.068 & 88.478 & 629 & 0.141 \\
+\cline{1-8} \cline{2-8}
+False & 15\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 1.061 & 88.483 & 629 & 0.141 \\
+\cline{1-8} \cline{2-8}
+False & 17.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 1.072 & 88.334 & 629 & 0.140 \\
+\cline{1-8} \cline{2-8}
+False & 20\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 1.070 & 88.569 & 629 & 0.141 \\
+\cline{1-8} \cline{2-8}
+False & 22.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 1.075 & 89.893 & 629 & 0.143 \\
+\cline{1-8} \cline{2-8}
+False & 25\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 1.067 & 90.256 & 629 & 0.143 \\
+\cline{1-8} \cline{2-8}
+False & 27.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 1.070 & 90.710 & 629 & 0.144 \\
+\cline{1-8} \cline{2-8}
+False & 30\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 1.086 & 89.606 & 629 & 0.142 \\
+\cline{1-8} \cline{2-8}
+False & 32.5\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 1.085 & 90.918 & 629 & 0.145 \\
+\cline{1-8} \cline{2-8}
+False & 35\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 1.136 & 91.268 & 629 & 0.145 \\
+\cline{1-8} \cline{2-8}
+False & 37.5\% & 366,773.5842 & \bfseries \color{red} 100.0000\% & 1.099 & 91.295 & 629 & 0.145 \\
+\cline{1-8} \cline{2-8}
+False & 40\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 1.082 & 91.013 & 629 & 0.145 \\
+\cline{1-8} \cline{2-8}
+False & 42.5\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 1.085 & 90.752 & 629 & 0.144 \\
+\cline{1-8} \cline{2-8}
+False & 45\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 1.084 & 90.929 & 629 & 0.145 \\
+\cline{1-8} \cline{2-8}
+False & 47.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 1.074 & 90.947 & 629 & 0.145 \\
+\cline{1-8} \cline{2-8}
+False & 50\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 1.085 & 90.402 & 629 & 0.144 \\
+\cline{1-8} \cline{2-8}
+False & 52.5\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 1.103 & 88.853 & 629 & 0.141 \\
+\cline{1-8} \cline{2-8}
+False & 55\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 1.110 & 90.711 & 629 & 0.144 \\
+\cline{1-8} \cline{2-8}
+False & 57.5\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 1.102 & 90.898 & 629 & 0.145 \\
+\cline{1-8} \cline{2-8}
+False & 60\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 1.082 & 91.549 & 629 & 0.146 \\
+\cline{1-8} \cline{2-8}
+False & 62.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 1.076 & 88.590 & 629 & 0.141 \\
+\cline{1-8} \cline{2-8}
+False & 65\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 1.083 & 91.217 & 629 & 0.145 \\
+\cline{1-8} \cline{2-8}
+False & 67.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 1.094 & 91.329 & 629 & 0.145 \\
+\cline{1-8} \cline{2-8}
+False & 70\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 1.089 & 91.622 & 629 & 0.146 \\
+\cline{1-8} \cline{2-8}
+False & 72.5\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 1.080 & 90.865 & 629 & 0.144 \\
+\cline{1-8} \cline{2-8}
+False & 75\% & 366,773.5842 & \bfseries \color{red} 100.0000\% & 1.089 & 90.842 & 629 & 0.144 \\
+\cline{1-8} \cline{2-8}
+False & 77.5\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 1.099 & 91.445 & 629 & 0.145 \\
+\cline{1-8} \cline{2-8}
+False & 80\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 1.084 & 91.316 & 629 & 0.145 \\
+\cline{1-8} \cline{2-8}
+False & 82.5\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 1.100 & 91.120 & 629 & 0.145 \\
+\cline{1-8} \cline{2-8}
+False & 85\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 1.108 & 88.844 & 629 & 0.141 \\
+\cline{1-8} \cline{2-8}
+False & 87.5\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 1.088 & 88.995 & 629 & 0.141 \\
+\cline{1-8} \cline{2-8}
+False & 90\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 1.102 & 89.085 & 629 & 0.142 \\
+\cline{1-8} \cline{2-8}
+False & 92.5\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 1.092 & 91.523 & 629 & 0.146 \\
+\cline{1-8} \cline{2-8}
+False & 95\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 1.111 & 91.695 & 629 & 0.146 \\
+\cline{1-8} \cline{2-8}
+False & 97.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 1.102 & 91.671 & 629 & 0.146 \\
+\cline{1-8} \cline{2-8}
+\bottomrule
+\end{tabular}%}
+\end{table}

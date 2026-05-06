@@ -6,28 +6,50 @@
 	title={Lottery Ticket Hypothesis for Large Language Models}
 ]{cs595project}
 
+\newboolean{showcaption}
+
 % Document
-\begin{document}
+\begin{document} % Should be 6-8 pages.
 %
 \begin{center}
 	{\bfseries\Huge Using the Lottery Ticket Hypothesis to Decrease the Size of LLMs}\\
-	{\bfseries \Large Author: \href{mailto:lwashington3@hawk.illinoistech.edu}{Len Washington III} (A20484223) \orcid{0009-0004-0165-6316}}\\
+	{\bfseries \Large Author: \href{mailto:lwashington3@hawk.illinoistech.edu}{Len Washington III}\orcid{0009-0004-0165-6316} (A20484223)}\\
+	{\bfseries \Large Artifact: \href{https://github.com/lwashington3/cs595-2-project}{\faIcon{github} lwashington3/cs595-2-project}}\\
 \end{center}
 
-% Indicate whether your project is mainly:
+% Indicate whether your project is mainly: % TODO: Which am I?
 %- Research prototype
-%- Systemization/reproduction
+%- Systemization/reproduction <-
 %- Engineering/measurement
 
 \section{Motivation}\label{sec:motivation} % and problem statement
 % Clearly explain the efficiency problem you study. Why does it matter for ML systems, efficient deep learning, or AI accelerators?
+Transformers and Large Language Models have allowed for more efficient processing of NLP tasks. % TODO: Flesh this out
+One such example where LLMs have been implemented is the EXSCLAIM pipeline,\supercite{EXSCLAIM} which utilizes LLMs to split captions from research papers to match with any subfigures within the overall (master) figure.
+However, the biggest problem with running EXSCLAIM on its current servers is that there are no GPUs, which significantly reduces how fast the pipeline can run.
+Coupled with the dozens of captions that may need to be separated, the Caption Distributor is easily the largest bottleneck within the pipeline.
+The default LLM (Llama 3.2) can do a fair job of splitting these captions, though it will either need to be replaced by a better model (which would have to be larger) or have some term of improvement done.
+To address these issues, a method was sought out to increase the inference speed without disrupting the current accuracy of the models.
+A pruning method known as the Lottery Ticket Hypothesis was chosen, since it had claims of reducing a neural network's weights by 95\% while still maintaining similar accuracies as the unpruned version.
 
 \section{Background}\label{sec:background}
 % Summarize the most relevant prior work. Cite papers, codebases, datasets, tools, and any external resources you used.
-\cite{Lottery-Ticket-Hypothesis}
+The Lottery Ticket Hypothesis states that ``[any] randomly-initialized, dense neural network contains a subnetwork that is initialized such that--when trained in isolation--it can match the test accuracy of the original network after training for at most the same number of iterations.''\supercite{Lottery-Ticket-Hypothesis}
+
 
 \section{Methodology}\label{sec:methodology}
-% Describe your approach in enough detail that another student could understand and reproduce the main idea. Include system design, algorithms, implementation choices, datasets, workloads, models, hardware, and software environment when relevant.
+% Describe your approach in enough detail that another student could understand and reproduce the main idea.
+% Include system design, algorithms, implementation choices, datasets, workloads, models, hardware, and software environment when relevant.
+To reproduce the Lottery Ticket Hypothesis with a LLM that I did not initially train, nor possess the dataset, several steps are required.
+The first is two obtain the raw weights of a given LLM, as well as a dataset that could be used to pretrain the weights $\dots$ % TODO: Explain why I plan on pretraining
+Once that is done, the other metrics are calculated and stored, and the process begins for the next model evaluating for the same row.
+
+Each layer within the model will be subjected to magnitude pruning, where the weights are sorted by magnitude, then the smallest $p\%$ of parameters are removed (or masked out when it comes to the evaluations).
+
+To evaluate the results, a pipeline was constructed to take in the base model (whether it's the original model or pretrained model) and applying the mask found previously.
+Once the model has been masked, a time is used to time how long the overarching process is, as well as how long it takes to generate the first token once the inference has begun.
+After that, the model is called again, this time to receive the logits from the output to calculate the Perplexity of the return, $\dots$
+
 
 \section{Experimental Setup}\label{sec:experimental-setup}
 % Clearly state:
@@ -36,12 +58,57 @@
 %- Datasets, models, benchmarks, or workloads
 %- Baselines and comparison methods
 %- Metrics, such as latency, throughput, memory usage, accuracy, energy, cost, or scalability
+\begin{table}[H]
+	\centering
+	\caption{Experimental Specifications}
+	\label{tab:experiment-specs}
+	\begin{tabular}{|c|c|}
+		\toprule
+		GPU & NVIDIA A100 80GB PCIe\\
+		\midrule
+		CPU & AMD EPYC 7763 64-Core Processor\\
+		\midrule
+		Cores & 256\\
+		\midrule
+		RAM & 503.414455 GB\\
+		\midrule
+		Disk Space & 418 GB\\
+		\midrule
+		Chameleon Cloud Site & CHI@UC\\
+		\midrule
+		Chameleon Cloud Node Name & gigaio-compute-04\\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+The software stack consisted of Python and mainly relied on the HuggingFace suite, namely Transformers, Datasets, and Safetensors.
+The full list of libraries and versions can be seen in Appendix Section~\ref{sec:python-libraries}
+The baseline model that was used for pruning and evaluation was \href{https://huggingface.co/google/gemma-3-1b-it/tree/dcc83ea841ab6100d6b47a070329e1ba4cf78752}{google/gemma-3-1b-it} along with \href{https://huggingface.co/datasets/abisee/cnn_dailymail/tree/96df5e686bee6baa90b8bee7c28b81fa3fa6223d}{abisee/cnn\_dailymail} as the dataset.
+The metrics used to evaluate the effectiveness of pruning were Time-to-First-Token (TTFT), Time per Output Tokens (TPOT), ROGUE-L F1 score, and Perplexity.
 
 \section{Results}\label{sec:results}
 % Present your main results using tables or figures. Do not only report numbers; explain what the numbers mean. Discuss where your method works, where it does not, and why.
+The experiments found that none of the predictions from the baseline model, nor any of my pruned models (pretrained or not), held up good for what was expected for the dataset.
+As such, the results will show how well the pruned models did at matching the response of the baseline model.
+
+\begin{figure}[H]
+	\centering
+	\resizebox{\textwidth}{!}{\input{../evaluation/ablation_1778011282//1/rouge-l.pgf}}
+	\caption{The ROUGE F1 Score for the Longest Common Subsequence.}
+	\label{fig:rogue-0}
+\end{figure}
+
+\input{../evaluation/ablation_1778011282//1/trained_results}
+
+\input{../evaluation/ablation_1778011282//1/untrained_results}
+
+%\input{../evaluation/1/results}
 
 \section{Profiling Analysis}\label{sec:profiling-analysis}
 % Include evidence of careful measurement. This can include runtime breakdowns, memory profiling, GPU utilization, kernel-level profiling, communication overhead, or other system-level analysis.
+\begin{itemize}
+	\item Reading in models for the evaluation pipeline takes $\sim$40 seconds, which can lead to massive wait times if 77 models are being evaluated (leading to a wait time of about 51 minutes before the evaluation actually starts)
+\end{itemize}
 
 \section{Reproducibility}\label{sec:reproducibility}
 The artifact can be found at \url{https://github.com/lwashington3/cs595-2-project}
@@ -49,10 +116,25 @@ The artifact can be found at \url{https://github.com/lwashington3/cs595-2-projec
 
 \section{Limitations}\label{sec:limitations}
 % Discuss what remains incomplete, what assumptions your project makes
+\begin{itemize}
+	\item The only a few values from the pretraining set could be used for training before the GPU's memory was full.
+\end{itemize}
 
 \section{Future Works}\label{sec:future-works}
 % What you would do next with more time.
+\begin{itemize}
+	\item Attempt to figure out the maximum size of the pretraining set that it doesn't go beyond the memory bounds of a device
+	\item Structurally remove transformer layers from the model and test how that affects it
+	\item Figure out a better solution towards saving values (I could save the masked pretrained value in a single file instead of having it distributed [this is only done because I don't want the same version of different files constantly written in different places]), but I not all values need to be written (save space)
+\end{itemize}
 
 \printbibliography[title={References}, heading=subbibnumbered]
+
+\appendix
+\section*{\textsc{Appendix}}
+\renewcommand{\thesection}{\Alph{section}.}
+
+\section{Python Libraries}\label{sec:python-libraries}
+\inputminted{text}{../requirements.txt}
 
 \end{document}

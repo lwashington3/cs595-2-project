@@ -43,8 +43,7 @@ def pretrain_model(model: AutoModelForCausalLM | Path, train: Dataset, val: Data
 
 	training_kwargs = training_kwargs or dict()
 
-	print(f"{device=}")
-	model.to(device) # TODO: Might want to try "google/gemma-3-1b-it"
+	model.to(device)
 	trainer = Trainer(
 		model,
 		training_args,

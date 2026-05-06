@@ -125,12 +125,14 @@ def main(args=None):
 	evaluate_parser.add_argument("-d", "--dataset", default=default_dataset, help="The dataset that will be used to evaluate the models.")
 	evaluate_parser.add_argument("-me", "--max-evaluations", type=int, default=None, help="The maximum number of rows to look at during the evaluation. Default is no limit.")
 	evaluate_parser.add_argument("-sf", "--sql-filter", type=str, default=None, help="Only experiments based on this SQL condition will be evaluated. i.e. `dataset = 'glue'`.")
+	# Normally, I would add more SQL injection protection for this, but I doubt you would harm your own SQLite database
 	evaluate_parser.add_argument("-mt", "--max-new-tokens", type=int, default=256, help="The maximum amount of new tokens each model is allowed to add to the response.")
 	evaluate_parser.add_argument("-bl", "--baseline", type=str, default=None,
 								 help="The model to highlight as the baseline. If an integer is given, then the database will search for the row with this ROWID. If a string is given, it will use the given directory or HF Hub model.")
 	evaluate_parser.add_argument("-mf", "--mask-filter", type=str, default=None, choices=SELECTOR_LOOKUP.keys())
 	evaluate_parser.add_argument("-a", "--ablation", default=False, action="store_true", help="If the ablation graphics should be generated.")
-	# Normally, I would add more SQL injection protection for this, but I doubt you would harm your own SQLite database
+	evaluate_parser.add_argument("-bt", "--baseline-as-target", default=False, action="store_true",
+								 help="If any results requiring the true value should use the actual target value as the target (False/unset) or the baseline model's response (True/set).")
 
 	dataset_parser.add_argument("-r", "--repo-id", default="ArxivCap", help="The namespace of the uploaded dataset.")
 	dataset_parser.add_argument("-m", "--message", help="The commit message for uploading this dataset.")
@@ -178,7 +180,7 @@ def main(args=None):
 
 				evaluation_pipeline(args.dataset, folder, connection, logger, max_evaluations=args.max_evaluations,
 									sql_filter=args.sql_filter, baseline=args.baseline, mask_selector=mask_selector,
-									ablation=args.ablation)
+									ablation=args.ablation, baseline_as_target=args.baseline_as_target)
 			case "dataset":
 				from .generate_dataset import generate_dataset
 				dataset = generate_dataset(args.repo_id, args.message, logger=logger)
