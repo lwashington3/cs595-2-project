@@ -1,0 +1,92 @@
+\begin{table}[H]
+\centering
+\caption{Row 12 Results (Pre-trained before Pruning). \ifshowcaption{}Caption: ``(CNN) -- Double Olympic gold medalist Haile Gebrselassie is swapping the track for the polls after announcing his intention to run for election to the Ethiopian parliament in 2015. Gebrselassie is one of the most celebrated track and field athletes of all time, dominating the 10,000 meter event by winning four consecutive World Championships titles over the distance between 1993 and 1999. Now he hopes to use his iconic status in his homeland to kick start his political career, a move he has long been expected to make. "A lot of messages in the news about me going into politics," the 40-year-old, who clinched gold in 1996 and 2000, said on Twitter. "Yes, I want to be in the parliament in 2015 to help my country to move forward." If Gebrselassie does successfully make the transition into politics, he will be following in the footsteps of some other sport stars. Gebrselassie's fellow two-time gold medal winner Sebastian Coe served as a Member of Parliament in his native Britain between 1992 and 1997. Former middle distance runner Coe also served as chairman of the organizing committee's for last year's London 2012 Olympic Games. Manny Pacquiao, boxing's first and only eight-division world champion, has become a political heavyweight in the Philippines. The 34-year-old, known as the "Pac Man", was elected into the House of Representatives for the Sarangani province in May 2010. A host of famous football names have also forged successful political careers for themselves. Romario was a lethal striker who starred as Brazil won the World Cup in 1994. He is now an elected member of the Chamber of Deputies on the Brazilian Socialist Party ticket and has recently expressed concerns regarding the South American country's hosting of the 2014 World Cup. Romario has raised the issue of whether the money spent hosting football's biggest competition would be better spent on education. Like Romario, George Weah was once voted FIFA World Player of the Year. The Liberian striker, who received the accolade in 1995, ran unsuccessfully for the presidency of his country in 2005 despite gaining over 40% of the vote.''.\fi}
+\label{tab:evaluation-pipeline-12-trained}
+\begin{tabular}{lllrllll}
+\toprule
+ &  & Perplexity & ROGUE-L F1 Score (\%) & TTFT (ms) & Run Time (ms) & Output Tokens & Time per Output Token (ms) \\
+Trained & Pruning Percentage &  &  &  &  &  &  \\
+\midrule
+nan & 0 & \bfseries 16.3933 & \bfseries 100.0000\% & 15.253 & 471.549 & 502 & 0.939 \\
+\cline{1-8}
+True & 2.5\% & 390,428.4481 & \bfseries \color{red} 100.0000\% & 13.740 & 447.225 & 502 & 0.891 \\
+\cline{1-8}
+True & 5.0\% & 470,946.6043 & \bfseries \color{red} 100.0000\% & 13.577 & 450.469 & 502 & 0.897 \\
+\cline{1-8}
+True & 7.5\% & 501,320.0508 & \bfseries \color{red} 100.0000\% & 13.471 & 447.680 & 502 & 0.892 \\
+\cline{1-8}
+True & 10.0\% & 826,537.0311 & \bfseries \color{red} 100.0000\% & 13.772 & 445.099 & 502 & 0.887 \\
+\cline{1-8}
+True & 12.5\% & 729,416.3698 & \bfseries \color{red} 100.0000\% & 13.933 & 450.164 & 502 & 0.897 \\
+\cline{1-8}
+True & 15.0\% & 879,844.0897 & \bfseries \color{red} 100.0000\% & 13.442 & 446.962 & 502 & 0.890 \\
+\cline{1-8}
+True & 17.5\% & 996,993.9692 & \bfseries \color{red} 100.0000\% & 13.637 & 444.728 & 502 & 0.886 \\
+\cline{1-8}
+True & 20.0\% & 1,202,604.2842 & \bfseries \color{red} 100.0000\% & 14.092 & 445.839 & 502 & 0.888 \\
+\cline{1-8}
+True & 22.5\% & 1,450,617.6656 & \bfseries \color{red} 100.0000\% & 14.214 & 451.273 & 502 & 0.899 \\
+\cline{1-8}
+True & 25.0\% & 2,391,664.2010 & \bfseries \color{red} 100.0000\% & 14.320 & 445.102 & 502 & 0.887 \\
+\cline{1-8}
+True & 27.5\% & 1,450,617.6656 & \bfseries \color{red} 100.0000\% & 13.826 & 446.835 & 502 & 0.890 \\
+\cline{1-8}
+True & 30.0\% & 3,070,957.6223 & \bfseries \color{red} 100.0000\% & 13.496 & 443.788 & 502 & 0.884 \\
+\cline{1-8}
+True & 32.5\% & 6,501,217.3374 & \bfseries \color{red} 100.0000\% & 14.113 & 445.437 & 502 & 0.887 \\
+\cline{1-8}
+True & 35.0\% & 6,920,509.8318 & \bfseries \color{red} 100.0000\% & 13.647 & 444.720 & 502 & 0.886 \\
+\cline{1-8}
+True & 37.5\% & 3,943,187.6406 & \bfseries \color{red} 100.0000\% & 13.971 & 448.071 & 502 & 0.893 \\
+\cline{1-8}
+True & 40.0\% & 7,366,844.3689 & \bfseries \color{red} 100.0000\% & 13.490 & 444.165 & 502 & 0.885 \\
+\cline{1-8}
+True & 42.5\% & 8,886,110.5205 & \bfseries \color{red} 100.0000\% & 13.410 & 444.193 & 502 & 0.885 \\
+\cline{1-8}
+True & 45.0\% & 10,069,282.3901 & \bfseries \color{red} 100.0000\% & 13.713 & 445.657 & 502 & 0.888 \\
+\cline{1-8}
+True & 47.5\% & 11,409,991.7638 & \bfseries \color{red} 100.0000\% & 13.431 & 446.235 & 502 & 0.889 \\
+\cline{1-8}
+True & 50.0\% & 8,886,110.5205 & \bfseries \color{red} 100.0000\% & 13.517 & 440.631 & 502 & 0.878 \\
+\cline{1-8}
+True & 52.5\% & 7,366,844.3689 & \bfseries \color{red} 100.0000\% & 14.629 & 450.400 & 502 & 0.897 \\
+\cline{1-8}
+True & 55.0\% & 18,811,896.1195 & \bfseries \color{red} 100.0000\% & 13.365 & 443.064 & 502 & 0.883 \\
+\cline{1-8}
+True & 57.5\% & 27,371,147.3466 & \bfseries \color{red} 100.0000\% & 13.476 & 446.376 & 502 & 0.889 \\
+\cline{1-8}
+True & 60.0\% & 14,650,719.4290 & \bfseries \color{red} 100.0000\% & 15.388 & 445.737 & 502 & 0.888 \\
+\cline{1-8}
+True & 62.5\% & 12,929,214.5167 & \bfseries \color{red} 100.0000\% & 13.366 & 445.786 & 502 & 0.888 \\
+\cline{1-8}
+True & 65.0\% & 16,601,440.0572 & \bfseries \color{red} 100.0000\% & 17.633 & 445.778 & 502 & 0.888 \\
+\cline{1-8}
+True & 67.5\% & 14,650,719.4290 & \bfseries \color{red} 100.0000\% & 13.457 & \bfseries \color{red} 438.492 & 502 & \bfseries \color{red} 0.873 \\
+\cline{1-8}
+True & 70.0\% & 24,154,952.7536 & \bfseries \color{red} 100.0000\% & 13.557 & 449.349 & 502 & 0.895 \\
+\cline{1-8}
+True & 72.5\% & 39,824,784.3976 & \bfseries \color{red} 100.0000\% & 14.157 & 445.032 & 502 & 0.887 \\
+\cline{1-8}
+True & 75.0\% & 157,510,077.7662 & \bfseries \color{red} 100.0000\% & 13.482 & 442.216 & 502 & 0.881 \\
+\cline{1-8}
+True & 77.5\% & 139,002,155.7545 & \bfseries \color{red} 100.0000\% & 14.662 & 443.556 & 502 & 0.884 \\
+\cline{1-8}
+True & 80.0\% & 84,309,069.2313 & \bfseries \color{red} 100.0000\% & 13.483 & 443.313 & 502 & 0.883 \\
+\cline{1-8}
+True & 82.5\% & 108,254,987.7502 & \bfseries \color{red} 100.0000\% & 13.539 & 439.222 & 502 & 0.875 \\
+\cline{1-8}
+True & 85.0\% & 95,534,691.3789 & \bfseries \color{red} 100.0000\% & 13.670 & 442.693 & 502 & 0.882 \\
+\cline{1-8}
+True & 87.5\% & 31,015,573.2745 & \bfseries \color{red} 100.0000\% & 13.548 & 440.716 & 502 & 0.878 \\
+\cline{1-8}
+True & 90.0\% & 377,847,034.1041 & \bfseries \color{red} 100.0000\% & 13.463 & 444.175 & 502 & 0.885 \\
+\cline{1-8}
+True & 92.5\% & 18,811,896.1195 & \bfseries \color{red} 100.0000\% & 13.079 & 441.727 & 502 & 0.880 \\
+\cline{1-8}
+True & 95.0\% & 3,070,957.6223 & \bfseries \color{red} 100.0000\% & 13.375 & 445.248 & 502 & 0.887 \\
+\cline{1-8}
+True & 97.5\% & 1,544,174.4671 & \bfseries \color{red} 100.0000\% & 13.486 & 444.639 & 502 & 0.886 \\
+\cline{1-8}
+\bottomrule
+\end{tabular}
+\end{table}

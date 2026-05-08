@@ -10,8 +10,9 @@
 \newcommand{\ROGUE}{ROGUE}
 \newcommand{\ROUGE}{ROGUE}
 
-\newcommand{\ablationunix}{1778157329} % 1778198132
-\providecommand{\ablationunix}{1778157329}
+\newcommand{\ablationunix}{1778204079} % 1778198132
+\providecommand{\ablationunix}{1778204079}
+\newcommand{\hfmodel}[1]{\href{https://huggingface.co/#1}{#1}}
 
 \RequirePackage{svg}
 
@@ -22,58 +23,54 @@
 	{\bfseries\Huge Using the Lottery Ticket Hypothesis to Decrease the Size of LLMs}\\
 	{\bfseries \Large Author: \href{mailto:lwashington3@hawk.illinoistech.edu}{Len Washington III}\orcid{0009-0004-0165-6316} (A20484223)}\\
 	{\bfseries \Large Artifacts: \href{https://github.com/lwashington3/cs595-2-project}{\faIcon{github} lwashington3/cs595-2-project}\\ \href{https://huggingface.co/collections/lwashington3/lottery-ticket-hypothesis-for-llm}{\includesvg[width=1em]{hugging-face-brands-solid-full.svg} lwashington3/lottery-ticket-hypothesis-for-llm}}\\
+	\textbf{Systemization/reproduction}
 \end{center}
-
-% Indicate whether your project is mainly: % TODO: Which am I?
-%- Research prototype
-%- Systemization/reproduction <-
-%- Engineering/measurement
 
 \section{Motivation}\label{sec:motivation} % and problem statement
 % Clearly explain the efficiency problem you study. Why does it matter for ML systems, efficient deep learning, or AI accelerators?
-Transformers and Large Language Models have allowed for more efficient execution of NLP tasks.
+The introduction of transformers and large language models (LLMs) have greatly improved the efficiency of NLP tasks, allowing a single model to handle a multitude of tasks.
 One such example where LLMs have been implemented is the \href{https://exsclaim.materialeyes.org}{EXSCLAIM} pipeline,\supercite{EXSCLAIM} which utilizes LLMs to split captions from research papers to match with any subfigures within the overall (master) figure.
 However, the biggest problem with running EXSCLAIM on its current servers is that there are no GPUs, which significantly reduces how fast the pipeline can run.
 Coupled with the dozens of captions that may need to be separated, the Caption Distributor is easily the largest bottleneck within the pipeline.
-The default LLM (Llama 3.2) can do a fair job of splitting these captions, though it will either need to be replaced by a better model (which would have to be larger) or have some type of improvement done.
-To address these issues, a method was sought out to increase the inference speed without disrupting the current accuracy of the models.
+The default LLM (Llama 3.2) does a fair job of splitting these captions, though it will either need to be replaced by a better model (which would have to be larger) or improved in some way.
+To address these issues, a method was sought out to increase the inference speed without disrupting the current accuracy of the model.
 A pruning technique known as the Lottery Ticket Hypothesis was chosen, since it had claims of reducing a neural network's weights by 95\% while still maintaining similar accuracies as the unpruned version.
 
 \section{Background}\label{sec:background}
 % Summarize the most relevant prior work. Cite papers, codebases, datasets, tools, and any external resources you used.
 The Lottery Ticket Hypothesis states that ``a randomly-initialized, dense neural network contains a subnetwork that is initialized such that--when trained in isolation--it can match the test accuracy of the original network after training for at most the same number of iterations.''\supercite{Lottery-Ticket-Hypothesis}
-Essentially, by training a randomly-initialized neural network, a subnetwork, or winning ticket, can be discovered and retrained from the beginning, matching the accuracy of the original model.
+Essentially, by training a randomly-initialized neural network, a subnetwork (or winning ticket) can be discovered and retrained from the beginning, matching the accuracy of the original model.
 
-The paper describes two methods towards pruning a network, one-shot pruning, and iterative pruning.
-For one-shot pruning, the trained network is pruned once, with $p\%$ of weights being masked out (pruned) while the reset are reset to the initially-random values.
+The paper describes two methods towards pruning the network, one-shot pruning, and iterative pruning.
+For one-shot pruning, the trained network is pruned once, with $p\%$ of the weights being masked out (pruned) while the rest are reset to the initially-random values.
 There is also iterative pruning, which repeatedly trains, prunes, and resets the network over $n$ rounds, each time pruning another $p^\frac{1}{n}$\%.
 \citeauthor{LTH-Transformer} describe further methods for utilizing the Lottery Ticket Hypothesis with transformers.
-One such method recommends applying the computed mask $m$ to one of the earlier checkpoints from when initially-randomized model is trained, rather than the initial model.
+One such method recommends applying the computed mask $m$ to one of the earlier checkpoints from when the initially-randomized model was trained, rather than the initial model.
 %This ``iterative magnitude pruning with rewinding''
-However, the paper does not go into more detailed implementation of such methods.
 
-Since EXSCLAIM's pipeline was summarizing scientific captions into a list of strings, a similar dataset was sought with hopes of further use for EXSCLAIM.
-As such, one dataset stood out, \href{https://huggingface.co/datasets/MMInstruction/ArxivCap}{MMInstruction/ArxivCap},\supercite{li-etal-2024-multimodal-arxiv} which was designed training parser to understand Arxiv.
-The 755 GB dataset was filtered through, retaining only what was necessary, before re-uploading it to HuggingFace.
+Since EXSCLAIM's pipeline was summarizing scientific captions into a list of strings, a similar dataset was sought. % with the hope of using it during EXSCLAIM's impro
+As such, one dataset stood out, \href{https://huggingface.co/datasets/MMInstruction/ArxivCap}{MMInstruction/ArxivCap},\supercite{li-etal-2024-multimodal-arxiv} which was designed for training parsers to understand Arxiv papers.
+The 755 GB dataset was filtered, retaining only what was necessary, before re-uploading it to HuggingFace.
 This dataset, \href{https://huggingface.co/datasets/lwashington3/ArxivCap-Minimal}{lwashington3/ArxivCap-Minimal}, however, did not seem to work well with most LLMs, and was replaced for the duration of the project with \href{https://huggingface.co/datasets/abisee/cnn_dailymail/tree/96df5e686bee6baa90b8bee7c28b81fa3fa6223d}{abisee/cnn\_dailymail}.
 
 \section{Methodology}\label{sec:methodology}
 % Describe your approach in enough detail that another student could understand and reproduce the main idea.
 % Include system design, algorithms, implementation choices, datasets, workloads, models, hardware, and software environment when relevant.
-To utilize the Lottery Ticket Hypothesis with an LLM that I did not initially train, nor possess the training dataset, several steps are required.
-The first is to obtain the raw weights of a given LLM, as well as a dataset that would be used to fine-tune the model.
-%Safetensors is the framework used to handle and manipulate raw tensor weights throughout this project, %given that it is a part of HuggingFace's suite
-The model will also be preprocessed utilizing this dataset, to help bridge any assumptions made by~\cite{Lottery-Ticket-Hypothesis} having the initial training dataset for the pruning process.
-Once the model has been preprocessed, each layer within the model will be subjected to magnitude pruning, where the weights are sorted by magnitude, then the smallest $p\%$ of parameters are masked, before training on the dataset.
+There were several steps involved in implementing the Lottery Ticket Hypothesis when neither the initial model, nor the training dataset, were available.
+The first is to obtain the raw weights of a chosen LLM, as well as a dataset that would be used to fine-tune the model to help bridge any assumptions made by~\cite{Lottery-Ticket-Hypothesis} having the initial training dataset for the pruning process.
+Once the model has been fine-tuned, each layer within the model will be subjected to one-shot magnitude pruning, where the weights are sorted by magnitude, then the smallest $p\%$ of parameters are masked and the model is re-trained.%
+\footnote{Originally, the implementation missed the step of re-training the masked models.
+Those models and masks can be seen at \url{https://huggingface.co/lwashington3/lottery-ticket-hypothesis-masks}.
+The results they had were similar to the properly retrained versions found at \url{https://huggingface.co/lwashington3/lottery-ticket-hypothesis-models}.}
 
 To evaluate the results, a pipeline was constructed to run through the original (un-pruned) model, as well as several pruned models using the held-out portion of the dataset.
 %Each pruned model was recomputed by applying the mask to its base model.%
 %\footnote{The training pipeline could have saved the masked model directly, but it was more efficient to have a single base model saved, and apply several mask files (with a smaller datatype and storage requirement) than to save multiple larger models.}
-Once the models have been loaded into memory, the system runs evaluate each model against the given row.
-The model is called once using HuggingFace's native implementation (with additional timers) to measure how long it takes for the first token to be generated, as well as the overall run time.
-After that, the model is called again, this time using PyTorch's implementation, to receive the logits from the output which can be used to calculate the Perplexity of the prediction.
-The last metric, the \ROGUE-L F1 score, can be calculated with either the true value from the dataset or the predicted value of the baseline as the target.
-For the following results, the \ROUGE-L was calculated using the predicted value of the baseline as the target value, since the purpose of this is to see how close the results of a pruned model can get to the original model.
+Once the models have been loaded into memory, the system evaluates each model against the given test row.
+The model is called once using HuggingFace's native implementation with timers set to measure how long it takes for the first token to be generated, as well as the overall run time.
+After that, the model is called again, this time using PyTorch's implementation, to receive the logits from the output which can be used to calculate the perplexity of the prediction.
+The last metric, the \ROGUE-L F1 score, can be calculated with either the true test value or the predicted value of the baseline acting as the target.
+%For the following results, the \ROUGE-L was calculated using the predicted value of the baseline as the target value, since the purpose of this is to see how close the results of a pruned model can get to the original model.
 
 \section{Experimental Setup}\label{sec:experimental-setup}
 % Clearly state:
@@ -108,35 +105,38 @@ For the following results, the \ROUGE-L was calculated using the predicted value
 Python 3.14.4 was the only language involved, and the software stack was mostly composed of the HuggingFace suite, namely Transformers, Datasets, and Safetensors (the library used to access the raw tensor parameters).
 The full list of libraries and versions can be seen in Appendix Section~\ref{sec:python-libraries}
 The baseline model that was used for pruning and evaluation was \href{https://huggingface.co/google/gemma-3-1b-it/tree/dcc83ea841ab6100d6b47a070329e1ba4cf78752}{google/gemma-3-1b-it} (Gemma 3) along with \href{https://huggingface.co/datasets/abisee/cnn_dailymail/tree/96df5e686bee6baa90b8bee7c28b81fa3fa6223d}{abisee/cnn\_dailymail} (CNN DailyMail) as the dataset.
-The metrics used to evaluate the effectiveness of pruning were Time-to-First-Token (TTFT), Time per Output Tokens (TPOT), ROGUE-L F1 score, and Perplexity.
+The metrics used to evaluate the effectiveness of pruning were time-to-first-token (TTFT), time per output tokens (TPOT), run time, ROGUE-L F1 score, and Perplexity.
 
 \section{Results}\label{sec:results}
 % Present your main results using tables or figures. Do not only report numbers; explain what the numbers mean. Discuss where your method works, where it does not, and why.
 First, it should be noted that the original Gemma 3 model was not accurate when it came to summarizing the CNN DailyMail dataset.
-These low results led me to substitute in Gemma's responses for any metrics that required the true value (namely \ROUGE-L) so the pruned models could be judged more accurately.
+The low results led to substituting in Gemma's responses for any metrics that required the true value (namely \ROUGE-L) so the pruned models could be judged more accurately.
 
 The results for the experiment turned out rather well, with the pruned models taking less time to run, while being able to produce the exact same response as the original model.%
-\footnote{Note: this happens when the model has max\_new\_tokens set to 0. Anything more will result in extra tokens that do not make sense towards the output. Since the pipeline could not have max\_new\_tokens to anything less than 1, the last token for each output was ignored.}
-The results for the first row of CNN DailyMail's test set that were and were not trained can be found in Tables~\ref{tab:evaluation-pipeline-1-trained} and~\ref{tab:evaluation-pipeline-1-untrained}, as well as Figures~\ref{fig:run-time-baseline}-\ref{fig:rogue-l-baseline}.
+\footnote{Note: this happens when the model has max\_new\_tokens set to 0. Anything more will result in extra tokens that do not make sense towards the output. Since the pipeline could not have max\_new\_tokens to anything less than 1, max\_new\_tokens was set to 1 and the last token for each output was ignored.}
+The first row of CNN DailyMail's test set can be found in Tables~\ref{tab:evaluation-pipeline-1-trained}-\ref{tab:evaluation-pipeline-1-untrained}, which show the models that were and were not pre-trained before pruning, respectively, and Figures~\ref{fig:run-time-baseline}-\ref{fig:rogue-l-baseline}.
 The only metric that was not better than the original was the perplexity, which shows that the pruned models are a lot less certain about their responses than the original model is.
-However, given that the other metrics were improved, this does not matter as much.
+However, given that the other metrics were improved and the output was the same, this does not matter as much.
 
-The results for testing if pre-training the model beforehand can be seen in Figures~\ref{fig:run-time}-\ref{fig:tpot}.
+The results for testing pre-training the model beforehand can be seen in Figures~\ref{fig:run-time}-\ref{fig:perplexity}.
+The results were comparable, though pre-trained models seemed to have the edge a bit more often. % TODO: Say more
 
 \section{Profiling Analysis}\label{sec:profiling-analysis}
 % Include evidence of careful measurement. This can include runtime breakdowns, memory profiling, GPU utilization, kernel-level profiling, communication overhead, or other system-level analysis.
-\begin{itemize}
-	\item Reading in models for the evaluation pipeline takes $\sim$40 seconds, which can lead to massive wait times if 77 models are being evaluated (leading to a wait time of about 51 minutes before the evaluation actually starts)
-\end{itemize}
+Originally, reading in the models for the evaluation pipeline would take $\sim$40 seconds, which led to 50+ minute wait times when trying to load in 79 models into memory.%
+\footnote{These results were from the masked models that were not re-trained. Saving only the masks took considerably less memory, and allowed for more models to exist at once. The enhancements are still relevant for the corrected codebase.}
+The read time was later reduced to 23--28 seconds, reducing the wait time.%
+\footnote{Memory profiles for the evaluation pipeline are available in the GitHub artifact.}
+The training functions were also improved by running a binary search to figure out how many rows the GPU could hold for a given dataset and model, without having to guess or constantly use a single row for training and validation.
 
 \section{Reproducibility}\label{sec:reproducibility}
 % Explain how to reproduce your results. Include instructions for running the code, expected outputs, and any important dependencies.
 The artifact can be found at \url{https://github.com/lwashington3/cs595-2-project}.
-By cloning the repository, Docker Compose can be used to the LTH module, along with containing scripts used to automatically generate the figures and tables in this paper.
+By cloning the repository, Docker Compose can be used to run the LTH module, along with containing scripts used to automatically generate the figures and tables in this paper.
 Running \code{docker compose run -it project} in the repo's root directory will run the ablation script with default values to generate masks for pruned models (pre-trained and not pre-trained), as well as the figures and tables during the evaluation.
 Other scripts are available in the \href{https://github.com/lwashington3/cs595-2-project/tree/main/scripts}{scripts} folder, along with documentation for how to set your own variables.
 With default values, the models should appear in the models folder, which will then be sorted by process name (default is ``Ablation \{UNIX timestamp that the script started\}''), training status (trained or untrained), then the pruning percentage used.
-Within the \code{evaluation} folder, a folder with the same process name as before will contain a folder for each row in the test dataset.
+Within the \code{evaluation} folder, a folder with the same process name as before will contain a folder for each row in the test dataset that was evaluated.
 Each of those folders will contain the figures (saved as PNG, SVG, and \LaTeX\ compatible-PGF formats), as well as the tables pre-processed in a \LaTeX\ file.
 There will be two copies of each file's stem, one with \code{\_baseline}, which has the baseline value added, such as Figures~\ref{fig:run-time-baseline}-\ref{fig:rogue-l-baseline}, and one only containing the pruned models, such as Figures~\ref{fig:run-time}-\ref{fig:rogue-l}.
 
@@ -144,15 +144,17 @@ There will be two copies of each file's stem, one with \code{\_baseline}, which 
 % Discuss what remains incomplete, what assumptions your project makes
 Currently, the pre-training process is limited by the size of the GPU.
 Without a GPU, the training could run for hours without visibly finishing the first example.
-Even then, a 32 GB Nvidia GeForce RTX 5090 pre-training Gemma could not fit any training rows onn the GPU, and the 80 GB GPU mentioned in Table~\ref{tab:experiment-specs} could only hold 6 rows.
+Even then, a 32 GB Nvidia GeForce RTX 5090 couldn't fit any rows alongside a few LLMs, such as \hfmodel{meta-llama/Llama-3.1-8B-Instruct}\footnote{Which resulted in Gemma 3 being the default model.};
+and the 80 GB GPU mentioned in Table~\ref{tab:experiment-specs} couldn't handle training meta-llama/Llama-3.1-8B-Instruct, \hfmodel{Qwen/Qwen3-4B-Instruct-2507}, \hfmodel{Qwen/Qwen3.5-2B}, and could only hold 6 rows alongside Gemma.
+The size of the hard drive was also a massive limitor, with 418 GB only holding 40 fully trained models, limiting the ability to store models to evaluate later on.
 
 \section{Future Works}\label{sec:future-works}
 % What you would do next with more time.
-\begin{itemize}
-	\item Figure out how to have more control over the pre-training process so I can better control when training dataset rows are onloaded or offloaded from the GPU so more than 6 can work.
-	\item Structurally remove transformer layers from the model and test how that affects it
-	\item Figure out a better solution towards saving values (I could save the masked pre-trained value in a single file instead of having it distributed [this is only done because I don't want the same version of different files constantly written in different places]), but I not all values need to be written (save space)
-\end{itemize}
+There are several immediate steps that would have been taken if there was more time.
+The first would be to figure out how to have more control over the training process, since it seems that the current behavior is to load everything onto the GPU immediately, instead of loading and unloading rows as needed so the entire dataset would eventually be used.
+The second would be to implement the ability to choose between one-shot pruning and iterative pruning, since the current codebase can only run one-shot.
+The pipeline should also be updated to allow masking with multiple pruning parameters at once instead of having to restart the pipeline for each pruning percentage, since this unnecessarily offloads and onloads the same data.
+Tests should also be done to see if structurally pruning different parts of the model, such as only the head or removing an entire layer, can positively reduce the size of the model without compromising accuracy.
 
 \printbibliography[title={References}, heading=subbibnumbered]
 
@@ -163,11 +165,10 @@ Even then, a 32 GB Nvidia GeForce RTX 5090 pre-training Gemma could not fit any 
 \section{Python Libraries}\label{sec:python-libraries}
 \inputminted{text}{../requirements.txt}
 
-\section{Results Tables}\label{sec:results-tables} % TODO: Pruning parameter was set up as how much remains, not what was removed
+\section{Result Tables}\label{sec:result-tables}
 Tables~\ref{tab:evaluation-pipeline-1-trained} and~\ref{tab:evaluation-pipeline-1-untrained} show the results for the same row of the dataset, grouped by pre-training status.
-The first row for both details the baseline model that was not pruned.
+The first row for both tables details the baseline (unpruned) model.
 
-% TODO: These need last column lines added and double last line removed
 \input{../evaluation/ablation_\ablationunix/1/trained_results}
 
 \input{../evaluation/ablation_\ablationunix/1/untrained_results}
@@ -192,6 +193,13 @@ The first row for both details the baseline model that was not pruned.
 	\resizebox{\textwidth}{!}{\input{../evaluation/ablation_\ablationunix/1/output_token_time_baseline.pgf}}
 	\caption{The average amount of time it took to generate each token in the response.}
 	\label{fig:tpot-baseline}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\resizebox{\textwidth}{!}{\input{../evaluation/ablation_\ablationunix/1/perplexity_baseline.pgf}}
+	\caption{The Perplexity of the first row of CNN Daily Mail. The Perplexity of the Trained models is so high that the perplexity of the baseline and untrained models are too low to be seen.}
+	\label{fig:perplexity-baseline}
 \end{figure}
 
 \begin{figure}[H]
@@ -221,6 +229,13 @@ The first row for both details the baseline model that was not pruned.
 	\resizebox{\textwidth}{!}{\input{../evaluation/ablation_\ablationunix/1/output_token_time.pgf}}
 	\caption{The average amount of time it took to generate each token in the response (without the baseline).}
 	\label{fig:tpot}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\resizebox{\textwidth}{!}{\input{../evaluation/ablation_\ablationunix/1/perplexity.pgf}}
+	\caption{The Perplexity of the first row of CNN Daily Mail. The Perplexity of the Trained models is so high that the perplexity untrained models are too low to be seen.}
+	\label{fig:perplexity}
 \end{figure}
 
 \begin{figure}[H]

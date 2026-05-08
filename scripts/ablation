@@ -8,7 +8,7 @@ MODEL=google/gemma-3-1b-it;
 DATASET=abisee/cnn_dailymail;
 RESULTS_DIRECTORY="$(realpath $(dirname "$BASH_SCRIPT"))/models/ablation_$NOW";
 RUN_NAME="Ablation $NOW"
-EVALUATION_DIRECTORY="$(realpath $(dirname "$BASH_SCRIPT"))/evaluations/ablation_$NOW"
+EVALUATION_DIRECTORY="$(realpath $(dirname "$BASH_SCRIPT"))/evaluation/ablation_$NOW"
 TRAINING_ROWS=-1 # 6 was found as the best for the defaults defined in the paper
 
 while getopts "m:d:r:n:e:t:h" opt; do
@@ -37,7 +37,8 @@ shift $((OPTIND - 1))
 mkdir -p "$EVALUATION_DIRECTORY"
 printf "Pruned models will be placed in: $RESULTS_DIRECTORY.\nEvaluation results will be placed in: $EVALUATION_DIRECTORY.\nName will be \"$RUN_NAME\"."
 
-PRUNING_PERCENTS=$(seq 2.5 2.5 97.5);
+#PRUNING_PERCENTS=$(seq 2.5 2.5 97.5);
+PRUNING_PERCENTS=$(seq 2.5 2.5 92.5);
 NUM_ITERATIONS=$(echo $PRUNING_PERCENTS | wc -w);
 
 for PRUNE in $(echo $PRUNING_PERCENTS); do

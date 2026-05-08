@@ -1,0 +1,92 @@
+\begin{table}[H]
+\centering
+\caption{Row 5 Results (Pre-trained before Pruning). \ifshowcaption{}Caption: ``By . Sara Smyth . PUBLISHED: . 20:53 EST, 30 December 2013 . | . UPDATED: . 10:28 EST, 1 January 2014 . Photo: In this picture of a man's face, it is possible to identify other people (picture posed by models) Reflections from the eyes of child sex abuse victims in digital photographs could be used by police to catch paedophiles. According to new research from two UK universities, the images of people reflected in the victim's eye can be identified with the help of advanced camera technology. The eye's pupil acts like a mirror in which the images of people standing behind the photographer are caught. The breakthrough means that unseen . bystanders who witnessed a crime could now be identified once the . high-resolution photographs are magnified. Psychologists . at the University of York and the University of Glasgow were able to . extract such images and zoom in on them so that the subjects could be . identified by third parties. Lead . researcher Dr Rob Jenkins said: ‘The pupil of the eye is like a black . mirror. Eyes in the photographs could reveal where you were and who you . were with.' Dr Jenkins said it was possible to ‘mine face photographs for hidden information' including witnesses, bystanders and locations. In . the study, Dr Jenkins and the University of Glasgow's Christie Kerr . photographed eight individuals, who were looking at four people behind . the camera. The reflected . faces were then cropped and magnified and subjects were asked to either . match the images to mug shots or to identify the faces that they knew. Close-up: It is possible to see a group of people reflected in the eye, using a technology which could lead to breakthroughs over crimes which are photographed by their perpetrators . Identifiable: The faces of individuals in the photograph can be seen by zooming in on the image . The . study, published in the journal PLOS ONE, found test subjects were able . to spot the reflections of familiar faces 84 per cent of the time. When the reflected images were of . unfamiliar people, observers were able to match the person to a mug shot . with 71 per cent accuracy. The . researchers said they were surprised to discover that even unfamiliar . faces are distinguishable despite the poor quality of the images. The . quality of images of reflected faces is about 30,000 times lower than a . face that was directly captured in the same photograph. The researchers suggested this . technique could become a crucial part in investigating criminal cases . where in which victims are photographed, including hostage-taking and . child abuse. But for the . technique to work the photos has to be shot in high-resolution and the . subject must be looking directly at the camera. The subject's face must be in focus and well lit to for their eyes to give a clear reflection. Researchers . said that if images were available from both eyes, a 3D image could be . constructed showing what the subject saw when the photo was taken.''.\fi}
+\label{tab:evaluation-pipeline-5-trained}
+\begin{tabular}{lllrllll}
+\toprule
+ &  & Perplexity & ROGUE-L F1 Score (\%) & TTFT (ms) & Run Time (ms) & Output Tokens & Time per Output Token (ms) \\
+Trained & Pruning Percentage &  &  &  &  &  &  \\
+\midrule
+nan & 0 & \bfseries 31.1091 & \bfseries 100.0000\% & 12.909 & 460.280 & 626 & 0.735 \\
+\cline{1-8}
+True & 2.5\% & 1,061,294.5558 & \bfseries \color{red} 100.0000\% & 11.832 & 443.691 & 626 & 0.709 \\
+\cline{1-8}
+True & 5.0\% & 2,110,636.2494 & \bfseries \color{red} 100.0000\% & 11.912 & 442.020 & 626 & 0.706 \\
+\cline{1-8}
+True & 7.5\% & 1,749,778.9086 & \bfseries \color{red} 100.0000\% & 12.051 & 443.195 & 626 & 0.708 \\
+\cline{1-8}
+True & 10.0\% & 2,110,636.2494 & \bfseries \color{red} 100.0000\% & 11.939 & 443.483 & 626 & 0.708 \\
+\cline{1-8}
+True & 12.5\% & 3,704,281.9787 & \bfseries \color{red} 100.0000\% & 11.998 & 443.284 & 626 & 0.708 \\
+\cline{1-8}
+True & 15.0\% & 27,371,147.3466 & \bfseries \color{red} 100.0000\% & 11.763 & 439.539 & 626 & 0.702 \\
+\cline{1-8}
+True & 17.5\% & 27,371,147.3466 & \bfseries \color{red} 100.0000\% & 12.180 & 442.050 & 626 & 0.706 \\
+\cline{1-8}
+True & 20.0\% & 11,409,991.7638 & \bfseries \color{red} 100.0000\% & 11.772 & 442.273 & 626 & 0.707 \\
+\cline{1-8}
+True & 22.5\% & 7,841,965.0104 & \bfseries \color{red} 100.0000\% & 12.342 & 441.095 & 626 & 0.705 \\
+\cline{1-8}
+True & 25.0\% & 21,316,670.9871 & \bfseries \color{red} 100.0000\% & 11.849 & 441.016 & 626 & 0.704 \\
+\cline{1-8}
+True & 27.5\% & 8,886,110.5205 & \bfseries \color{red} 100.0000\% & 11.910 & 443.350 & 626 & 0.708 \\
+\cline{1-8}
+True & 30.0\% & 31,015,573.2745 & \bfseries \color{red} 100.0000\% & 12.504 & 442.848 & 626 & 0.707 \\
+\cline{1-8}
+True & 32.5\% & 5,389,698.4763 & \bfseries \color{red} 100.0000\% & 11.766 & 441.809 & 626 & 0.706 \\
+\cline{1-8}
+True & 35.0\% & 8,886,110.5205 & \bfseries \color{red} 100.0000\% & 11.810 & 442.041 & 626 & 0.706 \\
+\cline{1-8}
+True & 37.5\% & 24,154,952.7536 & \bfseries \color{red} 100.0000\% & 11.805 & 443.587 & 626 & 0.709 \\
+\cline{1-8}
+True & 40.0\% & 21,316,670.9871 & \bfseries \color{red} 100.0000\% & 11.768 & \bfseries \color{red} 438.596 & 626 & \bfseries \color{red} 0.701 \\
+\cline{1-8}
+True & 42.5\% & 11,409,991.7638 & \bfseries \color{red} 100.0000\% & 11.698 & 446.614 & 626 & 0.713 \\
+\cline{1-8}
+True & 45.0\% & 14,650,719.4290 & \bfseries \color{red} 100.0000\% & 12.443 & 444.190 & 626 & 0.710 \\
+\cline{1-8}
+True & 47.5\% & 11,409,991.7638 & \bfseries \color{red} 100.0000\% & 11.824 & 443.011 & 626 & 0.708 \\
+\cline{1-8}
+True & 50.0\% & 10,069,282.3901 & \bfseries \color{red} 100.0000\% & 12.167 & 442.071 & 626 & 0.706 \\
+\cline{1-8}
+True & 52.5\% & 11,409,991.7638 & \bfseries \color{red} 100.0000\% & 11.879 & 442.389 & 626 & 0.707 \\
+\cline{1-8}
+True & 55.0\% & 6,501,217.3374 & \bfseries \color{red} 100.0000\% & 11.837 & 441.968 & 626 & 0.706 \\
+\cline{1-8}
+True & 57.5\% & 6,107,328.4909 & \bfseries \color{red} 100.0000\% & 11.738 & 441.894 & 626 & 0.706 \\
+\cline{1-8}
+True & 60.0\% & 6,107,328.4909 & \bfseries \color{red} 100.0000\% & 12.098 & 444.104 & 626 & 0.709 \\
+\cline{1-8}
+True & 62.5\% & 4,468,216.9751 & \bfseries \color{red} 100.0000\% & 12.096 & 442.651 & 626 & 0.707 \\
+\cline{1-8}
+True & 65.0\% & 6,107,328.4909 & \bfseries \color{red} 100.0000\% & 11.821 & 446.386 & 626 & 0.713 \\
+\cline{1-8}
+True & 67.5\% & 4,197,501.3938 & \bfseries \color{red} 100.0000\% & 11.791 & 444.138 & 626 & 0.709 \\
+\cline{1-8}
+True & 70.0\% & 3,479,850.8791 & \bfseries \color{red} 100.0000\% & 11.753 & 443.857 & 626 & 0.709 \\
+\cline{1-8}
+True & 72.5\% & 2,110,636.2494 & \bfseries \color{red} 100.0000\% & 11.831 & 444.284 & 626 & 0.710 \\
+\cline{1-8}
+True & 75.0\% & 1,982,759.2635 & \bfseries \color{red} 100.0000\% & 11.900 & 444.149 & 626 & 0.710 \\
+\cline{1-8}
+True & 77.5\% & 1,643,765.1638 & \bfseries \color{red} 100.0000\% & 11.642 & 441.020 & 626 & 0.705 \\
+\cline{1-8}
+True & 80.0\% & 996,993.9692 & \bfseries \color{red} 100.0000\% & 11.859 & 440.969 & 626 & 0.704 \\
+\cline{1-8}
+True & 82.5\% & 1,129,742.1739 & \bfseries \color{red} 100.0000\% & 11.821 & 443.071 & 626 & 0.708 \\
+\cline{1-8}
+True & 85.0\% & 1,450,617.6656 & \bfseries \color{red} 100.0000\% & 11.789 & 444.683 & 626 & 0.710 \\
+\cline{1-8}
+True & 87.5\% & 936,589.1582 & \bfseries \color{red} 100.0000\% & 11.838 & 443.515 & 626 & 0.708 \\
+\cline{1-8}
+True & 90.0\% & 776,459.6839 & \bfseries \color{red} 100.0000\% & 11.824 & 445.013 & 626 & 0.711 \\
+\cline{1-8}
+True & 92.5\% & 685,223.2661 & \bfseries \color{red} 100.0000\% & 11.968 & 447.484 & 626 & 0.715 \\
+\cline{1-8}
+True & 95.0\% & 470,946.6043 & \bfseries \color{red} 100.0000\% & 11.803 & 444.837 & 626 & 0.711 \\
+\cline{1-8}
+True & 97.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 11.801 & 443.054 & 626 & 0.708 \\
+\cline{1-8}
+\bottomrule
+\end{tabular}
+\end{table}

@@ -22,7 +22,7 @@ services:
             - ./LaTeX:/lth/LaTeX
             - ./washLTH:/usr/local/lib/python3.14/site-packages/washLTH
             - ./scripts:/lth/scripts
-            - ./:/lth
+#            - ./:/lth
         deploy:
             resources:
                 reservations:

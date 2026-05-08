@@ -1,0 +1,92 @@
+\begin{table}[H]
+\centering
+\caption{Row 8 Results (Pre-trained before Pruning). \ifshowcaption{}Caption: ``(CNN) -- In a dusty campsite in central Australia more than 30 years ago, a mother's cries of "a dingo's got my baby" set the stage for one of the country's most intriguing murder mysteries. The final scenes are set to be played out in court on Friday when a coroner will hear new evidence that her parents hope will once and for all confirm Azaria Chamberlain's official cause of death. "We want a finding that Azaria was taken by a dingo," said Stuart Tipple, the lawyer representing Lindy Chamberlain-Creighton and her former husband Michael. "There is a lot of new evidence. The last inquest was in 1995 and since then there have been a number of significant dingo attacks," Tipple said. Azaria Chamberlain was just two months old when she was snatched from a tent in August, 1980 during a family holiday to Uluru, the sacred Aboriginal site more commonly known then as Ayer's Rock. Her body has never been found. Chamberlain's claims that a dingo snatched her baby caused shock, then incredulity, before a suspicious public turned their gaze on the then 32-year-old mother-of-three. The first inquest into Azaria's death in 1981 found that the baby died as a result of being taken by a dingo, but a second the following year committed her mother to trial for murder. The 35-day hearing created a media frenzy in Australia as commentators picked apart the intricacies of the case, while a fascinated public speculated wildly as to why and how Azaria had died. "A lot of people just never believed a dingo was capable of doing it," Tipple said. The jury returned its verdict in 1982; Lindy Chamberlain was found guilty of slitting her daughter's throat with a pair of scissors before hiding the body and concocting a story about a dingo to cover her crime. She was sentenced to life in jail. Her husband Michael was given a suspended sentence after being found guilty of being an accessory after the fact. The couple had two other children; two boys aged six and four at the time of Azaria's death. Chamberlain served four years of her sentence before the Northern Territory government ordered her release in 1986 after the discovery of new evidence; a baby's jacket, believed to be Azaria's, found half-buried near a dingo lair at Uluru. In 1988, a Royal Commission set up to review the evidence formally quashed convictions for both husband and wife. Despite the finding that the couple was not to blame, a third inquest into their daughter's death returned an open verdict in 1995. It is that ruling that the Chamberlains now want changed. "Certainly, like any parent, they want closure and they're not going to be able to get closure until the record's correct," Tipple said. "At the moment an open finding is not a correct finding. "There's certainly a personal part in the journey but they want to warn people and make sure the tragedy doesn't occur again." On Friday, he'll present the coroner with evidence of at least 12 "very significant" dingo attacks in Australia since the last inquest in 1995. In one of the worst cases, a nine-year-old boy was killed, and his friend mauled, by two dingoes on Fraser Island, off the coast of Queensland, in 2001. Twenty-eight dingoes were culled in the public outcry that followed. The world's largest sand island, Fraser Island earned UNESCO World Heritage status for its "exceptional beauty" and its rare combination of tall rainforests and towering sand dunes. It's also home to the largest population of native Australian dingoes -- around 200 animals living in up to 30 packs -- and the site of most, if not all, dingo attacks. "On Fraser Island the dingo has a particularly difficult role because tourists are as interested in the dingo as the dingo is interested in food," said Professor Gisela Kaplan, a dingo expert from the University of New England in New South Wales. "Fear, very often, is the only thing that stands between a dangerous animal and a human. Once that fear is lost any predatory animal can become dangerous," she said. Dingo management strategies have been introduced in areas of the country where the mammals are prevalent. Fraser Island's includes approval to cull specific animals considered to pose a threat to humans. "Once a dingo has lost its fear of people and starts to use aggressive tactics to gain dominance over, or food from, people the habit cannot be changed," according to the Queensland government's campaign "Be dingo-safe!" It adds: "These dingoes display aggressive or dangerous behaviour such as nipping and biting, and in some cases this escalates very quickly to attacks and serious mauling." Tipple says that, if nothing else, the couple hope a change in the official cause of Azaria's death makes "public authorities more aware of their responsibilties." "This will make them fine tune, hopefully, those plans and make them current and keep updating them," he said. Where once many people -- including the jury that convicted Lindy and Michael Chamberlain -- believed that it was unlikely that a dingo would kill a baby, evidence in recent years shows that it is indeed possible. However, Kaplan said public opinion had swung too far the other way, and that Australia's largest native predator had been "demonized." "A dingo is a suitable animal to be demonized, isn't it? In one way you can know it, and in the other way it's mysterious," she said. Kaplan warned that if more wasn't done to protect the animals in their natural habitat, they would eventually die out. "This is a very rare and endangered Australian native animal," she said. "If that goes extinct, there will be outcry in future that we've allowed that to happen, because there are so many misconceptions about the animal."''.\fi}
+\label{tab:evaluation-pipeline-8-trained}
+\begin{tabular}{lllrllll}
+\toprule
+ &  & Perplexity & ROGUE-L F1 Score (\%) & TTFT (ms) & Run Time (ms) & Output Tokens & Time per Output Token (ms) \\
+Trained & Pruning Percentage &  &  &  &  &  &  \\
+\midrule
+nan & 0 & \bfseries 23.4824 & \bfseries 100.0000\% & 14.412 & 521.013 & 1,283 & 0.406 \\
+\cline{1-8}
+True & 2.5\% & 1,129,742.1739 & \bfseries \color{red} 100.0000\% & 13.833 & 507.557 & 1,283 & 0.396 \\
+\cline{1-8}
+True & 5.0\% & 1,749,778.9086 & \bfseries \color{red} 100.0000\% & 13.519 & 505.015 & 1,283 & 0.394 \\
+\cline{1-8}
+True & 7.5\% & 1,862,629.9526 & \bfseries \color{red} 100.0000\% & 13.439 & 504.730 & 1,283 & 0.393 \\
+\cline{1-8}
+True & 10.0\% & 2,710,110.5896 & \bfseries \color{red} 100.0000\% & 13.762 & 505.384 & 1,283 & 0.394 \\
+\cline{1-8}
+True & 12.5\% & 3,704,281.9787 & \bfseries \color{red} 100.0000\% & 13.424 & 500.218 & 1,283 & 0.390 \\
+\cline{1-8}
+True & 15.0\% & 65,659,969.1373 & \bfseries \color{red} 100.0000\% & 13.424 & 502.683 & 1,283 & 0.392 \\
+\cline{1-8}
+True & 17.5\% & 31,015,573.2745 & \bfseries \color{red} 100.0000\% & 13.400 & 497.852 & 1,283 & 0.388 \\
+\cline{1-8}
+True & 20.0\% & 10,069,282.3901 & \bfseries \color{red} 100.0000\% & 13.444 & 500.367 & 1,283 & 0.390 \\
+\cline{1-8}
+True & 22.5\% & 16,601,440.0572 & \bfseries \color{red} 100.0000\% & 13.472 & 497.973 & 1,283 & 0.388 \\
+\cline{1-8}
+True & 25.0\% & 14,650,719.4290 & \bfseries \color{red} 100.0000\% & 13.521 & 502.903 & 1,283 & 0.392 \\
+\cline{1-8}
+True & 27.5\% & 10,069,282.3901 & \bfseries \color{red} 100.0000\% & 13.447 & 503.301 & 1,283 & 0.392 \\
+\cline{1-8}
+True & 30.0\% & 10,069,282.3901 & \bfseries \color{red} 100.0000\% & 13.656 & 504.400 & 1,283 & 0.393 \\
+\cline{1-8}
+True & 32.5\% & 11,409,991.7638 & \bfseries \color{red} 100.0000\% & 13.514 & 507.705 & 1,283 & 0.396 \\
+\cline{1-8}
+True & 35.0\% & 11,409,991.7638 & \bfseries \color{red} 100.0000\% & 13.637 & 503.835 & 1,283 & 0.393 \\
+\cline{1-8}
+True & 37.5\% & 21,316,670.9871 & \bfseries \color{red} 100.0000\% & 13.511 & 502.589 & 1,283 & 0.392 \\
+\cline{1-8}
+True & 40.0\% & 16,601,440.0572 & \bfseries \color{red} 100.0000\% & 14.018 & 500.931 & 1,283 & 0.390 \\
+\cline{1-8}
+True & 42.5\% & 6,920,509.8318 & \bfseries \color{red} 100.0000\% & 13.524 & 502.510 & 1,283 & 0.392 \\
+\cline{1-8}
+True & 45.0\% & 11,409,991.7638 & \bfseries \color{red} 100.0000\% & 13.542 & 500.227 & 1,283 & 0.390 \\
+\cline{1-8}
+True & 47.5\% & 7,841,965.0104 & \bfseries \color{red} 100.0000\% & 13.840 & 503.031 & 1,283 & 0.392 \\
+\cline{1-8}
+True & 50.0\% & 8,886,110.5205 & \bfseries \color{red} 100.0000\% & 13.420 & 504.795 & 1,283 & 0.393 \\
+\cline{1-8}
+True & 52.5\% & 7,841,965.0104 & \bfseries \color{red} 100.0000\% & 13.430 & 499.664 & 1,283 & 0.389 \\
+\cline{1-8}
+True & 55.0\% & 7,841,965.0104 & \bfseries \color{red} 100.0000\% & 13.407 & 504.934 & 1,283 & 0.394 \\
+\cline{1-8}
+True & 57.5\% & 6,501,217.3374 & \bfseries \color{red} 100.0000\% & 13.392 & 503.755 & 1,283 & 0.393 \\
+\cline{1-8}
+True & 60.0\% & 3,704,281.9787 & \bfseries \color{red} 100.0000\% & 13.467 & 502.566 & 1,283 & 0.392 \\
+\cline{1-8}
+True & 62.5\% & 4,468,216.9751 & \bfseries \color{red} 100.0000\% & 14.162 & 501.989 & 1,283 & 0.391 \\
+\cline{1-8}
+True & 65.0\% & 7,366,844.3689 & \bfseries \color{red} 100.0000\% & 13.457 & 500.435 & 1,283 & 0.390 \\
+\cline{1-8}
+True & 67.5\% & 3,070,957.6223 & \bfseries \color{red} 100.0000\% & 14.753 & 501.144 & 1,283 & 0.391 \\
+\cline{1-8}
+True & 70.0\% & 3,943,187.6406 & \bfseries \color{red} 100.0000\% & 13.380 & 502.746 & 1,283 & 0.392 \\
+\cline{1-8}
+True & 72.5\% & 2,246,760.5923 & \bfseries \color{red} 100.0000\% & 13.517 & 509.329 & 1,283 & 0.397 \\
+\cline{1-8}
+True & 75.0\% & 3,070,957.6223 & \bfseries \color{red} 100.0000\% & 20.379 & 512.237 & 1,283 & 0.399 \\
+\cline{1-8}
+True & 77.5\% & 2,391,664.2010 & \bfseries \color{red} 100.0000\% & 13.492 & 508.600 & 1,283 & 0.396 \\
+\cline{1-8}
+True & 80.0\% & 1,862,629.9526 & \bfseries \color{red} 100.0000\% & 14.273 & 502.733 & 1,283 & 0.392 \\
+\cline{1-8}
+True & 82.5\% & 1,749,778.9086 & \bfseries \color{red} 100.0000\% & 13.456 & 499.245 & 1,283 & 0.389 \\
+\cline{1-8}
+True & 85.0\% & 1,202,604.2842 & \bfseries \color{red} 100.0000\% & 13.895 & 501.074 & 1,283 & 0.391 \\
+\cline{1-8}
+True & 87.5\% & 1,061,294.5558 & \bfseries \color{red} 100.0000\% & 13.522 & 501.780 & 1,283 & 0.391 \\
+\cline{1-8}
+True & 90.0\% & 776,459.6839 & \bfseries \color{red} 100.0000\% & 13.572 & 498.723 & 1,283 & 0.389 \\
+\cline{1-8}
+True & 92.5\% & 568,070.0400 & \bfseries \color{red} 100.0000\% & 13.532 & \bfseries \color{red} 496.673 & 1,283 & \bfseries \color{red} 0.387 \\
+\cline{1-8}
+True & 95.0\% & 470,946.6043 & \bfseries \color{red} 100.0000\% & 13.514 & 499.024 & 1,283 & 0.389 \\
+\cline{1-8}
+True & 97.5\% & 390,428.4481 & \bfseries \color{red} 100.0000\% & 13.375 & 499.679 & 1,283 & 0.389 \\
+\cline{1-8}
+\bottomrule
+\end{tabular}
+\end{table}

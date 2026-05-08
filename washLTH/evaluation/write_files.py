@@ -46,14 +46,13 @@ def write_results(output_directory: Path, df: pd.DataFrame, idx: int, prompt: st
 	styler = styler.format(formatter="{:,.3f}".format, subset=["TTFT (ms)", "Run Time (ms)", "Time per Output Token (ms)"], na_rep=latex_na_rep)
 	styler = styler.format(formatter="{:,.0f}".format, subset=["Output Tokens"], na_rep=latex_na_rep)
 
+	styler = styler.format_index(escape="latex", axis=0).format_index(escape="latex", axis=1)
 	if show_generated_text:
 		styler = styler.format(escape="latex", subset=["Generated Text"])
-		styler = styler.format_index(escape="latex", axis=0).format_index(escape="latex", axis=1)
 		styler.to_latex(output_directory / f"results_with_captions.tex", caption=f"Row {idx:,}\\ifshowcaption{{}}: Caption: ``{prompt}''.\\else.",
 						label=f"tab:evaluation-pipeline-{idx}", column_format=column_format, **latex_kwargs)
-		styler_hidden = styler.hide(subset=["Generated Text"], axis=1)
-	else:
-		styler_hidden = styler
+
+	styler_hidden = styler.hide(subset=["Generated Text"], axis=1)
 
 	styler_hidden.to_latex(output_directory / f"results.tex", caption=f"Row {idx:,}\\ifshowcaption{{}}: Caption: ``{prompt}''.\\else.\\fi",
 	                label=f"tab:evaluation-pipeline-{idx}", column_format=ablation_column_format,

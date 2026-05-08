@@ -1,0 +1,92 @@
+\begin{table}[H]
+\centering
+\caption{Row 7 Results (No pre-training before pruning). \ifshowcaption{}Caption: ``By . Zoe Szathmary . A golf caddie for Michael Jordan was killed after he was hit by an allegedly drunk driver on Friday. Neil Fyfe, 29, was hit by a Jeep as he rode his bicycle across a Southampton road, the New York Daily News reports, and was pronounced dead at a nearby hospital. Jeep driver Jesse Werner Steudte, 21, was arrested by Southampton police, who they said was 'driving intoxicated,' BBC says. Victim: Neil Fyfe, pictured, died on Friday after he was killed by an allegedly drunk driver . Driver: Jesse Steudte, pictured, was allegedly drunk at the time of the crash, though his lawyer claims it may have been caused by a seizure . Steudte, who is currently held on $25,000 cash bail, admitted to drinking before the crash, according to the New York Post. He pleaded not guilty to driving under the influence. Sources tell the paper Fyfe was due to marry his fiancee Jen in October and had previously caddied for Luke Donald and Michael Johnson - the latter at famed The Bear's Club in Jupiter, Florida. 'Michael Jordan loves Neil — he’s going to be very upset,' caddie Frank Weatherwax told the Post. A seizure may have caused the deadly crash, Steudte's lawyer Colin Astarita told 27 East. Astarita told the site Steudte was unable to attend school this semester because of medication for a recent epilepsy diagnosis. Legend: Fyfe reportedly caddied for Michael Jordan, pictured, at The Bear's Club in Florida .''.\fi}
+\label{tab:evaluation-pipeline-7-untrained}
+\begin{tabular}{lllrllll}
+\toprule
+ &  & Perplexity & ROGUE-L F1 Score (\%) & TTFT (ms) & Run Time (ms) & Output Tokens & Time per Output Token (ms) \\
+Trained & Pruning Percentage &  &  &  &  &  &  \\
+\midrule
+nan & 0 & \bfseries 48.1827 & \bfseries 100.0000\% & 14.544 & 454.511 & 334 & 1.361 \\
+\cline{1-8}
+False & 2.5\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 13.959 & 447.051 & 334 & 1.338 \\
+\cline{1-8}
+False & 5.0\% & 366,773.5842 & \bfseries \color{red} 100.0000\% & 13.639 & 441.012 & 334 & 1.320 \\
+\cline{1-8}
+False & 7.5\% & \color{red} 285,643.5546 & \bfseries \color{red} 100.0000\% & 13.315 & 442.657 & 334 & 1.325 \\
+\cline{1-8}
+False & 10.0\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 13.418 & 443.339 & 334 & 1.327 \\
+\cline{1-8}
+False & 12.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 14.018 & 443.596 & 334 & 1.328 \\
+\cline{1-8}
+False & 15.0\% & 366,773.5842 & \bfseries \color{red} 100.0000\% & 13.472 & 441.751 & 334 & 1.323 \\
+\cline{1-8}
+False & 17.5\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 13.397 & 441.475 & 334 & 1.322 \\
+\cline{1-8}
+False & 20.0\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 13.315 & 441.876 & 334 & 1.323 \\
+\cline{1-8}
+False & 22.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 13.221 & 442.677 & 334 & 1.325 \\
+\cline{1-8}
+False & 25.0\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 13.304 & 444.860 & 334 & 1.332 \\
+\cline{1-8}
+False & 27.5\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 14.076 & 445.874 & 334 & 1.335 \\
+\cline{1-8}
+False & 30.0\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 13.315 & 444.374 & 334 & 1.330 \\
+\cline{1-8}
+False & 32.5\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 13.316 & 441.140 & 334 & 1.321 \\
+\cline{1-8}
+False & 35.0\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 13.244 & 442.534 & 334 & 1.325 \\
+\cline{1-8}
+False & 37.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 13.176 & 442.860 & 334 & 1.326 \\
+\cline{1-8}
+False & 40.0\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 13.243 & 444.457 & 334 & 1.331 \\
+\cline{1-8}
+False & 42.5\% & \color{red} 285,643.5546 & \bfseries \color{red} 100.0000\% & 13.324 & 445.840 & 334 & 1.335 \\
+\cline{1-8}
+False & 45.0\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 13.999 & 447.117 & 334 & 1.339 \\
+\cline{1-8}
+False & 47.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 13.373 & 443.682 & 334 & 1.328 \\
+\cline{1-8}
+False & 50.0\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 13.355 & 444.770 & 334 & 1.332 \\
+\cline{1-8}
+False & 52.5\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 13.370 & 442.946 & 334 & 1.326 \\
+\cline{1-8}
+False & 55.0\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 13.462 & 441.003 & 334 & 1.320 \\
+\cline{1-8}
+False & 57.5\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 13.426 & 438.241 & 334 & 1.312 \\
+\cline{1-8}
+False & 60.0\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 13.270 & 445.873 & 334 & 1.335 \\
+\cline{1-8}
+False & 62.5\% & \color{red} 285,643.5546 & \bfseries \color{red} 100.0000\% & 13.257 & 444.253 & 334 & 1.330 \\
+\cline{1-8}
+False & 65.0\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 13.217 & 441.042 & 334 & 1.320 \\
+\cline{1-8}
+False & 67.5\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 13.206 & 441.169 & 334 & 1.321 \\
+\cline{1-8}
+False & 70.0\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 13.346 & 443.183 & 334 & 1.327 \\
+\cline{1-8}
+False & 72.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 13.251 & 441.830 & 334 & 1.323 \\
+\cline{1-8}
+False & 75.0\% & 366,773.5842 & \bfseries \color{red} 100.0000\% & 13.263 & 439.098 & 334 & 1.315 \\
+\cline{1-8}
+False & 77.5\% & 390,428.4481 & \bfseries \color{red} 100.0000\% & 13.377 & 442.185 & 334 & 1.324 \\
+\cline{1-8}
+False & 80.0\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 18.026 & 446.441 & 334 & 1.337 \\
+\cline{1-8}
+False & 82.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 14.566 & 442.949 & 334 & 1.326 \\
+\cline{1-8}
+False & 85.0\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 13.164 & 443.789 & 334 & 1.329 \\
+\cline{1-8}
+False & 87.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 13.174 & 446.725 & 334 & 1.337 \\
+\cline{1-8}
+False & 90.0\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 13.242 & 445.328 & 334 & 1.333 \\
+\cline{1-8}
+False & 92.5\% & 366,773.5842 & \bfseries \color{red} 100.0000\% & 13.209 & 448.882 & 334 & 1.344 \\
+\cline{1-8}
+False & 95.0\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 13.293 & 440.376 & 334 & 1.318 \\
+\cline{1-8}
+False & 97.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 13.219 & 447.965 & 334 & 1.341 \\
+\cline{1-8}
+\bottomrule
+\end{tabular}
+\end{table}

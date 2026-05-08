@@ -1,0 +1,92 @@
+\begin{table}[H]
+\centering
+\caption{Row 11 Results (Pre-trained before Pruning). \ifshowcaption{}Caption: ``Turkish authorities reopened Gezi Park in Istanbul on Monday for the first time since a crackdown on protesters last month and soon closed it again, pushing demonstrators to the streets. Riot police armed with tear gas and water cannon maneuvered through the city on Monday to disperse crowds of 30 or more people in side streets. The demonstrators moved through the city, chanting "Everywhere is Taksim, everywhere is resistance" as they were dispersed, then regrouped. In typical riot control protocol, police used water cannon and tear gas on Monday to clear out Taksim Square, the flashpoint of anti-government demonstrations that started in late May. Taksim Solidarity, the umbrella platform of activists and civil society groups, said in a media statement that roughly 80 people had been detained on Monday and that 32 of them are members of the group. Many of the detained were taken into custody after the park was opened to the public. After a news conference called by Taksim Solidarity, the officers chased members of the media and the group with nightsticks indoors. "We were headed to Gezi Park," Sami Yilmazturk said during the news conference. "As we were walking through Taksim Square, our friends were detained." Istanbul's governor warned protestors before Gezi Park was reopened that the park would be opened to the public but that demonstrations there would not be tolerated. "This is not an area for forums, for slogans, for occupation. This is not a place for marching, it is a place to take a rest, it is a place to meet and to have conversations," said Huseyin Avni Mutlu. "Actions that go outside of this, that turn into demonstrations or marches, will not be permitted." Some demonstrators shouted the "everywhere" slogan during the opening ceremony. Leaders of the protest movement called participants to gather in Gezi Park. Anti-government protests erupted when bulldozers began removing some trees in Gezi Park. Conservationists held sit-ins, which were broken up by riot police with tear gas and water cannons. Tens of thousands of people poured into Gezi Park and Taksim Square in Istanbul's main commercial district in response to the police action and the planned development project. Similar protests around Turkey soon turned into anti-government demonstrations. The 6th Administrative Court in Istanbul overruled parts of the Taksim development project last week, including plans to rebuild old barracks in Gezi Park that would have been used for a shopping arcade.''.\fi}
+\label{tab:evaluation-pipeline-11-trained}
+\begin{tabular}{lllrllll}
+\toprule
+ &  & Perplexity & ROGUE-L F1 Score (\%) & TTFT (ms) & Run Time (ms) & Output Tokens & Time per Output Token (ms) \\
+Trained & Pruning Percentage &  &  &  &  &  &  \\
+\midrule
+nan & 0 & \bfseries 31.1091 & \bfseries 100.0000\% & 14.627 & 459.614 & 502 & 0.916 \\
+\cline{1-8}
+True & 2.5\% & 366,773.5842 & \bfseries \color{red} 100.0000\% & 13.381 & 439.423 & 502 & 0.875 \\
+\cline{1-8}
+True & 5.0\% & 533,652.4162 & \bfseries \color{red} 100.0000\% & 13.267 & 441.735 & 502 & 0.880 \\
+\cline{1-8}
+True & 7.5\% & 604,707.4099 & \bfseries \color{red} 100.0000\% & 13.441 & 446.947 & 502 & 0.890 \\
+\cline{1-8}
+True & 10.0\% & 685,223.2661 & \bfseries \color{red} 100.0000\% & 13.572 & 438.895 & 502 & 0.874 \\
+\cline{1-8}
+True & 12.5\% & 729,416.3698 & \bfseries \color{red} 100.0000\% & 13.417 & 440.499 & 502 & 0.877 \\
+\cline{1-8}
+True & 15.0\% & 1,202,604.2842 & \bfseries \color{red} 100.0000\% & 13.286 & 439.802 & 502 & 0.876 \\
+\cline{1-8}
+True & 17.5\% & 1,061,294.5558 & \bfseries \color{red} 100.0000\% & 13.291 & 449.076 & 502 & 0.895 \\
+\cline{1-8}
+True & 20.0\% & 1,362,729.1843 & \bfseries \color{red} 100.0000\% & 13.375 & 438.850 & 502 & 0.874 \\
+\cline{1-8}
+True & 22.5\% & 1,982,759.2635 & \bfseries \color{red} 100.0000\% & 15.771 & 444.907 & 502 & 0.886 \\
+\cline{1-8}
+True & 25.0\% & 1,749,778.9086 & \bfseries \color{red} 100.0000\% & 13.338 & 442.177 & 502 & 0.881 \\
+\cline{1-8}
+True & 27.5\% & 2,391,664.2010 & \bfseries \color{red} 100.0000\% & 13.293 & 441.930 & 502 & 0.880 \\
+\cline{1-8}
+True & 30.0\% & 2,884,897.7057 & \bfseries \color{red} 100.0000\% & 13.411 & 449.322 & 502 & 0.895 \\
+\cline{1-8}
+True & 32.5\% & 4,756,392.2112 & \bfseries \color{red} 100.0000\% & 13.326 & 441.845 & 502 & 0.880 \\
+\cline{1-8}
+True & 35.0\% & 4,468,216.9751 & \bfseries \color{red} 100.0000\% & 13.401 & 441.701 & 502 & 0.880 \\
+\cline{1-8}
+True & 37.5\% & 7,366,844.3689 & \bfseries \color{red} 100.0000\% & 13.884 & 445.657 & 502 & 0.888 \\
+\cline{1-8}
+True & 40.0\% & 5,063,153.1532 & \bfseries \color{red} 100.0000\% & \bfseries \color{red} 13.194 & 441.596 & 502 & 0.880 \\
+\cline{1-8}
+True & 42.5\% & 7,366,844.3689 & \bfseries \color{red} 100.0000\% & 13.475 & 444.339 & 502 & 0.885 \\
+\cline{1-8}
+True & 45.0\% & 7,366,844.3689 & \bfseries \color{red} 100.0000\% & 15.440 & 441.653 & 502 & 0.880 \\
+\cline{1-8}
+True & 47.5\% & 11,409,991.7638 & \bfseries \color{red} 100.0000\% & 13.432 & 445.674 & 502 & 0.888 \\
+\cline{1-8}
+True & 50.0\% & 12,929,214.5167 & \bfseries \color{red} 100.0000\% & 13.333 & 444.608 & 502 & 0.886 \\
+\cline{1-8}
+True & 52.5\% & 6,920,509.8318 & \bfseries \color{red} 100.0000\% & 13.737 & 445.930 & 502 & 0.888 \\
+\cline{1-8}
+True & 55.0\% & 24,154,952.7536 & \bfseries \color{red} 100.0000\% & 13.237 & 440.494 & 502 & 0.877 \\
+\cline{1-8}
+True & 57.5\% & 27,371,147.3466 & \bfseries \color{red} 100.0000\% & 14.420 & 445.134 & 502 & 0.887 \\
+\cline{1-8}
+True & 60.0\% & 14,650,719.4290 & \bfseries \color{red} 100.0000\% & 13.265 & 441.907 & 502 & 0.880 \\
+\cline{1-8}
+True & 62.5\% & 21,316,670.9871 & \bfseries \color{red} 100.0000\% & 13.273 & 441.648 & 502 & 0.880 \\
+\cline{1-8}
+True & 65.0\% & 11,409,991.7638 & \bfseries \color{red} 100.0000\% & 13.251 & 443.938 & 502 & 0.884 \\
+\cline{1-8}
+True & 67.5\% & 8,886,110.5205 & \bfseries \color{red} 100.0000\% & 13.259 & 445.669 & 502 & 0.888 \\
+\cline{1-8}
+True & 70.0\% & 45,127,392.8338 & \bfseries \color{red} 100.0000\% & 13.234 & 438.768 & 502 & 0.874 \\
+\cline{1-8}
+True & 72.5\% & 45,127,392.8338 & \bfseries \color{red} 100.0000\% & 13.351 & 443.824 & 502 & 0.884 \\
+\cline{1-8}
+True & 75.0\% & 108,254,987.7502 & \bfseries \color{red} 100.0000\% & 13.305 & 439.849 & 502 & 0.876 \\
+\cline{1-8}
+True & 77.5\% & 139,002,155.7545 & \bfseries \color{red} 100.0000\% & 13.303 & 440.312 & 502 & 0.877 \\
+\cline{1-8}
+True & 80.0\% & 122,668,971.9059 & \bfseries \color{red} 100.0000\% & 13.665 & 440.939 & 502 & 0.878 \\
+\cline{1-8}
+True & 82.5\% & 18,811,896.1195 & \bfseries \color{red} 100.0000\% & 13.400 & 441.062 & 502 & 0.879 \\
+\cline{1-8}
+True & 85.0\% & 333,448,837.2477 & \bfseries \color{red} 100.0000\% & 13.406 & \bfseries \color{red} 437.573 & 502 & \bfseries \color{red} 0.872 \\
+\cline{1-8}
+True & 87.5\% & 31,015,573.2745 & \bfseries \color{red} 100.0000\% & 13.683 & 442.571 & 502 & 0.882 \\
+\cline{1-8}
+True & 90.0\% & 428,156,782.1910 & \bfseries \color{red} 100.0000\% & 13.557 & 443.375 & 502 & 0.883 \\
+\cline{1-8}
+True & 92.5\% & 21,316,670.9871 & \bfseries \color{red} 100.0000\% & 13.299 & 438.904 & 502 & 0.874 \\
+\cline{1-8}
+True & 95.0\% & 3,269,017.3725 & \bfseries \color{red} 100.0000\% & 13.546 & 444.001 & 502 & 0.884 \\
+\cline{1-8}
+True & 97.5\% & 1,544,174.4671 & \bfseries \color{red} 100.0000\% & 13.244 & 438.917 & 502 & 0.874 \\
+\cline{1-8}
+\bottomrule
+\end{tabular}
+\end{table}

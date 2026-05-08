@@ -1,0 +1,92 @@
+\begin{table}[H]
+\centering
+\caption{Row 15 Results (Pre-trained before Pruning). \ifshowcaption{}Caption: ``Phone, wallet, keys – it’s the usual mental checklist many of us go through before leaving  the house. But remembering the keys could soon be redundant thanks to a new mobile phone app. The app, called Kwikset Kevo, securely stores electronic versions of keys for multiple locks on a smartphone or tablet. Scroll down for video . The Kwikset Kevo app, pictured, lets users unlock their front door using just their phone. The app connects to a Bluetooth enabled lock, right, which means doors can be unlocked wirelessly, without having to get a phone out of a pocket or bag. The user just needs to touch the lock to get the door to open . Kwikset Kevo works in a similar way to the August lock announced in the U.S earlier this year. It runs on two AA batteries and a reminder is sent to the owner when the battery levels get low. Once installed the homeowner activates their device. The August lock can then be managed using a mobile app and online. The encrypted locking technology issues registered devices, or invited devices, with unique codes that can't be copied. To open the lock, anyone with a code . can approach the door, enable their phone's Bluetooth and press the . relevant address from the app. The lock takes a few seconds to scan for a paired Bluetooth device. It then confirms the visitor's identity. When a user approaches a saved location, . such as an office or a house, the phone can wirelessly unlock the door . using Bluetooth meaning users only have to touch a lock to open a door . and don't even need to remove the device from their pocket. The app is currently only available for iOS devices but the company said it is working on Android and BlackBerry versions. To convert a door into a Kwikset-enabled door, users need to buy and install new deadbolt locks on all the doors they wish to use with the app. Kwikset Kevo costs £144 and this includes these new locks. Once enabled, users can send eKeys . to friends and family, allowing them to gain access to premises on . either a permanent or temporary basis. To prevent unauthorised access, the app can detect whether a user is already inside, for example, using GPS before granting access and each individual user can be uniquely identified. The locks are supplied with . a physical key so users can gain access if their phone battery runs . flat or they wish to go out without it. Fobs are also included in the Kwikset Kevo pack for children who don't have a smartphone, or for people who don't have an iOS device. The Kevo smart lock package costs £144 and includes one deadbolt as well as two eKeys that can be sent to friends and family. The deadbolt comes in three finishes including Satin Nickel, Venetian Bronze and Polished Brass, pictured . The Kevo pack also comes with a fob and two traditional keys for people without smartphones, or in case their phone battery dies . The locks rely on a Bluetooth connection, which is the technology used by many wireless hands-free phone kits. Makers Hardware and Home Improvement say 79 per cent of people aged 18 to 44 now have their smartphone on them for at least 22 hours a day. The company believe users will appreciate not having to carry around a bunch of keys everywhere they go. Greg Gluchowski, from HHI, said: 'Kevo is the first deadbolt intelligent enough to communicate with a smartphone and unlock with a simple touch. 'This technology is so convenient that users do not even need to remove the smartphone from their pocket or purse when unlocking their door. 'Kevo is a game-changing door lock that uses modern technology and the convenience of touch to evolve the traditional key. It has never been done before.' Phil Dumas, from UniKey, which worked alongside HHI, added: 'By uniquely combining existing mobile and Bluetooth technologies, we’re bringing your front door into the digital age without compromising the look or security of the lock.' The Kevo smart lock package includes one deadbolt, one fob, two mechanical keys and two smartphone eKeys. The deadbolt comes in three finishes including Satin Nickel, Venetian Bronze and Polished Brass. Kevo operates on four included AA batteries, which the company claims should last for a year depending on usage.''.\fi}
+\label{tab:evaluation-pipeline-15-trained}
+\begin{tabular}{lllrllll}
+\toprule
+ &  & Perplexity & ROGUE-L F1 Score (\%) & TTFT (ms) & Run Time (ms) & Output Tokens & Time per Output Token (ms) \\
+Trained & Pruning Percentage &  &  &  &  &  &  \\
+\midrule
+nan & 0 & \bfseries 27.8860 & \bfseries 100.0000\% & 14.994 & 496.946 & 895 & 0.555 \\
+\cline{1-8}
+True & 2.5\% & 1,202,604.2842 & \bfseries \color{red} 100.0000\% & 13.354 & 476.025 & 895 & 0.532 \\
+\cline{1-8}
+True & 5.0\% & 2,391,664.2010 & \bfseries \color{red} 100.0000\% & 13.343 & 473.679 & 895 & 0.529 \\
+\cline{1-8}
+True & 7.5\% & 2,110,636.2494 & \bfseries \color{red} 100.0000\% & 13.852 & 476.714 & 895 & 0.533 \\
+\cline{1-8}
+True & 10.0\% & 1,982,759.2635 & \bfseries \color{red} 100.0000\% & 13.736 & 474.923 & 895 & 0.531 \\
+\cline{1-8}
+True & 12.5\% & 3,943,187.6406 & \bfseries \color{red} 100.0000\% & 13.465 & 476.332 & 895 & 0.532 \\
+\cline{1-8}
+True & 15.0\% & 45,127,392.8338 & \bfseries \color{red} 100.0000\% & 13.472 & 475.236 & 895 & 0.531 \\
+\cline{1-8}
+True & 17.5\% & 39,824,784.3976 & \bfseries \color{red} 100.0000\% & 13.753 & 478.613 & 895 & 0.535 \\
+\cline{1-8}
+True & 20.0\% & 6,920,509.8318 & \bfseries \color{red} 100.0000\% & 13.372 & 474.243 & 895 & 0.530 \\
+\cline{1-8}
+True & 22.5\% & 21,316,670.9871 & \bfseries \color{red} 100.0000\% & 13.563 & 477.218 & 895 & 0.533 \\
+\cline{1-8}
+True & 25.0\% & 24,154,952.7536 & \bfseries \color{red} 100.0000\% & 13.757 & 477.262 & 895 & 0.533 \\
+\cline{1-8}
+True & 27.5\% & 10,069,282.3901 & \bfseries \color{red} 100.0000\% & 13.444 & 474.275 & 895 & 0.530 \\
+\cline{1-8}
+True & 30.0\% & 14,650,719.4290 & \bfseries \color{red} 100.0000\% & 13.292 & 473.127 & 895 & 0.529 \\
+\cline{1-8}
+True & 32.5\% & 8,347,728.3006 & \bfseries \color{red} 100.0000\% & 13.302 & 477.412 & 895 & 0.533 \\
+\cline{1-8}
+True & 35.0\% & 12,929,214.5167 & \bfseries \color{red} 100.0000\% & 13.305 & 475.002 & 895 & 0.531 \\
+\cline{1-8}
+True & 37.5\% & 21,316,670.9871 & \bfseries \color{red} 100.0000\% & 13.897 & 474.982 & 895 & 0.531 \\
+\cline{1-8}
+True & 40.0\% & 11,409,991.7638 & \bfseries \color{red} 100.0000\% & 13.364 & 478.202 & 895 & 0.534 \\
+\cline{1-8}
+True & 42.5\% & 16,601,440.0572 & \bfseries \color{red} 100.0000\% & 13.337 & 482.930 & 895 & 0.540 \\
+\cline{1-8}
+True & 45.0\% & 11,409,991.7638 & \bfseries \color{red} 100.0000\% & 13.378 & 479.931 & 895 & 0.536 \\
+\cline{1-8}
+True & 47.5\% & 12,929,214.5167 & \bfseries \color{red} 100.0000\% & 13.380 & 478.836 & 895 & 0.535 \\
+\cline{1-8}
+True & 50.0\% & 6,107,328.4909 & \bfseries \color{red} 100.0000\% & 14.772 & 479.767 & 895 & 0.536 \\
+\cline{1-8}
+True & 52.5\% & 10,069,282.3901 & \bfseries \color{red} 100.0000\% & 13.527 & 476.282 & 895 & 0.532 \\
+\cline{1-8}
+True & 55.0\% & 7,366,844.3689 & \bfseries \color{red} 100.0000\% & 13.453 & 474.902 & 895 & 0.531 \\
+\cline{1-8}
+True & 57.5\% & 4,197,501.3938 & \bfseries \color{red} 100.0000\% & 13.704 & 475.843 & 895 & 0.532 \\
+\cline{1-8}
+True & 60.0\% & 5,389,698.4763 & \bfseries \color{red} 100.0000\% & 13.677 & 477.651 & 895 & 0.534 \\
+\cline{1-8}
+True & 62.5\% & 6,501,217.3374 & \bfseries \color{red} 100.0000\% & 13.357 & 476.732 & 895 & 0.533 \\
+\cline{1-8}
+True & 65.0\% & 5,737,304.1632 & \bfseries \color{red} 100.0000\% & 13.444 & 478.587 & 895 & 0.535 \\
+\cline{1-8}
+True & 67.5\% & 4,197,501.3938 & \bfseries \color{red} 100.0000\% & 13.385 & 476.388 & 895 & 0.532 \\
+\cline{1-8}
+True & 70.0\% & 5,063,153.1532 & \bfseries \color{red} 100.0000\% & 14.791 & 476.856 & 895 & 0.533 \\
+\cline{1-8}
+True & 72.5\% & 2,110,636.2494 & \bfseries \color{red} 100.0000\% & 13.431 & 478.427 & 895 & 0.535 \\
+\cline{1-8}
+True & 75.0\% & 1,450,617.6656 & \bfseries \color{red} 100.0000\% & 13.384 & 476.023 & 895 & 0.532 \\
+\cline{1-8}
+True & 77.5\% & 1,544,174.4671 & \bfseries \color{red} 100.0000\% & 13.462 & 473.392 & 895 & 0.529 \\
+\cline{1-8}
+True & 80.0\% & 1,643,765.1638 & \bfseries \color{red} 100.0000\% & 13.510 & 476.216 & 895 & 0.532 \\
+\cline{1-8}
+True & 82.5\% & 1,280,165.5968 & \bfseries \color{red} 100.0000\% & 13.436 & 474.931 & 895 & 0.531 \\
+\cline{1-8}
+True & 85.0\% & 1,643,765.1638 & \bfseries \color{red} 100.0000\% & 13.289 & 479.168 & 895 & 0.535 \\
+\cline{1-8}
+True & 87.5\% & 936,589.1582 & \bfseries \color{red} 100.0000\% & 13.408 & 483.020 & 895 & 0.540 \\
+\cline{1-8}
+True & 90.0\% & 826,537.0311 & \bfseries \color{red} 100.0000\% & 13.432 & 482.667 & 895 & 0.539 \\
+\cline{1-8}
+True & 92.5\% & 533,652.4162 & \bfseries \color{red} 100.0000\% & 13.490 & 479.810 & 895 & 0.536 \\
+\cline{1-8}
+True & 95.0\% & 470,946.6043 & \bfseries \color{red} 100.0000\% & 13.429 & \bfseries \color{red} 473.010 & 895 & \bfseries \color{red} 0.529 \\
+\cline{1-8}
+True & 97.5\% & 366,773.5842 & \bfseries \color{red} 100.0000\% & 13.330 & 473.149 & 895 & 0.529 \\
+\cline{1-8}
+\bottomrule
+\end{tabular}
+\end{table}

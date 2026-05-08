@@ -1,0 +1,170 @@
+\begin{table}[H]
+\centering
+\caption{Row 2\ifshowcaption{}: Caption: ``By . Daniel Miller . UPDATED: . 11:07 EST, 19 January 2012 . Careless: The ring's owner Caroline Gruosi-Scheufele, claims she raced back to the bathroom seven minutes later but it had vanished . Police in Hong Kong are hunting for an emerald and diamond ring worth over £1million which was stolen after its socialite owner left it in a hotel bathroom. Swiss jeweller Caroline Gruosi-Scheufele, 49, forgot she had taken the ring off to wash her hands after visiting the ladies' room of the Four Seasons Hotel's Harbour View ballroom in Hong Kong. She raced back seven minutes later only to discover it had gone. The stunning piece made by Chopard, the family firm which Mrs Gruosi-Scheufele runs with her brother Karl, consists of a 16.83 carat emerald sitting between two diamonds of 1.15 and 1.29 carats, with another 674 small diamonds around the band. Hong Kong police are treating the matter as theft and a £40,000 reward has been offered for its return. It is not yet clear whether the reward money has been offered by the police or the jewellers themselves. A police spokesman said: 'A female . foreigner left an emerald ring valued at HK$12 million in the washroom . on the fourth floor of the Four Seasons Hotel in Hong Kong. 'She took off the ring to wash her hands and forgot about it when she left the washroom. 'When she remembered the ring a few minutes later, she went back but failed to find it.' The ring's owner Caroline Gruosi-Scheufele, . claims she raced back to the bathroom seven minutes later but the ring similar to this had . gone . Mrs Gruosi-Scheufele, who has appeared in the pages of Hello magazine, claims she last saw the ring at around 11.24pm but by 11.31pm it had gone. She was in Hong Kong for the opening of a new Chopard store when the theft happened on Sept 8 last year. Detectives declined to say if staff and guests had been searched. Their spokesman added: 'A lot of people were coming and going. The washroom was very busy.' It is feared the ring could already have been disassembled and sold off through Hong Kong's network of small jewellers and pawn shops. Originally a watchmaker, Chopard, recently signed the Hollywood star . Uma Thurman to wear its products. The company was founded in 1860 by . Louis-Ulysse Chopard. Venue: The ring was left in the bathroom of the Harbour View Ballroom at the Four Seasons Hotel in Hong Kong . It was bought by Mrs Gruosi-Scheufele's  parents, . Karl and Karin Scheufele, in 1963. Last . week a 16-carat yellow diamond, stolen in an armed raid on a London . jewellers more than four years ago, surfaced in a Hong Kong pawn shop. The owner of the Yau On pawn shop is refusing to return the item claiming they paid more than HK$3 million (£252,000) for it in November 2010. The London jewellers Graff are now suing for the diamond’s immediate return at Manhattan’s state supreme court in New York.''.\else.\fi}
+\label{tab:evaluation-pipeline-2}
+\begin{tabular}{lllrllll}
+\toprule
+ &  & Perplexity & ROGUE-L F1 Score (\%) & TTFT (ms) & Run Time (ms) & Output Tokens & Time per Output Token (ms) \\
+Trained & Pruning Percentage &  &  &  &  &  &  \\
+\midrule
+nan & 0 & \bfseries 27.4537 & \bfseries 100.0000\% & 16.163 & 499.576 & 715 & 0.699 \\
+\cline{1-8}
+True & 2.5\% & 415,608.9196 & \bfseries \color{red} 100.0000\% & 13.661 & 473.658 & 715 & 0.662 \\
+\cline{1-8}
+False & 2.5\% & \color{red} 268,337.2865 & \bfseries \color{red} 100.0000\% & 13.679 & 489.724 & 715 & 0.685 \\
+\cline{1-8}
+True & 5.0\% & 533,652.4162 & \bfseries \color{red} 100.0000\% & 13.520 & 475.502 & 715 & 0.665 \\
+\cline{1-8}
+False & 5.0\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 13.579 & 486.002 & 715 & 0.680 \\
+\cline{1-8}
+True & 7.5\% & 685,223.2661 & \bfseries \color{red} 100.0000\% & 14.055 & 483.174 & 715 & 0.676 \\
+\cline{1-8}
+False & 7.5\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 13.566 & 489.703 & 715 & 0.685 \\
+\cline{1-8}
+True & 10.0\% & 643,707.6871 & \bfseries \color{red} 100.0000\% & \bfseries \color{red} 13.361 & 471.492 & 715 & 0.659 \\
+\cline{1-8}
+False & 10.0\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 14.600 & 494.793 & 715 & 0.692 \\
+\cline{1-8}
+True & 12.5\% & 643,707.6871 & \bfseries \color{red} 100.0000\% & 13.514 & 478.756 & 715 & 0.670 \\
+\cline{1-8}
+False & 12.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 13.631 & 488.690 & 715 & 0.683 \\
+\cline{1-8}
+True & 15.0\% & 1,129,742.1739 & \bfseries \color{red} 100.0000\% & 13.552 & 471.094 & 715 & 0.659 \\
+\cline{1-8}
+False & 15.0\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 13.689 & 487.644 & 715 & 0.682 \\
+\cline{1-8}
+True & 17.5\% & 1,202,604.2842 & \bfseries \color{red} 100.0000\% & 13.436 & 470.087 & 715 & 0.657 \\
+\cline{1-8}
+False & 17.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 13.460 & 481.560 & 715 & 0.674 \\
+\cline{1-8}
+True & 20.0\% & 996,993.9692 & \bfseries \color{red} 100.0000\% & 14.124 & 471.560 & 715 & 0.660 \\
+\cline{1-8}
+False & 20.0\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 13.454 & 491.514 & 715 & 0.687 \\
+\cline{1-8}
+True & 22.5\% & 1,862,629.9526 & \bfseries \color{red} 100.0000\% & 13.381 & 476.349 & 715 & 0.666 \\
+\cline{1-8}
+False & 22.5\% & 366,773.5842 & \bfseries \color{red} 100.0000\% & 13.452 & 492.575 & 715 & 0.689 \\
+\cline{1-8}
+True & 25.0\% & 2,110,636.2494 & \bfseries \color{red} 100.0000\% & 13.468 & 471.829 & 715 & 0.660 \\
+\cline{1-8}
+False & 25.0\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 13.436 & 488.158 & 715 & 0.683 \\
+\cline{1-8}
+True & 27.5\% & 2,246,760.5923 & \bfseries \color{red} 100.0000\% & 15.066 & 477.258 & 715 & 0.667 \\
+\cline{1-8}
+False & 27.5\% & 366,773.5842 & \bfseries \color{red} 100.0000\% & 13.871 & 487.867 & 715 & 0.682 \\
+\cline{1-8}
+True & 30.0\% & 3,070,957.6223 & \bfseries \color{red} 100.0000\% & 13.801 & 477.619 & 715 & 0.668 \\
+\cline{1-8}
+False & 30.0\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 13.957 & 491.687 & 715 & 0.688 \\
+\cline{1-8}
+True & 32.5\% & 5,389,698.4763 & \bfseries \color{red} 100.0000\% & 13.857 & 476.866 & 715 & 0.667 \\
+\cline{1-8}
+False & 32.5\% & 366,773.5842 & \bfseries \color{red} 100.0000\% & 13.753 & 494.315 & 715 & 0.691 \\
+\cline{1-8}
+True & 35.0\% & 6,501,217.3374 & \bfseries \color{red} 100.0000\% & 13.786 & 479.146 & 715 & 0.670 \\
+\cline{1-8}
+False & 35.0\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 13.935 & 488.612 & 715 & 0.683 \\
+\cline{1-8}
+True & 37.5\% & 6,107,328.4909 & \bfseries \color{red} 100.0000\% & 13.830 & 469.892 & 715 & 0.657 \\
+\cline{1-8}
+False & 37.5\% & 366,773.5842 & \bfseries \color{red} 100.0000\% & 14.100 & 487.337 & 715 & 0.682 \\
+\cline{1-8}
+True & 40.0\% & 5,389,698.4763 & \bfseries \color{red} 100.0000\% & 13.707 & 470.085 & 715 & 0.657 \\
+\cline{1-8}
+False & 40.0\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 14.285 & 488.888 & 715 & 0.684 \\
+\cline{1-8}
+True & 42.5\% & 12,929,214.5167 & \bfseries \color{red} 100.0000\% & 14.304 & 472.288 & 715 & 0.661 \\
+\cline{1-8}
+False & 42.5\% & 285,643.5546 & \bfseries \color{red} 100.0000\% & 15.262 & 500.640 & 715 & 0.700 \\
+\cline{1-8}
+True & 45.0\% & 7,841,965.0104 & \bfseries \color{red} 100.0000\% & 13.549 & 469.986 & 715 & 0.657 \\
+\cline{1-8}
+False & 45.0\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 13.613 & 482.858 & 715 & 0.675 \\
+\cline{1-8}
+True & 47.5\% & 11,409,991.7638 & \bfseries \color{red} 100.0000\% & 13.870 & 477.993 & 715 & 0.669 \\
+\cline{1-8}
+False & 47.5\% & \color{red} 268,337.2865 & \bfseries \color{red} 100.0000\% & 13.462 & 490.550 & 715 & 0.686 \\
+\cline{1-8}
+True & 50.0\% & 14,650,719.4290 & \bfseries \color{red} 100.0000\% & 13.796 & 479.252 & 715 & 0.670 \\
+\cline{1-8}
+False & 50.0\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 13.684 & 497.561 & 715 & 0.696 \\
+\cline{1-8}
+True & 52.5\% & 10,069,282.3901 & \bfseries \color{red} 100.0000\% & 13.746 & 478.051 & 715 & 0.669 \\
+\cline{1-8}
+False & 52.5\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 13.593 & 494.465 & 715 & 0.692 \\
+\cline{1-8}
+True & 55.0\% & 21,316,670.9871 & \bfseries \color{red} 100.0000\% & 13.617 & 473.166 & 715 & 0.662 \\
+\cline{1-8}
+False & 55.0\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 15.234 & 494.826 & 715 & 0.692 \\
+\cline{1-8}
+True & 57.5\% & 14,650,719.4290 & \bfseries \color{red} 100.0000\% & 13.479 & 468.228 & 715 & 0.655 \\
+\cline{1-8}
+False & 57.5\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 13.648 & 484.374 & 715 & 0.677 \\
+\cline{1-8}
+True & 60.0\% & 16,601,440.0572 & \bfseries \color{red} 100.0000\% & 13.508 & 475.699 & 715 & 0.665 \\
+\cline{1-8}
+False & 60.0\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 17.002 & 490.801 & 715 & 0.686 \\
+\cline{1-8}
+True & 62.5\% & 14,650,719.4290 & \bfseries \color{red} 100.0000\% & 13.659 & 477.103 & 715 & 0.667 \\
+\cline{1-8}
+False & 62.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 13.526 & 492.078 & 715 & 0.688 \\
+\cline{1-8}
+True & 65.0\% & 7,366,844.3689 & \bfseries \color{red} 100.0000\% & 13.777 & 474.215 & 715 & 0.663 \\
+\cline{1-8}
+False & 65.0\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 13.589 & 492.168 & 715 & 0.688 \\
+\cline{1-8}
+True & 67.5\% & 8,886,110.5205 & \bfseries \color{red} 100.0000\% & 13.672 & 471.935 & 715 & 0.660 \\
+\cline{1-8}
+False & 67.5\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 13.633 & 485.242 & 715 & 0.679 \\
+\cline{1-8}
+True & 70.0\% & 51,136,035.3806 & \bfseries \color{red} 100.0000\% & 14.107 & 480.975 & 715 & 0.673 \\
+\cline{1-8}
+False & 70.0\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 13.474 & 485.512 & 715 & 0.679 \\
+\cline{1-8}
+True & 72.5\% & 45,127,392.8338 & \bfseries \color{red} 100.0000\% & 13.507 & 468.381 & 715 & 0.655 \\
+\cline{1-8}
+False & 72.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 13.464 & 494.994 & 715 & 0.692 \\
+\cline{1-8}
+True & 75.0\% & 95,534,691.3789 & \bfseries \color{red} 100.0000\% & 13.578 & 477.896 & 715 & 0.668 \\
+\cline{1-8}
+False & 75.0\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 13.513 & 491.027 & 715 & 0.687 \\
+\cline{1-8}
+True & 77.5\% & 202,246,943.2362 & \bfseries \color{red} 100.0000\% & 13.474 & 477.377 & 715 & 0.668 \\
+\cline{1-8}
+False & 77.5\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 13.500 & 489.372 & 715 & 0.684 \\
+\cline{1-8}
+True & 80.0\% & 139,002,155.7545 & \bfseries \color{red} 100.0000\% & 13.537 & 474.081 & 715 & 0.663 \\
+\cline{1-8}
+False & 80.0\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 17.841 & 490.138 & 715 & 0.686 \\
+\cline{1-8}
+True & 82.5\% & 35,145,248.8770 & \bfseries \color{red} 100.0000\% & 13.509 & 473.606 & 715 & 0.662 \\
+\cline{1-8}
+False & 82.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 14.897 & 491.554 & 715 & 0.687 \\
+\cline{1-8}
+True & 85.0\% & 333,448,837.2477 & \bfseries \color{red} 100.0000\% & 14.140 & 471.931 & 715 & 0.660 \\
+\cline{1-8}
+False & 85.0\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 14.107 & 486.140 & 715 & 0.680 \\
+\cline{1-8}
+True & 87.5\% & 157,510,077.7662 & \bfseries \color{red} 100.0000\% & 14.012 & 474.093 & 715 & 0.663 \\
+\cline{1-8}
+False & 87.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 14.114 & 484.650 & 715 & 0.678 \\
+\cline{1-8}
+True & 90.0\% & 485,165,195.4098 & \bfseries \color{red} 100.0000\% & 13.900 & \bfseries \color{red} 467.923 & 715 & \bfseries \color{red} 0.654 \\
+\cline{1-8}
+False & 90.0\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 14.085 & 485.346 & 715 & 0.679 \\
+\cline{1-8}
+True & 92.5\% & 24,154,952.7536 & \bfseries \color{red} 100.0000\% & 13.861 & 477.186 & 715 & 0.667 \\
+\cline{1-8}
+False & 92.5\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 14.057 & 495.740 & 715 & 0.693 \\
+\cline{1-8}
+True & 95.0\% & 2,110,636.2494 & \bfseries \color{red} 100.0000\% & 13.878 & 477.786 & 715 & 0.668 \\
+\cline{1-8}
+False & 95.0\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 14.009 & 492.981 & 715 & 0.689 \\
+\cline{1-8}
+True & 97.5\% & 1,544,174.4671 & \bfseries \color{red} 100.0000\% & 13.859 & 477.334 & 715 & 0.668 \\
+\cline{1-8}
+False & 97.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 14.045 & 493.121 & 715 & 0.690 \\
+\cline{1-8}
+\bottomrule
+\end{tabular}
+\end{table}

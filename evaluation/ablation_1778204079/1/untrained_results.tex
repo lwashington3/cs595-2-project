@@ -1,0 +1,53 @@
+\begin{table}[H]
+\centering
+\caption{Row 1 Results (No pre-training before pruning). \ifshowcaption{}Caption: ``By . Sean O'hare . PUBLISHED: . 04:47 EST, 30 January 2013 . | . UPDATED: . 12:05 EST, 30 January 2013 . A Corvette owner carjacked at gunpoint managed to keep hold of his car after bungling thieves failed to work the manual gearstick and fled. Randolph Bean repeatedly shouted at the car thieves to push in the clutch of his bright yellow, standard transmission Corvette, but they still failed to get it moving. Mr Bean, 51, from Orlando, Florida was waiting to pick up his wife from work at the Orlando Regional Medical Centre at 11pm last night when the robbers struck. Scroll down for video . Randolph Bean (pictured) was waiting for his wife when two gunmen tried and failed to start his yellow Corvette . Mr Bean's canary yellow Corvette which has a standard transmission gear shift which the carjackers were unable to operate . 'He started . yanking on the door and made me open the door. He kind of flung it open . and dragged me out and demanded that I get on the ground... face down, . so I couldn't look at him,' he said. He explained how one of the thieves pointed a gun at him while asking . how to use the car. 'They apparently couldn't start it. I had to tell . him four different times to push in the clutch, because it's a standard . transmission,' he said. After repeated attempts to get the car moving the suspects finally gave up and ran away, leaving Mr Bean on the ground. Police searched the local area for the robbers but failed to find anyone matching their description. Mr Bean said he was surprised by their thieves incompetence and blamed a lack of driver's education classes in schools for their inability to operate a non-automatic car. Mr Bean inside his Corvette with his hand on the gear stick which outfoxed the car thieves. Mr Bean shouted four times that they needed to press the clutch to put the car into gear but they failed to understand . The attack took place outside the Orlando Regional Medical Centre where Mr Bean was waiting for his wife at 11pm yesterday . 'My first thought was I guess we don't have driver's ed. in school anymore because no one knows how to drive a stick. And my second thing was, don't shoot me because you can't start the car. I'm trying to help you out here.' The thieves stole Mr Bean's phone, keys and wallet during the attack although he found it hard to be bitter. He told Fox News 35 Orlando that he was grateful to the thieves for not killing him over a car and that they should turn their lives around. 'Guys turn your life around. You guys have got a lot going for you. Thank you for not taking my life for something silly as a car.' WATCH: Mr Bean explaining how the car thieves failed to work his Corvette's gearstick . FOX 35 News Orlando .''.\fi}
+\label{tab:evaluation-pipeline-1-untrained}
+\begin{tabular}{|m{0.08\textwidth} | m{0.11\textwidth} | r | R{0.13\textwidth} | R{0.09\textwidth} | R{0.09\textwidth} | R{0.09\textwidth} | R{0.11\textwidth} |}
+\toprule
+ &  & Perplexity & ROGUE-L F1 Score (\%) & TTFT (ms) & Run Time (ms) & Output Tokens & Time per Output Token (ms) \\
+Trained & Pruning Percentage &  &  &  &  &  &  \\
+\midrule
+ & 0\% & \bfseries 32.0966 & \bfseries 100.0000\% & 126.417 & 1,032.684 & 629 & 1.642 \\
+\cline{1-8}
+False & 2.5\% & 1,061,294.5558 & \bfseries \color{red} 100.0000\% & \bfseries \color{red} 9.063 & \bfseries \color{red} 341.632 & 629 & \bfseries \color{red} 0.543 \\
+\cline{1-8}
+False & 5.0\% & 2,391,664.2010 & \bfseries \color{red} 100.0000\% & 9.097 & 359.628 & 629 & 0.572 \\
+\cline{1-8}
+False & 7.5\% & 1,544,174.4671 & \bfseries \color{red} 100.0000\% & 10.317 & 365.822 & 629 & 0.582 \\
+\cline{1-8}
+False & 10.0\% & 1,749,778.9086 & \bfseries \color{red} 100.0000\% & 9.517 & 353.694 & 629 & 0.562 \\
+\cline{1-8}
+False & 12.5\% & 2,710,110.5896 & \bfseries \color{red} 100.0000\% & 9.571 & 356.579 & 629 & 0.567 \\
+\cline{1-8}
+False & 15.0\% & 31,015,573.2745 & \bfseries \color{red} 100.0000\% & 9.657 & 352.827 & 629 & 0.561 \\
+\cline{1-8}
+False & 17.5\% & 31,015,573.2745 & \bfseries \color{red} 100.0000\% & 10.324 & 364.899 & 629 & 0.580 \\
+\cline{1-8}
+False & 20.0\% & 10,069,282.3901 & \bfseries \color{red} 100.0000\% & 9.647 & 358.069 & 629 & 0.569 \\
+\cline{1-8}
+False & 22.5\% & 8,347,728.3006 & \bfseries \color{red} 100.0000\% & 9.611 & 352.545 & 629 & 0.560 \\
+\cline{1-8}
+False & 25.0\% & 24,154,952.7536 & \bfseries \color{red} 100.0000\% & 9.595 & 361.021 & 629 & 0.574 \\
+\cline{1-8}
+False & 27.5\% & 8,886,110.5205 & \bfseries \color{red} 100.0000\% & 9.588 & 361.088 & 629 & 0.574 \\
+\cline{1-8}
+False & 30.0\% & 16,601,440.0572 & \bfseries \color{red} 100.0000\% & 10.300 & 358.363 & 629 & 0.570 \\
+\cline{1-8}
+False & 32.5\% & 6,501,217.3374 & \bfseries \color{red} 100.0000\% & 9.604 & 361.307 & 629 & 0.574 \\
+\cline{1-8}
+False & 35.0\% & 14,650,719.4290 & \bfseries \color{red} 100.0000\% & 9.801 & 354.908 & 629 & 0.564 \\
+\cline{1-8}
+False & 37.5\% & 45,127,392.8338 & \bfseries \color{red} 100.0000\% & 9.600 & 353.682 & 629 & 0.562 \\
+\cline{1-8}
+False & 40.0\% & 21,316,670.9871 & \bfseries \color{red} 100.0000\% & 9.571 & 362.677 & 629 & 0.577 \\
+\cline{1-8}
+False & 42.5\% & 8,347,728.3006 & \bfseries \color{red} 100.0000\% & 9.571 & 356.886 & 629 & 0.567 \\
+\cline{1-8}
+False & 45.0\% & 8,886,110.5205 & \bfseries \color{red} 100.0000\% & 10.065 & 355.949 & 629 & 0.566 \\
+\cline{1-8}
+False & 47.5\% & 11,409,991.7638 & \bfseries \color{red} 100.0000\% & 9.689 & 360.981 & 629 & 0.574 \\
+\cline{1-8}
+False & 50.0\% & 8,347,728.3006 & \bfseries \color{red} 100.0000\% & 9.651 & 361.988 & 629 & 0.575 \\
+\bottomrule
+\end{tabular}
+\end{table}

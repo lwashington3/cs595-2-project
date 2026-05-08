@@ -123,7 +123,7 @@ def training_pipeline(model: HFObject, dataset: HFObject | DatasetDict, experime
 			with open(training_rows_file, 'r') as f:
 				training_rows = int(f.read())
 
-		if val_rows is None or training_rows < 1:
+		if val_rows is None or val_rows < 1:
 			with open(val_rows_file, 'r') as f:
 				val_rows = int(f.read())
 	else:
@@ -155,7 +155,8 @@ def training_pipeline(model: HFObject, dataset: HFObject | DatasetDict, experime
 	pruning_args = (model, experiment_directory, pretrained_safe_tensors, pruning_parameter, device, logger, train.take(training_rows), val.take(val_rows), tokenizer)
 	do_magnitude_pruning(*pruning_args, prune_head_only=False, **kwargs)
 
-	do_magnitude_pruning(*pruning_args, prune_head_only=True, **kwargs)
+	# Not enough space for this too
+	# do_magnitude_pruning(*pruning_args, prune_head_only=True, **kwargs)
 
 	# structure_model = structure_prune(pretrained_model, dataset, experiment_directory)
 

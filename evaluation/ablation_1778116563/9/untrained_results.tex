@@ -1,0 +1,92 @@
+\begin{table}[H]
+\centering
+\caption{Row 9 Results (No pre-training before pruning). \ifshowcaption{}Caption: ``Hundreds of babies have been rescued by police in China after a crackdown was launched on trafficking infants. The nationwide bust saw 1,094 people arrested as officers acted on information relating to four major internet-based baby trafficking rings. China's Public Security Ministry said 382 babies were rescued after four websites were found to be selling children under the guise of adoption. Hundreds of babies have been rescued after police in China launched a crackdown on four baby trafficking websites. Nearly 2,000 suspects were arrested as a result of the nationwide operation . The ministry said the internet has helped baby traffickers, by providing a more secretive cover for the illegal business. Child abduction and trafficking is widespread in China, where strict population control rules have encouraged the traditional bias for sons. The strict laws limit many families to one child, and with boys being favoured as heirs to the family name, many female babies are sold, aborted or abandoned. Poverty fuels the trade, while illicit profits tempts traffickers, resulting in a thriving market for babies and toddlers. To address the issue, China is considering tougher penalties for parents who sell their children, as well as for those people who are found to have bought a child. Around 118 boys are born for every 100 girls, against a global average of 1003 to 107 boys per 100 girls. The imbalance has created criminal demand for kidnapped or bought baby boys, as well as baby girls destined to be brides attracting rich dowries in sparsely populated regions. 'Child traffickers have now taken the fight online, using 'unofficial adoption' as a front,' state news agency Xinhua quoted an unidentified police official as saying. 'They are well-hidden and very deceptive.' Zhang Shuxia, an obstetrician involved in baby trafficking, standing trial in Weinan Intermediate People's Court in Weinan, Shaanxi province in December. She was handed a suspended death sentence for stealing seven babies and selling them to traffickers . The traffickers arrested today used websites like China's Orphan Network and Dream Adoption Home. State news agenct Xinhau did not say what steps the authorities were taking to reunite the rescued babies with their parents. Parents in China have been warned to guard against kidnappers, who could pose as nurses in hospitals or lie in wait outside school gates to bundle unsuspecting children into vans or speed off with them on motorbikes. Last month a Chinese court handed down a suspended death sentence to a doctor who sold seven newborns to human traffickers in a case that sparked public anger. Zhang Shuxia, 55, an obstetrician in northwestern Shaanxi province, was found guilty of selling the babies for as much as 21,600 yuan ($3,600) each between 2011 and 2013, the court said. Last year, China, which has a population of about 1.4 billion, said it would ease family restrictions, letting millions of families have two children, in the country's most significant liberalisation of its strict one-child policy in about three decades.''.\fi}
+\label{tab:evaluation-pipeline-9-untrained}
+\begin{tabular}{lllrllll}
+\toprule
+ &  & Perplexity & ROGUE-L F1 Score (\%) & TTFT (ms) & Run Time (ms) & Output Tokens & Time per Output Token (ms) \\
+Trained & Pruning Percentage &  &  &  &  &  &  \\
+\midrule
+nan & 0 & \bfseries 30.1520 & \bfseries 100.0000\% & 12.430 & 466.589 & 635 & 0.735 \\
+\cline{1-8}
+False & 2.5\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 11.884 & 463.220 & 635 & 0.729 \\
+\cline{1-8}
+False & 5.0\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 11.817 & 461.512 & 635 & 0.727 \\
+\cline{1-8}
+False & 7.5\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 12.669 & 461.370 & 635 & 0.727 \\
+\cline{1-8}
+False & 10.0\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 12.134 & 457.200 & 635 & 0.720 \\
+\cline{1-8}
+False & 12.5\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 11.851 & 454.464 & 635 & 0.716 \\
+\cline{1-8}
+False & 15.0\% & \color{red} 285,643.5546 & \bfseries \color{red} 100.0000\% & 11.953 & 456.716 & 635 & 0.719 \\
+\cline{1-8}
+False & 17.5\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 11.909 & 457.457 & 635 & 0.720 \\
+\cline{1-8}
+False & 20.0\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 11.963 & 455.097 & 635 & 0.717 \\
+\cline{1-8}
+False & 22.5\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 11.938 & 457.088 & 635 & 0.720 \\
+\cline{1-8}
+False & 25.0\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 11.880 & 457.745 & 635 & 0.721 \\
+\cline{1-8}
+False & 27.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 12.591 & 461.066 & 635 & 0.726 \\
+\cline{1-8}
+False & 30.0\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 13.651 & 459.605 & 635 & 0.724 \\
+\cline{1-8}
+False & 32.5\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 11.877 & 459.917 & 635 & 0.724 \\
+\cline{1-8}
+False & 35.0\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 11.849 & 457.834 & 635 & 0.721 \\
+\cline{1-8}
+False & 37.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 11.828 & 453.948 & 635 & 0.715 \\
+\cline{1-8}
+False & 40.0\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 11.865 & 456.427 & 635 & 0.719 \\
+\cline{1-8}
+False & 42.5\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 11.862 & 458.085 & 635 & 0.721 \\
+\cline{1-8}
+False & 45.0\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 12.000 & 459.103 & 635 & 0.723 \\
+\cline{1-8}
+False & 47.5\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 11.890 & 460.215 & 635 & 0.725 \\
+\cline{1-8}
+False & 50.0\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 11.893 & 461.440 & 635 & 0.727 \\
+\cline{1-8}
+False & 52.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 11.857 & 455.921 & 635 & 0.718 \\
+\cline{1-8}
+False & 55.0\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 11.845 & 456.270 & 635 & 0.719 \\
+\cline{1-8}
+False & 57.5\% & 366,773.5842 & \bfseries \color{red} 100.0000\% & 11.978 & 457.508 & 635 & 0.720 \\
+\cline{1-8}
+False & 60.0\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 11.944 & 457.431 & 635 & 0.720 \\
+\cline{1-8}
+False & 62.5\% & \color{red} 285,643.5546 & \bfseries \color{red} 100.0000\% & 11.814 & 454.063 & 635 & 0.715 \\
+\cline{1-8}
+False & 65.0\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 12.111 & 464.300 & 635 & 0.731 \\
+\cline{1-8}
+False & 67.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 11.868 & 458.104 & 635 & 0.721 \\
+\cline{1-8}
+False & 70.0\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 11.872 & 460.560 & 635 & 0.725 \\
+\cline{1-8}
+False & 72.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 11.883 & 459.936 & 635 & 0.724 \\
+\cline{1-8}
+False & 75.0\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 11.912 & 457.119 & 635 & 0.720 \\
+\cline{1-8}
+False & 77.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 11.895 & 454.223 & 635 & 0.715 \\
+\cline{1-8}
+False & 80.0\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 11.952 & 457.308 & 635 & 0.720 \\
+\cline{1-8}
+False & 82.5\% & 366,773.5842 & \bfseries \color{red} 100.0000\% & \bfseries \color{red} 11.780 & 459.152 & 635 & 0.723 \\
+\cline{1-8}
+False & 85.0\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 11.925 & 457.508 & 635 & 0.720 \\
+\cline{1-8}
+False & 87.5\% & 366,773.5842 & \bfseries \color{red} 100.0000\% & 11.887 & 460.621 & 635 & 0.725 \\
+\cline{1-8}
+False & 90.0\% & 344,551.8961 & \bfseries \color{red} 100.0000\% & 12.016 & 461.610 & 635 & 0.727 \\
+\cline{1-8}
+False & 92.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 11.823 & 456.793 & 635 & 0.719 \\
+\cline{1-8}
+False & 95.0\% & 304,065.9811 & \bfseries \color{red} 100.0000\% & 11.802 & 456.415 & 635 & 0.719 \\
+\cline{1-8}
+False & 97.5\% & 323,676.5520 & \bfseries \color{red} 100.0000\% & 11.806 & 455.626 & 635 & 0.718 \\
+\cline{1-8}
+\bottomrule
+\end{tabular}
+\end{table}
