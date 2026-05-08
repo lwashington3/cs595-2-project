@@ -6,8 +6,9 @@ from .database import get_connection, safe_cursor
 
 from pathlib import Path
 from psutil import virtual_memory
-from torch.cuda import is_available
+from torch.cuda import is_available, empty_cache
 
+import gc
 import logging
 
 
@@ -93,9 +94,10 @@ def main(args=None):
 	from argparse import ArgumentParser
 	from datetime import datetime as dt
 
-	default_model = "meta-llama/Llama-3.1-8B-Instruct"
-	default_dataset = "lwashington3/ArxivCap-Minimal"
-	# default_dataset = "lwashington3/exsclaim-caption-distributor"
+	# default_model = "meta-llama/Llama-3.1-8B-Instruct"
+	# default_dataset = "lwashington3/ArxivCap-Minimal"
+	default_model = "google/gemma-3-1b-it"
+	default_dataset = "abisee/cnn_dailymail"
 
 	parser = ArgumentParser(prog="washLTH")
 
@@ -103,6 +105,7 @@ def main(args=None):
 	train_parser = subparsers.add_parser("train", help="Run the training pipeline.")
 	evaluate_parser = subparsers.add_parser("evaluate", help="Run a pruned model.")
 	dataset_parser = subparsers.add_parser("dataset", help="Pre-process the dataset and upload it to HuggingFace Hub.")
+	merge_parser = subparsers.add_parser("merge", help="Takes in the results.csv from previous evaluations, averages them, then creates similar outputs as before.")
 
 	parser.add_argument("-t", "--token", default=None,
 						help="Your HuggingFace token. If not given the system will pull it from the \"HF_TOKEN\" environment variable.")
@@ -116,10 +119,11 @@ def main(args=None):
 
 	train_parser.add_argument("-m", "--model", default=default_model, help=f"The HuggingFace model you want to use. Default is \"{default_model}\".")
 	train_parser.add_argument("-mr", "--model-revision", type=str, default=None, help="The specific revision/tag of the version of the dataset to use.")
-	train_parser.add_argument("-d", "--dataset", default=None, help=f"The HuggingFace dataset you want to use. Default is \"{default_dataset}\".")
+	train_parser.add_argument("-d", "--dataset", default=default_dataset, help=f"The HuggingFace dataset you want to use. Default is \"{default_dataset}\".")
 	train_parser.add_argument("-dr", "--dataset-revision", type=str, default=None, help="The specific revision/tag of the version of the dataset to use.")
-	train_parser.add_argument("-p", "--prune", type=float, default=0.2, help="The amount of parameters to prune.")
+	train_parser.add_argument("-p", "--prune", type=float, default=0.2, help="The percentage of parameters to keep.")
 	train_parser.add_argument("-n", "--name", type=str, default=f"run_{dt.now().isoformat()}", help="The name of the experiment.")
+	train_parser.add_argument("-tr", "--training-rows", type=int, default=None, help="The number of rows from the training and validation sets to be used for pretraining. None will use the entire dataset.")
 
 	evaluate_parser.add_argument("-m", "--model", type=str, default=None, help="Only experiments based on this model will be evaluated.")
 	evaluate_parser.add_argument("-d", "--dataset", default=default_dataset, help="The dataset that will be used to evaluate the models.")
@@ -133,6 +137,10 @@ def main(args=None):
 	evaluate_parser.add_argument("-a", "--ablation", default=False, action="store_true", help="If the ablation graphics should be generated.")
 	evaluate_parser.add_argument("-bt", "--baseline-as-target", default=False, action="store_true",
 								 help="If any results requiring the true value should use the actual target value as the target (False/unset) or the baseline model's response (True/set).")
+
+	merge_parser.add_argument("-r", "--results", type=Path, action="append", help="List of `results.csv` files to merge.", required=True)
+	merge_parser.add_argument("-i", "--idx", "--index", type=int, help="The row of the dataset that all of these results were created for.")
+	merge_parser.add_argument("-p", "--prompt", type=str, help="The prompt that these evaluations were generated for.")
 
 	dataset_parser.add_argument("-r", "--repo-id", default="ArxivCap", help="The namespace of the uploaded dataset.")
 	dataset_parser.add_argument("-m", "--message", help="The commit message for uploading this dataset.")
@@ -152,13 +160,11 @@ def main(args=None):
 		match args.command:
 			case "train":
 				model = HFObject(args.model, args.model_revision)
-				if args.dataset is not None:
-					dataset = HFObject(args.dataset, args.dataset_revision)
-				else:
-					dataset = None
+				dataset = HFObject(args.dataset, args.dataset_revision)
 				start_time = dt.now()
 
-				safetensor_file, pretrained_file = training_pipeline(model, folder, args.prune, dataset, logger=logger, seed=args.seed)
+				safetensor_file, pretrained_file = training_pipeline(model, dataset, folder, args.prune, logger=logger,
+																	 seed=args.seed, training_rows=args.training_rows)
 				with safe_cursor(connection) as cursor:
 					cursor.execute("INSERT INTO experiments(dataset, base_model, pretrained_model, \"name\", experiment_directory, tokenizer_directory, pipeline_start) VALUES (:dataset, :base_model, :pretrained_model, :name, :directory, :tokenizer_dir, :start_time)",
 								   dict(
@@ -181,15 +187,23 @@ def main(args=None):
 				evaluation_pipeline(args.dataset, folder, connection, logger, max_evaluations=args.max_evaluations,
 									sql_filter=args.sql_filter, baseline=args.baseline, mask_selector=mask_selector,
 									ablation=args.ablation, baseline_as_target=args.baseline_as_target)
+			case "merge":
+				from .evaluation.merge import merge_results
+				merge_results(args.results, args.folder, args.idx, args.prompt)
 			case "dataset":
 				from .generate_dataset import generate_dataset
 				dataset = generate_dataset(args.repo_id, args.message, logger=logger)
+	except KeyboardInterrupt:
+		logger.warning("Pipeline was interrupted by user.")
 	except BaseException as e:
 		logger.exception("An error stopped the pipeline.", exc_info=e)
 		raise e
+	finally:
+		connection.commit()
+		connection.close()
 
-	connection.commit()
-	connection.close()
+		gc.collect()
+		empty_cache()
 	# test(model, dataset, path)
 
 

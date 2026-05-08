@@ -154,8 +154,9 @@ def evaluation_pipeline(dataset: str | Dataset | DatasetDict, output_directory: 
 		position_float="centering",
 		hrules=True,
 		sparse_index=False,
-		clines="all;data",
-		column_format=r"|m{0.08\textwidth}| m{0.11\textwidth}| r | R{0.13\textwidth}| R{0.09\textwidth}| R{0.09\textwidth}| R{0.09\textwidth}| R{0.11\textwidth}|"
+		clines="skip-last;data",
+		column_format=r"%|m{0.08\textwidth} | m{0.11\textwidth} | r | R{0.13\textwidth} | R{0.09\textwidth} | R{0.09\textwidth} | R{0.09\textwidth} | R{0.11\textwidth} |",
+		ablation_column_format=r"|m{0.08\textwidth} | m{0.11\textwidth} | r | R{0.13\textwidth} | R{0.09\textwidth} | R{0.09\textwidth} | R{0.09\textwidth} | R{0.11\textwidth} |",
 	)
 	latex_na_rep = "-"
 
@@ -172,15 +173,14 @@ def evaluation_pipeline(dataset: str | Dataset | DatasetDict, output_directory: 
 		results_directory.mkdir(parents=True, exist_ok=True)
 
 		results_func(results_directory, df, i, prompt, latex_na_rep, latex_kwargs)
+		del df
 
 		logger.debug(f"Finished testing row {i:,} of {len(dataset):,}.")
 		snapshot2 = tracemalloc.take_snapshot()
-		top_stats = snapshot2.compare_to(snapshot1, "lineno", cumulative=True)
+		top_stats = snapshot2.compare_to(snapshot1, "lineno", cumulative=False)
 		snapshot2.dump(output_directory / f"{i:,}_dump.txt")
 		top_stats = tuple(filter(lambda stat: "washLTH" in stat.traceback._frames[0][0], top_stats))
 		stat_info = "\n\t".join(map(repr, top_stats[:30]))
 		logger.debug(f"Top stats for row {i:,}:\n\t{stat_info}")
-		# for stat in top_stats[:5]:
-		# 	print(stat)
 
 	logger.info("Model evaluations have finished.")

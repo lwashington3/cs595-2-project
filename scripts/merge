@@ -1,0 +1,49 @@
+#!/bin/bash
+
+notify () {
+	if [[ ! -n "$NTFY_LINK" ]]; then
+		return;
+	 fi;
+	local EXIT_CODE=$1;
+	curl -d "Pipeline failed with exit code $EXIT_CODE!" "$NTFY_LINK";
+}
+
+OUTPUT_DIRECTORY="$(realpath $(dirname "$BASH_SCRIPT"))/evaluations/merged";
+RESULTS=
+INDEX=0
+PROMPT=""
+
+while getopts "o:h" opt; do
+	case $opt in
+		o) OUTPUT_DIRECTORY="$OPTARG" ;;
+		h) printf """ablation is a script designed to automatically prune models to be used for the ablation study.
+
+Arguments:
+	-o: The directory where the merged results will be written.
+	-h: Displays this help message.
+		"""; exit 0;;
+		\?) echo "Invalid option: $opt"; exit 1;;
+	esac
+done
+shift $((OPTIND - 1))
+
+if [[ -n "$RESULTS" ]]; then
+	time python3.14 -m washLTH -f="$OUTPUT_DIRECTORY" merge --results="$RESULTS" --index="$INDEX" --prompt="$PROMPT" || notify $?;
+	exit $?;
+fi
+
+
+INDEX=0
+ABLATIONS=( $HOME/evaluations/ablation_* )
+NUM_ROWS=$(find "${ABLATIONS[0]}" -maxdepth 1 -mindepth 1 -type d -print | wc -l)
+OUTPUT_DIRECTORY="$HOME/averaged"
+mkdir -p "$OUTPUT_DIRECTORY";
+
+for INDEX in $(seq "$NUM_ROWS"); do
+	RES_DIR="$OUTPUT_DIRECTORY/$INDEX";
+	mkdir -p "$RES_DIR";
+	RESULTS=( $HOME/evaluations/ablation_*/$INDEX/results.csv )
+	RESULTS=$(printf -- " -r %s" "${RESULTS[@]}")
+	python3.14 -m washLTH -f="$RES_DIR" merge$RESULTS --index="$INDEX" --prompt="" || notify "$?";
+	echo "Merged index $INDEX."
+done

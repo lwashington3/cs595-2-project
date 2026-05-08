@@ -1,8 +1,8 @@
+# from .pretrain import pretrain_model_iteratively, pretrain_model
 from .tools import correct_patterns, RegexType, StringChecker
 from ..tensors import get_pytorch_device, SafeTensorReader
 from ..types import SafeTensor
 
-from datasets import Dataset
 from pathlib import Path
 from tqdm import tqdm
 from typing import Iterable
@@ -15,9 +15,8 @@ import torch
 __all__ = ["magnitude_prune"]
 
 
-def magnitude_prune(safe_tensors_file, pruning_parameter: float, logger: logging.Logger, train: Dataset = None,
-					val: Dataset = None, output_file: Path = None, /,
-					allow_layer_pattern: RegexType | StringChecker | Iterable[RegexType | StringChecker] = None,
+def magnitude_prune(safe_tensors_file, pruning_parameter: float, logger: logging.Logger, output_file: Path = None,
+					/, allow_layer_pattern: RegexType | StringChecker | Iterable[RegexType | StringChecker] = None,
 					ignore_layer_pattern: RegexType | StringChecker | Iterable[RegexType | StringChecker] = None,
 					**kwargs) -> SafeTensor:
 	"""
@@ -58,19 +57,18 @@ def magnitude_prune(safe_tensors_file, pruning_parameter: float, logger: logging
 			mask = torch.ones_like(tensor, dtype=torch.int8)
 
 			layer_shape = tensor.shape
-			num_parameters = reduce(mul, layer_shape)
+			num_parameters: int = reduce(mul, layer_shape)
 			num_prune = num_parameters * pruning_parameter
 
 			flattened = torch.flatten(tensor)
 			idx = torch.argsort(torch.abs(flattened), descending=True).reshape(layer_shape)
 			del flattened
 
-			mask[idx > num_prune] = False
+			# mask[idx > num_prune] = 0
+			mask[idx < num_prune] = 0
 			masks[layer] = mask
 			if device != "cpu":
 				tensor.to("cpu")
-
-	# TODO: Should test the results against the dataset if iteratively pruning
 
 	if output_file is not None:
 		from safetensors.torch import save_file

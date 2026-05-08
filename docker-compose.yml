@@ -12,14 +12,17 @@ services:
             - HISTFILE=/var/.bash_history
         env_file: .env
         volumes:
+            # If not running on Linux, remove this line
             - /etc/localtime:/etc/localtime:ro
             - ./.bash_history:/var/.bash_history
             - ./hf:/hf
             - ./datasets:/datasets
-            - ./:/lth
+            - ./models:/lth/models
+            - ./evaluation:/lth/evaluation
             - ./LaTeX:/lth/LaTeX
             - ./washLTH:/usr/local/lib/python3.14/site-packages/washLTH
-            - ./chameleon:/lth/scripts
+            - ./scripts:/lth/scripts
+            - ./:/lth
         deploy:
             resources:
                 reservations:

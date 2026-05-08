@@ -1,0 +1,19 @@
+#!/bin/bash
+
+notify () {
+	if [[ ! -n "$NTFY_LINK" ]]; then
+		return;
+	 fi;
+	local EXIT_CODE=$1;
+	curl -d "Pipeline failed with exit code $?!" "$NTFY_LINK";
+}
+
+NOW="1778116563";
+MODEL="google/gemma-3-1b-it";
+DATASET="abisee/cnn_dailymail";
+RUN_NAME="Ablation $NOW";
+EVALUATION_DIRECTORY="$HOME/evaluations/ablation_$NOW";
+clear;
+time python3.14 -m washLTH -f="$EVALUATION_DIRECTORY" evaluate --dataset="$DATASET" --baseline="$MODEL" \
+  --max-evaluations=15 --mask-filter="magnitude" --sql-filter="WHERE \"name\" REGEXP '$RUN_NAME \((Unt|T)rained\) \(\d+\.?\d*%\)'" \
+  --ablation --baseline-as-target || notify $?;

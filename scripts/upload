@@ -1,0 +1,6 @@
+#! /bin/bash
+
+hf upload-large-folder lwashington3/lottery-ticket-hypothesis-masks ~/models ./models
+hf upload-large-folder lwashington3/lottery-ticket-hypothesis-masks ~/.cache/huggingface/hub/models--google--gemma-3-1b-it/snapshots/dcc83ea841ab6100d6b47a070329e1ba4cf78752/pretrained_cnn_dailymail ./pretrained_cnn_dailymail
+
+hf upload lwashington3/lottery-ticket-hypothesis-masks ~/LTH.db .

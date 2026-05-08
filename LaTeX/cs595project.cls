@@ -33,7 +33,7 @@
 \RequirePackage{multirow}
 \RequirePackage{minted}
 
-\RequirePackage{fontawesome5}
+\RequirePackage{fontawesome7}
 \definecolor{orcid}{HTML}{a6ce39}
 \newcommand{\orcid}[1]{\href{https://orcid.org/#1}{\textcolor{orcid}{\faIcon{orcid}}}}
 
