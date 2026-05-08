@@ -191,8 +191,9 @@ def main(args=None):
 				from .evaluation.merge import merge_results
 				merge_results(args.results, args.folder, args.idx, args.prompt)
 			case "dataset":
-				from .generate_dataset import generate_dataset
-				dataset = generate_dataset(args.repo_id, args.message, logger=logger)
+				from .generate_dataset import main as generate_dataset
+				generate_dataset()
+				# dataset = generate_dataset(args.repo_id, args.message, logger=logger)
 	except KeyboardInterrupt:
 		logger.warning("Pipeline was interrupted by user.")
 	except BaseException as e:

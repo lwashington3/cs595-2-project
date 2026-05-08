@@ -39,6 +39,6 @@ python3 -m washLTH -f={The folder where the results will be stored} evaluate --m
 To merge previous evaluation results (assuming the same model/dataset combo, though it's not required), use the [merge](scripts/merge) script to combine them all.
 
 ## Pruning Parameter Mix-Up
-I did not realize until 1778195738 that how I had the pruning parameter was inverted.
+I did not realize until May 7th at 18:15 (Unix timestamp: 1778195738) that how I had the pruning parameter was inverted.
 It was describing what percentage of parameters should remain, instead of what percentage of parameters to mask.
-This change should be reflected in the [report](out/washington_lth.pdf), but any figures or tables from beforehand will show percentage remaining instead of percentage pruned.
+This change was reflected [report](out/washington_lth.pdf), and in any figures and tables generated afterward.
